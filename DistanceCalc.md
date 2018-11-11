@@ -32,6 +32,6 @@ sim(bbox1,bbox2)=distance/(A(bbox1)+A(bbox2))
 
 
 **Beispiele:**
-Deutschland - Polen
+Deutschland - Polen  
 bbox(DE)=5.866315,47.270111,15.041932,55.099159
 bbox(POL)=14.122971,49.002048,24.145782,,55.033695
