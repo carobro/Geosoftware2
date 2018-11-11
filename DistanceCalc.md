@@ -22,8 +22,8 @@ Anwendung von Seitenkosinussatz:
 [Quelle](https://www.kompf.de/gps/distcalc.html)
 
 # Flächenberechnung
-`(max lat - min lat)*111.3 = y`
-`(max lon - min lon)*111.3 * cos(max lat+min lat)/2) = x`
+`(max lat - min lat)*111.3 = y`  
+`(max lon - min lon)*111.3 * cos(max lat+min lat)/2) = x`  
 `A=x*y`
 mit A: Fläche in km²
 
