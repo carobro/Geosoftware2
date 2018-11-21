@@ -1,4 +1,4 @@
-﻿# GDAL unterstützt: 
+# GDAL unterstützt: 
 
 ## Vektorformat:
 - CSV
@@ -6,7 +6,7 @@
 - GeoJson
 - NetCDF
 
-## Raserformat:
+## Rasterformat:
 - GeoTiff
 - GeoPackage
 
