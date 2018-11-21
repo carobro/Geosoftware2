@@ -6,10 +6,13 @@
 - GeoJson
 - NetCDF
 
+(ogrinfo)
+
 ## Rasterformat:
 - GeoTiff
 - GeoPackage
 
+(gdalinfo)
 
 
 ISO-XX ??
