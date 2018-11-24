@@ -1,28 +1,26 @@
 from osgeo import gdal
 
-def getMetaData(path):
+def firsttry(path):
 
 """returns the metadata of supported Datatypes. supported data: Shapefile (.shp), 
     GeoJson (.json/.geojson), GeoTIFF (.tif), netCDF (.nc), GeoPackage (.gpkg) CSV on the web
     @param path to the file """
     # connect path to file
      filepath = "%s\%s" % (path, name)
-  
- """ if (1+1=2):
-  try:
-      gdalinfo(filepath)
-      ogrinfo(filepath)"""
       
-def firsttry(argument):
     switcher = {
         1: gdalinfo(filepath),
         2: ogrinfo(filepath)
     }
-    print switcher.get(argument, click.echo("type %s not supported" % filepath))
+    print switcher.get(path, click.echo("type %s not supported" % filepath))
 
+ """ if (1+1=2):
+  try:
+      gdalinfo(filepath)
+      ogrinfo(filepath)
 else: 
      click.echo("type %s not supported" % filepath)
-        return None
+        return None"""
 
 """
 Main Methode anpassen
