@@ -1,13 +1,6 @@
-
-
 # Pflichtenheft
-
 # Enhancing discovery of geospatial
-
 # datasets in data repositories
-
-#
-
 
 Carolin B. ([c\_bron02@wwu.de](mailto:c_bron02@wwu.de)),
 
@@ -41,7 +34,7 @@ Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besuch
 
 - --Sprache: Englisch
 
-1.  Produkteinsatz
+2.  Produkteinsatz
 
 **Anwendungsbereich**
 
@@ -58,7 +51,7 @@ Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besuch
 - --Die Software/API ist als Anknüpfung zur Nutzung des Repositories ausgelegt
 - --Die Nutzung ist nur mit bereits vorhandener Netzwerkverbindung möglich
 
-1. Produktfunktionen
+3. Produktfunktionen
 
 **Metadatenextraktion**
 
@@ -136,7 +129,7 @@ FallsÄhnlichkeit❑ungleicherDatentyp\&gt;1→Ähnlichkeit❑ungleicherDatentyp
 
 Falls der Datentyp verschieden ist, vergrößert sich der Ähnlichkeitswert um 25%. In der Regel ist es z.B. nicht erstrebenswert Zeitreihen mit Vektordaten zu vergleichen.
 
-1. Produktdaten
+5. Produktdaten
 
 **D010** Metadaten:
 
@@ -152,7 +145,7 @@ Beispiel:
 - --Shapefile
 - --[Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-1. Benutzeroberfläche
+6. Benutzeroberfläche
 
 **FU010** Eine konfigurierbare Anzahl ähnlicher Datensätze wird auf einer Seite angezeigt, um einen einzelnen Datensatz anzuzeigen (darf nicht in vorhandene Benutzeroberflächen für die Basissoftware integriert sein)
 
@@ -166,7 +159,7 @@ In Abb. 1 befindet sich im unteren Bereich der Seite ein Block mit einer Liste e
 
 **FC020** Die Konfiguration ist mindestens nach dem Neustart des Dienstes aktiv
 
-1. Nichtfunktionale Anforderungen
+7. Nichtfunktionale Anforderungen
 
 **Wartbarkeit**
 
@@ -186,7 +179,7 @@ In Abb. 1 befindet sich im unteren Bereich der Seite ein Block mit einer Liste e
 - --Komplexe Seiteninhalte können asynchron geladen werden.
 - --Der Auftragnehmer stellt ein Testskript bereit, um die Leistung anhand von mindestens 10 verschiedenen URLs oder Ansichten mit einer angemessenen Anzahl von Wiederholungen zu bewerten.
 
-1. Technische Produktumgebung
+8. Technische Produktumgebung
 
 **Software**
 
@@ -197,7 +190,6 @@ In Abb. 1 befindet sich im unteren Bereich der Seite ein Block mit einer Liste e
   - --Zenodo (basierend auf INVENIO)
 
 _Wir verwenden Zenodo für die Entwicklung unserer Zusatzfunktion, weil Zenodo eine bereits implementierte Benutzeroberfläche bereitstellt, welche uns beim Testen und Überprüfen unserer Funktionalitäten behilflich ist._
-
 _Da Zenodo auf Invenio basiert sind die zusätzlichen Funktionalitäten ohne großen Aufwand auf andere Repositorien, die ebenfalls auf Invenio basieren übertragbar._
 
 - --Datenbank
@@ -212,9 +204,7 @@ _Da Zenodo auf Invenio basiert sind die zusätzlichen Funktionalitäten ohne gro
 - --genutzte zusätzliche Dienste/Plattformen
   - --GitHub, GitKraken
 
-1. Zeitplan
-
-1. Anhang
+9. Anhang
 
 Ähnlichkeitsberechnung
 
@@ -229,19 +219,14 @@ Wir nehmen an, dass die Erde eine Kugel ist, da dies unseren Genauigkeitsansprü
 Entfernungsberechnung
 
 Anwendung von Seitenkosinussatz: cos(g)=sin(lat1)∗sin(lat2)+cos(lat1)∗cos(lat2)∗cos(lon2−lon1)
-
 mit g: Gesuchter Großkreisbogen
-
 lat1, lat2, lon1, lon2: Breite, Länge in Grad
-
 dist=6378.388∗acos(cos(g))
-
 mit dist: Entfernung in km
 
 Flächenberechnung
 
 x=(maxlon−minlon)∗111.3∗cos(maxlat+minlat)/2
-
 y=(maxlat−minlat)∗111.3
 
 mit x, y: Breite, Länge in km
@@ -253,23 +238,16 @@ mit A: Fläche in km²
 Ähnlichkeitsberechnung
 
 Aufteilung in Ähnlichkeit Distanz(⅔) und Ähnlichkeit Fläche (⅓)
-
 =(2∗simdis+simA)/3
-
 mit Fallsdist\&lt;20000:simdis=dist/20000
-
        Sonst:simdis=1
-
 und         AA(bbox1−Abbox2)∨1000000(bbox1−Abbox2)∨1000000:simA=Falls∨
-
 Sonst: simA=1
 
 Erläuterung:
 
 Wir behaupten, dass 0 km Distanz für 100% Ähnlichkeit steht und 20000 km Distanz für 0% Ähnlichkeit steht, weil 20000km ungefähr die Hälfte des Äquatorumfangs ist. Auch wenn es Orte gibt, die noch etwas weiter entfernt liegen, geben wir hier allen, die sich mindestens 20000 km entfernt befinden eine Ähnlichkeit von 0% aufgrund der weiten Entfernung.
-
 Bei der Fläche setzen wir die Grenze für 0% Ähnlichkeit bei 1 000 000km² Differenz. Selbsterklärend ist die 100% Ähnlichkeit für die Fläche bei einer Differenz von 0 km².
-
 Zwei Gebiete sind ähnlicher je näher der sim - Wert Richtung 0 geht.
 
 Beispiele
