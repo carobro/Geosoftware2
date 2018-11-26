@@ -1,28 +1,28 @@
-Beispieldatensätze:
+#Beispieldatensätze:
 
 Link zum Sciebo Ordner: <https://uni-muenster.sciebo.de/s/QFj5pzm7AzxAh1f>
 
-GeoPackage
+###GeoPackage
 
 Quelle: <https://datapacks.censusdata.abs.gov.au/geopackages/>
 
-NetCDF
+###NetCDF
 
 Quelle: <https://www.unidata.ucar.edu/software/netcdf/examples/files.html>
 
-GeoJSON
+###GeoJSON
 
 Quelle: <https://open.nrw/suche>
 
-CSV
+###CSV
 
 Quelle: <https://open.nrw/suche>
 
-shapefile
+###shapefile
 
 Quelle: <https://open.nrw/suche> (auf jeden Fall, evtl auch noch andere??)
 
-GeoTIFF
+###GeoTIFF
 
 ?
 
