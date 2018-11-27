@@ -23,6 +23,7 @@ $ gdalinfo + Pfad zu Datei + optional:beliebiger Befehl, siehe [gdal Dokumentati
 ### Allgemeines Vorgehen bei [ogr](https://www.gdal.org/ogrinfo.html):
 
 $ ogrinfo + Pfad zu Datei → gibt alle Layer der Datei aus
+
 $ ogrinfo + Pfad zu Datei + Name eines Layers + beliebiger Befehl, siehe [ogr Dokumentation](https://www.gdal.org/ogrinfo.html) 
 
 Ein guter Befehl um die Metadaten von Dokumenten zu erhalten ist „-so“
