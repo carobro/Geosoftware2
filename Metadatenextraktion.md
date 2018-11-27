@@ -11,7 +11,7 @@ Da Apache Tika native in Java geschrieben wurde, sollte man überlegen auf [dies
 
 Installation (with pip)
 -----------------------
-1. `pip install tika`
+1. `pip install --user tika`
 
 Installation (without pip)
 --------------------------
