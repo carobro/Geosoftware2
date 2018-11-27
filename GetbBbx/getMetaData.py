@@ -10,10 +10,10 @@ def firsttry(path):
      filepath = "%s\%s" % (path, name)p
       
     switcher = { """ filepath immer in (" ") eingeben """
-        1: gdalinfo(filepath), """Für GeoTiff""" 
-        2: pd.read_csv(filepath), """ Für CSV) """
-        3: (test).bbox """ Für GeoJson the bounding box region of the entire file test=pygeoj.load(filepath) """"
-        4:
+        1: gdalinfo(filepath),              """GeoTiff""" 
+        2: pd.read_csv(filepath),           """CSV"""
+        3: (test).bbox                      """GeoJson; bounding box of entire file: test=pygeoj.load(filepath)""""
+        4: shapefile.Reader(filepath)       """Shapefile"
         5:
         6:
     }
