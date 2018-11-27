@@ -35,7 +35,7 @@
     MULTIPOINTM = 28
     MULTIPATCH = 31
 
-`>>> sf.box`
+`>>> sf.bbox`
 -> gibt die Boundingbox des Shapefiles an
 
 WEITERE FUNKTIONEN GIBT ES [HIER](https://github.com/GeospatialPython/pyshp#reading-shapefiles-using-the-context-manager)
