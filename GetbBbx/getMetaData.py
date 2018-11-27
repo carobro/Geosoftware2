@@ -1,6 +1,6 @@
 from osgeo import gdal
 import pandas as pd
-
+import pygeoj
 def firsttry(path):
 
 """returns the metadata of supported Datatypes. supported data: Shapefile (.shp), 
@@ -12,7 +12,7 @@ def firsttry(path):
     switcher = { """ filepath immer in (" ") eingeben """
         1: gdalinfo(filepath), """Für GeoTiff""" 
         2: pd.read_csv(filepath), """ Für CSV) """
-        3:
+        3: (test).bbox """ Für GeoJson the bounding box region of the entire file test=pygeoj.load(filepath) """"
         4:
         5:
         6:
