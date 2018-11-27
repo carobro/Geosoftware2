@@ -7,11 +7,15 @@ def firsttry(path):
     GeoJson (.json/.geojson), GeoTIFF (.tif), netCDF (.nc), GeoPackage (.gpkg) CSV on the web
     @param path to the file """
     # connect path to file
-     filepath = "%s\%s" % (path, name)
+     filepath = "%s\%s" % (path, name)p
       
-    switcher = {
-        1: gdalinfo(filepath),
-        2: ogrinfo(filepath)
+    switcher = { """ filepath immer in (" ") eingeben """
+        1: gdalinfo(filepath), """Für GeoTiff""" 
+        2: pd.read_csv(filepath), """ Für CSV) """
+        3:
+        4:
+        5:
+        6:
     }
     print switcher.get(path, click.echo("type %s not supported" % filepath))
 
