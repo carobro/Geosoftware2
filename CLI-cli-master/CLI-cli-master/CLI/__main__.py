@@ -1,14 +1,17 @@
-import sys
-# from .classmodule import MyClass
-# from .funcmodule import my_function
-def main():
-    print('in main')
-    args = sys.argv[1:]
-    print('count of args :: {}'.format(len(args)))
-    for arg in args:
-        print('passed argument :: {}'.format(arg))
-    # my_function('hello world')
-    # my_object = MyClass('Thomas')
-    # my_object.say_name()
+from osgeo import gdal
+import pandas as pd
+
+def getMetaData(path):
+
+    # connect path to file
+    filepath = "%s\%s" % (path, name)
+      
+    switcher = {
+        1: gdalinfo(filepath),             
+        2: pd.read_csv(filepath),         
+
+    }
+    print switcher.get(path, click.echo("type %s not supported" % filepath))
+
 if __name__ == '__main__':
-    main()
+    getMetaData()
