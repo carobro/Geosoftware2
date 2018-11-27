@@ -1,6 +1,4 @@
-# Pflichtenheft
-# Enhancing discovery of geospatial
-# datasets in data repositories
+# Enhancing discovery of geospatial datasets in data repositories
 
 Carolin B. ([c\_bron02@wwu.de](mailto:c_bron02@wwu.de)),
 
@@ -57,7 +55,7 @@ Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besuch
 
 **FE010** Unterstützte Geo-(Meta)-Datenformate beim Hochladen und Speichern der Daten: [GeoPackage, NetCDF, GeoJSON, Shapefile, CSV im Web, ISO 19xxx, GeoTIFF]
 
-**FE015  ** Erstellung des CLI Tools mit Hilfe von &quot;[argparse](https://docs.python.org/3/library/argparse.html)&quot;
+**FE015** Erstellung des CLI Tools mit Hilfe von &quot;[argparse](https://docs.python.org/3/library/argparse.html)&quot;
 
 **FE020** Ein CLI-Tool zum Extrahieren der räumlichen Ausdehnung auf verschiedenen Detailebenen. Der Benutzer kann in Form einer Parameterübergabe entscheiden, ob er dabei die räumliche Ausdehnung als Bounding Box oder als einzelnes Feature aus einer einzelnen Datei erhalten möchte.
 
