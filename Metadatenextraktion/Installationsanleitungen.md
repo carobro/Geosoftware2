@@ -25,3 +25,8 @@
 `$ python`   
 `>>> from osgeo import gdal`   
 `>>> gdalinfo(filepath)`    
+
+## Für NetCDF -Extraktion
+`$ pip install numpy`
+`$ pip install pandas`
+`$ pip install xarray`
