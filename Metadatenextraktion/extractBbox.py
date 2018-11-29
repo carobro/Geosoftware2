@@ -12,8 +12,6 @@ def getMetadata(path):
     filepath = path
     # https://docs.python.org/2/library/os.path.html
     # Program that extracts the boudingbox of files.
-"""Jede Try Funktion versucht den Path auszulesen, falls dies nicht
-möglich ist, springt er weiter """
     try:
         getShapefilebbx(filepath)
     except Exception as e:
@@ -56,27 +54,25 @@ def getCSVbbx(filepath):
 def getGeoJsonbbx(filepath):
     """returns the bounding Box GeoJson
     @param path Path to the file """
-        geojson = pygeoj.load(filepath)
-        geojbbx = (geojson).bbox 
-        click.echo(geojbbx)
+    geojson = pygeoj.load(filepath)
+    geojbbx = (geojson).bbox 
+    click.echo(geojbbx)
 
 def getNetCDFbbx(filepath):
     """returns the bounding Box NetCDF
     @param path Path to the file """
-        ds = xr.open_dataset(filepath)
-        lats = ds.coords["lat"]
-        lons = ds.coords["lon"]
-        bbox = (min(lats), min(lons), max(lats), max(lons))
-        click.echo(bbox)
+    ds = xr.open_dataset(filepath)
+    lats = ds.coords["lat"]
+    lons = ds.coords["lon"]
+    bbox = (min(lats), min(lons), max(lats), max(lons))
+    click.echo(bbox)
 
         
 def getGeopackagebbx(filepath):
     """returns the bounding Box Geopackage
     @param path Path to the file """
-        click.echo("GeoPagackeBlock")
+    click.echo("GeoPagackeBlock")
 
 
-
-"""Main Methode die ausgeführt wird"""
 if __name__ == '__main__':
     getMetadata()
