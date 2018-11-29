@@ -7,7 +7,6 @@
 `>>> pd.read_csv(filepath)`   
 
 ## Für Shapefile - Extraktion
-
 `$ pip install pyshp`   
 `$ python`   
 `>>> import shapefile`   

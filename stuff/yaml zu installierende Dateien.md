@@ -1,6 +1,6 @@
 # zu installierende Dateien/Programme
 
-- click ??
+- click
 - pyshp
 - gdal
 - pyGeoj
