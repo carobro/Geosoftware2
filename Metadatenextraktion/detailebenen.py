@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
+import ogr2ogr
+ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
@@ -36,9 +38,12 @@ def getMetadata(path, detail):
                             getGeopackagebbx(filepath, detail)
                         except Exception as e:
                             try:
-                                openFolder(filepath, detail)
+                                getIsobbx(filepath, detail)
                             except Exception as e:
-                                click.echo ("invalid file format!")
+                                try:
+                                    openFolder(filepath, detail)
+                                except Exception as e:
+                                    click.echo ("invalid file format!")
 
 
 def openFolder(filepath, detail):
@@ -68,10 +73,12 @@ def openFolder(filepath, detail):
                                 getGeoTiffbbx(docPath, detail)
                             except Exception as e:
                                 try:
-                                    openFolder(docPath, detail)
+                                    getIsobbx(filepath, detail)
                                 except Exception as e:
-                                    click.echo ("invalid file format!")
-
+                                    try:
+                                        openFolder(docPath, detail)
+                                    except Exception as e:
+                                        click.echo ("invalid file format!")
 
 
 def getShapefilebbx(filepath, detail):
@@ -258,6 +265,17 @@ def getGeopackagebbx(filepath, detail):
         print(row)
     if detail == 'feature':
             click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+
+def getIsobbx(filepath, detail):
+    """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
+    if detail =='bbox':
+        ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
+        iso = pygeoj.load(filepath="out.json")
+        isobbx = (iso).bbox
+        click.echo(isobbx)
+
+    if detail == 'feature':
+           click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
 
 if __name__ == '__main__':
     getMetadata()
