@@ -9,7 +9,7 @@ import xarray as xr
 @click.command()
 @click.option('--path', prompt='Datapath', help='Path to the data.')
 
-def getMetadata(path):
+def getTimeextend(path):
     filepath = path
     # https://docs.python.org/2/library/os.path.html
     # Program that extracts the time-extend of files.
@@ -73,4 +73,4 @@ def getGeopackagetime(filepath):
     print(row)
 
 if __name__ == '__main__':
-    getMetadata()
+    getTimeextend()
