@@ -13,7 +13,7 @@ def getMetaData(path):
      filepath = "%s\%s" % (path, name)p
       
     switcher = { """ filepath immer in (" ") eingeben """
-        1: gdalinfo(filepath),              """GeoTiff getGeoTiffBoundingBox(name, path) """ 
+        1: gdalinfo(filepath),              """GeoTiff getGeoTiffBoundingBox(name, path) """
         2: pd.read_csv(filepath),           """CSV"""
         3: (test).bbox                      """GeoJson; bounding box of entire file: test=pygeoj.load(filepath)""""
         4: shapefile.Reader(filepath)       """Shapefile"""

@@ -77,6 +77,6 @@ def getGeopackagebbx(filepath):
 
 
 
-"""Main Methode die ausgeführt wird"""
+"""main method"""
 if __name__ == '__main__':
     getMetadata()

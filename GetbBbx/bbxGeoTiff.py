@@ -1,5 +1,5 @@
 # https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file
-# falls die Datei eune GeoTiff ist -> auslesen der BoundingBox
+# falls die Datei eine GeoTiff ist -> auslesen der BoundingBox
 from osgeo import gdal
 
 def getGeoTiffBoundingBox(name, path):

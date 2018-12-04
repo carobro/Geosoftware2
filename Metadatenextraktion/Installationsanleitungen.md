@@ -29,3 +29,9 @@
 `$ pip install numpy`
 `$ pip install pandas`
 `$ pip install xarray`
+
+## Für GeoPackage - Extraktion
+`install from https://github.com/nextgis/pygdal`   
+`$ python`   
+`>>> from osgeo import gdal`   
+`>>> gdalinfo(filepath)`    
