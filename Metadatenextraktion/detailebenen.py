@@ -163,7 +163,7 @@ def getNetCDFbbx(filepath, detail):
         print("Max Longitude: ")
         print(maxlon)
 
-        # Speicherung als bbox noch nicht so schön, da Ausgabe als vier Arrays mit einem Wert
+        # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
         bbox = [minlat,minlon,maxlat,maxlon]
         click.echo(bbox)
         print("-------------------------------------------------")
