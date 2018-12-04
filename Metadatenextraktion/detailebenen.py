@@ -52,7 +52,7 @@ def openFolder(filepath, detail):
         try:
             getShapefilebbx(docPath, detail)
         except Exception as e:
-            try: 
+            try:
                 getGeoJsonbbx(docPath, detail)
             except Exception as e:
                 try:
@@ -153,7 +153,7 @@ def getNetCDFbbx(filepath, detail):
         maxlon=max(lons).values
         starttime=min(mytime)
         endtime=max(mytime)
-        # Bounding Box Ausgabe in Schön
+        # Bounding Box Ausgabe in Schoen
         print("Min Latitude: ")
         print(minlat)
         print("Min Longitude: ")
