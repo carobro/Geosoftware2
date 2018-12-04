@@ -31,7 +31,7 @@ for x in filepaths:
     starttime=min(mytime)
     endtime=max(mytime)
     # Bounding Box:
-    print("Min Latitude: ")
+    """print("Min Latitude: ")
     print(minlat)
     print("Min Longitude: ")
     print(minlon)
@@ -39,6 +39,10 @@ for x in filepaths:
     print(maxlat)
     print("Max Longitude: ")
     print(maxlon)
+    """
+    bbox=[minlat,minlon,maxlat,maxlon]
+    print(bbox)
+
     print("-------------------------------------------------")
 
     # Zeitliche Ausdehnung

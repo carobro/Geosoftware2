@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 
-""" Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet, 
+""" Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
 @click.command()
 @click.option('--path',required=True, help='Path to the data.')
@@ -19,7 +19,7 @@ def getMetadata(path, detail):
     try:
         getShapefilebbx(filepath, detail)
     except Exception as e:
-        try: 
+        try:
             getGeoJsonbbx(filepath, detail)
         except Exception as e:
             try:
@@ -90,7 +90,7 @@ def getGeoJsonbbx(filepath, detail):
     @param path Path to the file """
     if detail =='bbox':
         geojson = pygeoj.load(filepath)
-        geojbbx = (geojson).bbox 
+        geojbbx = (geojson).bbox
         click.echo(geojbbx)
 
     if detail == 'feature':
@@ -101,16 +101,48 @@ def getNetCDFbbx(filepath, detail):
     @param path Path to the file """
     if detail =='bbox':
         ds = xr.open_dataset(filepath)
-        lats = ds.coords["lat"]
-        lons = ds.coords["lon"]
-        bbox = (min(lats), min(lons), max(lats), max(lons))
+        try:
+            lats = ds.coords["lat"]
+            lons = ds.coords["lon"]
+
+        except Exception as e:
+            lats = ds.coords["latitude"]
+            lons = ds.coords["longitude"]
+        mytime = ds.coords["time"]
+        # print(ds.values)
+        minlat=min(lats).values
+        minlon=min(lons).values
+        maxlat=max(lats).values
+        maxlon=max(lons).values
+        starttime=min(mytime)
+        endtime=max(mytime)
+        # Bounding Box Ausgabe in Schön
+        print("Min Latitude: ")
+        print(minlat)
+        print("Min Longitude: ")
+        print(minlon)
+        print("Max Latitude: ")
+        print(maxlat)
+        print("Max Longitude: ")
+        print(maxlon)
+
+        # Speicherung als bbox noch nicht so schön, da Ausgabe als vier Arrays mit einem Wert
+        bbox = [minlat,minlon,maxlat,maxlon]
         click.echo(bbox)
+        print("-------------------------------------------------")
+
+        # Zeitliche Ausdehnung
+        print("Timestamp: ")
+        print(starttime.values)
+        print(endtime.values)
+        print("__________________________________________________")
+
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
 
 def getGeopackagebbx(filepath, detail):
     """returns the bounding Box Geopackage
-    @param path Path to the file 
+    @param path Path to the file
     @see https://docs.python.org/2/library/sqlite3.html"""
     if detail =='bbox':
         conn = sqlite3.connect(filepath)
