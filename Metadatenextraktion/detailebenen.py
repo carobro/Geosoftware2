@@ -3,6 +3,7 @@ from osgeo import gdal
 import pandas as pd
 import numpy as np
 import xarray as xr
+import os
 
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
@@ -34,7 +35,43 @@ def getMetadata(path, detail):
                         try:
                             getGeopackagebbx(filepath, detail)
                         except Exception as e:
-                            click.echo ("invalid file format!")
+                            try:
+                                openFolder(filepath, detail)
+                            except Exception as e:
+                                click.echo ("invalid file format!")
+
+
+def openFolder(filepath, detail):
+    folderpath= filepath
+    click.echo("drin")
+    docs=os.listdir(folderpath)
+    for x in docs:
+        docPath= folderpath +"/"+ x
+        print docPath
+        #getMetadata(docPath, detail2)
+        try:
+            getShapefilebbx(docPath, detail)
+        except Exception as e:
+            try: 
+                getGeoJsonbbx(docPath, detail)
+            except Exception as e:
+                try:
+                    getNetCDFbbx(docPath, detail)
+                except Exception as e:
+                    try:
+                        getCSVbbx(docPath, detail)
+                    except Exception as e:
+                        try:
+                            getGeopackagebbx(docPath, detail)
+                        except Exception as e:
+                            try:
+                                getGeoTiffbbx(docPath, detail)
+                            except Exception as e:
+                                try:
+                                    openFolder(docPath, detail)
+                                except Exception as e:
+                                    click.echo ("invalid file format!")
+
 
 
 def getShapefilebbx(filepath, detail):
