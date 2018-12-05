@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import ogr2ogr
+import ogr2ogrhttps://stackoverflow.com/questions/27943093/library-to-perform-coordinate-system-transformations
 ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
@@ -260,7 +260,7 @@ def getGeopackagebbx(filepath, detail):
         conn = sqlite3.connect(filepath)
         print(conn)
         c = conn.cursor()
-        c.execute("""SELECT min(min_x), min(min_y), max(max_x), max(max_y), srs_id
+        c.execute("""SELECT min(min_x)
                      FROM gpkg_contents""")
         row = c.fetchall()
         print(row)
