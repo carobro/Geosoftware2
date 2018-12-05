@@ -12,7 +12,7 @@ Hilal ([h\_kara06@wwu.de](mailto:h_kara06@wwu.de)),
 
 Münster, den 30. November 2018
 
-1. Zielbestimmung
+## 1. Zielbestimmung
 
 Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besucher ermöglicht, ähnliche Datensätze als Empfehlungen anzuzeigen, während er sich einen Datensatz anschaut. Hier lehnen wir uns an einem Empfehlungssystem, wie beispielsweise Amazon an. Besonderes Augenmerk fällt auf die Implementation der Metadatenextraktion verschiedener Geodaten-Typen. Im Folgenden werden die Funktionalitäten näher erläutert.
 
@@ -32,7 +32,7 @@ Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besuch
 
 - Sprache: Englisch
 
-2.  Produkteinsatz
+## 2.  Produkteinsatz
 
 **Anwendungsbereich**
 
@@ -49,7 +49,7 @@ Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besuch
 - Die Software/API ist als Anknüpfung zur Nutzung des Repositories ausgelegt
 - Die Nutzung ist nur mit bereits vorhandener Netzwerkverbindung möglich
 
-3. Produktfunktionen
+## 3. Produktfunktionen
 
 **Metadatenextraktion**
 
@@ -127,7 +127,7 @@ FallsÄhnlichkeit❑ungleicherDatentyp\&gt;1→Ähnlichkeit❑ungleicherDatentyp
 
 Falls der Datentyp verschieden ist, vergrößert sich der Ähnlichkeitswert um 25%. In der Regel ist es z.B. nicht erstrebenswert Zeitreihen mit Vektordaten zu vergleichen.
 
-5. Produktdaten
+## 5. Produktdaten
 
 **D010** Metadaten:
 
@@ -143,7 +143,7 @@ Beispiel:
 - Shapefile
 - [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-6. Benutzeroberfläche
+## 6. Benutzeroberfläche
 
 **FU010** Eine konfigurierbare Anzahl ähnlicher Datensätze wird auf einer Seite angezeigt, um einen einzelnen Datensatz anzuzeigen (darf nicht in vorhandene Benutzeroberflächen für die Basissoftware integriert sein)
 
@@ -157,7 +157,7 @@ In Abb. 1 befindet sich im unteren Bereich der Seite ein Block mit einer Liste e
 
 **FC020** Die Konfiguration ist mindestens nach dem Neustart des Dienstes aktiv
 
-7. Nichtfunktionale Anforderungen
+## 7. Nichtfunktionale Anforderungen
 
 **Wartbarkeit**
 
@@ -177,7 +177,7 @@ In Abb. 1 befindet sich im unteren Bereich der Seite ein Block mit einer Liste e
 - Komplexe Seiteninhalte können asynchron geladen werden.
 - Der Auftragnehmer stellt ein Testskript bereit, um die Leistung anhand von mindestens 10 verschiedenen URLs oder Ansichten mit einer angemessenen Anzahl von Wiederholungen zu bewerten.
 
-8. Technische Produktumgebung
+## 8. Technische Produktumgebung
 
 **Software**
 
@@ -202,7 +202,7 @@ _Da Zenodo auf Invenio basiert sind die zusätzlichen Funktionalitäten ohne gro
 - genutzte zusätzliche Dienste/Plattformen
   - GitHub, GitKraken
 
-9. Anhang
+## 9. Anhang
 
 Ähnlichkeitsberechnung
 
