@@ -12,44 +12,44 @@ Hilal ([h\_kara06@wwu.de](mailto:h_kara06@wwu.de)),
 
 Münster, den 30. November 2018
 
-1. Zielbestimmung
+## 1. Zielbestimmung
 
 Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besucher ermöglicht, ähnliche Datensätze als Empfehlungen anzuzeigen, während er sich einen Datensatz anschaut. Hier lehnen wir uns an einem Empfehlungssystem, wie beispielsweise Amazon an. Besonderes Augenmerk fällt auf die Implementation der Metadatenextraktion verschiedener Geodaten-Typen. Im Folgenden werden die Funktionalitäten näher erläutert.
 
 **Das Programm**
 
-- --Bei Betrachten eines Datensatzes werden weitere Datensätze empfohlen
-- --Empfehlungen von Datensätzen basieren auf der räumlichen Ähnlichkeit der Daten
+- Bei Betrachten eines Datensatzes werden weitere Datensätze empfohlen
+- Empfehlungen von Datensätzen basieren auf der räumlichen Ähnlichkeit der Daten
 
-- **--** Die Datensätze werden in einer Datenbank gespeichert
+- Die Datensätze werden in einer Datenbank gespeichert
 
 **Die Benutzer**
 
-- --Der Besucher der Internetseite ([https://www.zenodo.org/](https://www.zenodo.org/)) (= Benutzer) soll Metadaten einsehen können
-- --Der Besucher der Internetseite soll auf die Empfehlungen klicken können/ mit ihnen interagieren und auf eine Seite weitergeleitet, auf der Informationen zu dem entsprechenden Datensatz angezeigt werden.
+- Der Besucher der Internetseite ([https://www.zenodo.org/](https://www.zenodo.org/)) (= Benutzer) soll Metadaten einsehen können
+- Der Besucher der Internetseite soll auf die Empfehlungen klicken können/ mit ihnen interagieren und auf eine Seite weitergeleitet, auf der Informationen zu dem entsprechenden Datensatz angezeigt werden.
 
 **Sonstiges**
 
-- --Sprache: Englisch
+- Sprache: Englisch
 
-2.  Produkteinsatz
+## 2.  Produkteinsatz
 
 **Anwendungsbereich**
 
-- --Wissenschaftliches Repositorium
+- Wissenschaftliches Repositorium
 
 **Zielgruppen**
 
-- --Wissenschaftler, die nach ähnlichen oder im Zusammenhang stehenden Geodatensätzen suchen
-- --Betreiber von wissenschaftlichen Repositorien
-- --Archivare, welche den Zugang zu vergleichbaren wissenschaftlichen Daten erleichtern wollen
+- Wissenschaftler, die nach ähnlichen oder im Zusammenhang stehenden Geodatensätzen suchen
+- Betreiber von wissenschaftlichen Repositorien
+- Archivare, welche den Zugang zu vergleichbaren wissenschaftlichen Daten erleichtern wollen
 
 **Betriebsbedingungen**
 
-- --Die Software/API ist als Anknüpfung zur Nutzung des Repositories ausgelegt
-- --Die Nutzung ist nur mit bereits vorhandener Netzwerkverbindung möglich
+- Die Software/API ist als Anknüpfung zur Nutzung des Repositories ausgelegt
+- Die Nutzung ist nur mit bereits vorhandener Netzwerkverbindung möglich
 
-3. Produktfunktionen
+## 3. Produktfunktionen
 
 **Metadatenextraktion**
 
@@ -73,7 +73,7 @@ Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besuch
 
 **FA010** Alle benutzerbezogenen Funktionen sind über diese REST-konformen HTTP-API-Endpunkte verfügbar
 
-        Rekord:                 &quot;https://zenodo.org/record/[ID]&quot;
+        Rekord:                 https://zenodo.org/record/[ID]
 
 Metadaten:                 &quot;https://zenodo.org/record/[ID]/metadata&quot;,
             Daten:                         &quot;https://zenodo.org/api/files&quot;,
@@ -127,23 +127,23 @@ FallsÄhnlichkeit❑ungleicherDatentyp\&gt;1→Ähnlichkeit❑ungleicherDatentyp
 
 Falls der Datentyp verschieden ist, vergrößert sich der Ähnlichkeitswert um 25%. In der Regel ist es z.B. nicht erstrebenswert Zeitreihen mit Vektordaten zu vergleichen.
 
-5. Produktdaten
+## 5. Produktdaten
 
 **D010** Metadaten:
 
-- --Autor (String)
-- --zeitliche Ausdehnung (nach XML S[chema 11.2](https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#bib-xmlschema11-2))
-- --Dateityp (String)
-- --Angaben zu Rechten (String)
+- Autor (String)
+- zeitliche Ausdehnung (nach XML S[chema 11.2](https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/#bib-xmlschema11-2))
+- Dateityp (String)
+- Angaben zu Rechten (String)
 
 Beispiel:
 
-- --Carolin Bronowicz
-- --P1Y2M3DT4H5M6S
-- --Shapefile
-- --[Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
+- Carolin Bronowicz
+- P1Y2M3DT4H5M6S
+- Shapefile
+- [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-6. Benutzeroberfläche
+## 6. Benutzeroberfläche
 
 **FU010** Eine konfigurierbare Anzahl ähnlicher Datensätze wird auf einer Seite angezeigt, um einen einzelnen Datensatz anzuzeigen (darf nicht in vorhandene Benutzeroberflächen für die Basissoftware integriert sein)
 
@@ -157,62 +157,62 @@ In Abb. 1 befindet sich im unteren Bereich der Seite ein Block mit einer Liste e
 
 **FC020** Die Konfiguration ist mindestens nach dem Neustart des Dienstes aktiv
 
-7. Nichtfunktionale Anforderungen
+## 7. Nichtfunktionale Anforderungen
 
 **Wartbarkeit**
 
-- --Lizenz: Creative Commons - Namensnennung 4.0 International - CC BY 4.0
-- --Link zum Linzenzvertrag: [https://creativecommons.org/licenses/by/4.0/legalcode.de](https://creativecommons.org/licenses/by/4.0/legalcode.de)
+- Lizenz: Creative Commons - Namensnennung 4.0 International - CC BY 4.0
+- Link zum Linzenzvertrag: [https://creativecommons.org/licenses/by/4.0/legalcode.de](https://creativecommons.org/licenses/by/4.0/legalcode.de)
 
-- --Ein etabliertes Erstellungs- und Konfigurationssystem sowie ein Abhängigkeitsmanagement müssen für die verwendete Programmiersprache angewendet werden, wir verwenden pip für Python.
-- --Gemäß der Dokumentation zum Aufbau wird die Konfiguration in Markdown-formatierten Dokumentations-Dateien bereitgestellt
+- Ein etabliertes Erstellungs- und Konfigurationssystem sowie ein Abhängigkeitsmanagement müssen für die verwendete Programmiersprache angewendet werden, wir verwenden pip für Python.
+- Gemäß der Dokumentation zum Aufbau wird die Konfiguration in Markdown-formatierten Dokumentations-Dateien bereitgestellt
 
 **Benutzerfreundlichkeit**
 
-- --Das Layout wird dem Zenodo Layout angepasst, damit die Benutzerfreundlichkeit erhalten wird
+- Das Layout wird dem Zenodo Layout angepasst, damit die Benutzerfreundlichkeit erhalten wird
 
 **Performanz**
 
-- --Die Antwortzeit eines API-Aufrufs an ein Repository erhöht sich möglicherweise um den Faktor 2, wenn verwandte Projekte aufgelistet werden, im Vergleich dazu, dass verwandte Projekte nicht angezeigt werden.
-- --Komplexe Seiteninhalte können asynchron geladen werden.
-- --Der Auftragnehmer stellt ein Testskript bereit, um die Leistung anhand von mindestens 10 verschiedenen URLs oder Ansichten mit einer angemessenen Anzahl von Wiederholungen zu bewerten.
+- Die Antwortzeit eines API-Aufrufs an ein Repository erhöht sich möglicherweise um den Faktor 2, wenn verwandte Projekte aufgelistet werden, im Vergleich dazu, dass verwandte Projekte nicht angezeigt werden.
+- Komplexe Seiteninhalte können asynchron geladen werden.
+- Der Auftragnehmer stellt ein Testskript bereit, um die Leistung anhand von mindestens 10 verschiedenen URLs oder Ansichten mit einer angemessenen Anzahl von Wiederholungen zu bewerten.
 
-8. Technische Produktumgebung
+## 8. Technische Produktumgebung
 
 **Software**
 
-- --Betriebssystem
-  - --Linux
+- Betriebssystem
+  - Linux
 
-- --Plattform
-  - --Zenodo (basierend auf INVENIO)
+- Plattform
+  - Zenodo (basierend auf INVENIO)
 
 _Wir verwenden Zenodo für die Entwicklung unserer Zusatzfunktion, weil Zenodo eine bereits implementierte Benutzeroberfläche bereitstellt, welche uns beim Testen und Überprüfen unserer Funktionalitäten behilflich ist._
 _Da Zenodo auf Invenio basiert sind die zusätzlichen Funktionalitäten ohne großen Aufwand auf andere Repositorien, die ebenfalls auf Invenio basieren übertragbar._
 
-- --Datenbank
-  - --PostgreSQL 9.2
-- --Browser
-  - --Google Chrome 70.0.3538
-  - --Mozilla Firefox 63.0
-- --Message-Broker
-  - --rabbitMQ
-- --Search-Engine
-  - --ElasticSearch
-- --genutzte zusätzliche Dienste/Plattformen
-  - --GitHub, GitKraken
+- Datenbank
+  - PostgreSQL 9.2
+- Browser
+  - Google Chrome 70.0.3538
+  - Mozilla Firefox 63.0
+- Message-Broker
+  - rabbitMQ
+- Search-Engine
+  - ElasticSearch
+- genutzte zusätzliche Dienste/Plattformen
+  - GitHub, GitKraken
 
-9. Anhang
+## 9. Anhang
 
 Ähnlichkeitsberechnung
 
 Wir nehmen an, dass die Erde eine Kugel ist, da dies unseren Genauigkeitsansprüchen genügt.
 
-- --Unsere Bounding BoxesUnsere Bounding Boxe (bbox) bestehen aus vier Werten: min lon, min lat, max lon, max lat (bbox) bestehen aus vier Werten: min lon, min lat, max lon, max lat
-- --min lat und max lat sind dabei Dezimalzahlen zwischen -90.0 und 90.0
-- --min lon und max lon sind Dezimalzahlen zwischen -180.0 und 180.0
-- --lat1, lat2 bezeichnen im folgenden den mittleren Breitengrad (max lat+min lat)/2 der beiden Bounding Boxes, welche verglichen werden
-- --lon1, lon2 bezeichnen im folgenden den mittleren Längengrad (max lon+min lon)/2 der beiden Bounding Boxes, welche verglichen werden
+- Unsere Bounding BoxesUnsere Bounding Boxe (bbox) bestehen aus vier Werten: min lon, min lat, max lon, max lat (bbox) bestehen aus vier Werten: min lon, min lat, max lon, max lat
+- min lat und max lat sind dabei Dezimalzahlen zwischen -90.0 und 90.0
+- min lon und max lon sind Dezimalzahlen zwischen -180.0 und 180.0
+- lat1, lat2 bezeichnen im folgenden den mittleren Breitengrad (max lat+min lat)/2 der beiden Bounding Boxes, welche verglichen werden
+- lon1, lon2 bezeichnen im folgenden den mittleren Längengrad (max lon+min lon)/2 der beiden Bounding Boxes, welche verglichen werden
 
 Entfernungsberechnung
 
