@@ -4,8 +4,8 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import ogr2ogr
-ogr2ogr.BASEPATH = "/home/cornelia/Dokumente/geosoft/Geosoftware2/Geosoftware2/Metadatenextraktion"
+#import ogr2ogr
+#ogr2ogr.BASEPATH = "/home/cornelia/Dokumente/geosoft/Geosoftware2/Geosoftware2/Metadatenextraktion"
 
 def getIsobbx(filepath, detail):
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""

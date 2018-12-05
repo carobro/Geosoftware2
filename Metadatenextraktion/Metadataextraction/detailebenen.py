@@ -4,7 +4,8 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo
+import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
+#import getIsoInfo
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
@@ -15,8 +16,11 @@ sondern auf den Inhalt"""
 @click.option('--bbox', 'detail', flag_value='bbox',
               default=True)
 @click.option('--feature', 'detail', flag_value='feature')
+@click.option('--single', 'folder', flag_value='single', default=True)
+@click.option('--whole', 'folder', flag_value='whole')
 
-def getMetadata(path, detail):
+def getMetadata(path, detail, folder):
+
     filepath = path
     # Program that extracts the boudingbox of files.
 
@@ -38,51 +42,13 @@ def getMetadata(path, detail):
                         try:
                             getGeoPackageInfo.getGeopackagebbx(filepath, detail)
                         except Exception as e:
+                            #try:
+                            #getIsoInfo.getIsobbx(filepath, detail)
+                            #except Exception as e:
                             try:
-                                getIsoInfo.getIsobbx(filepath, detail)
+                                openFolder.openFolder(filepath, detail)
                             except Exception as e:
-                                try:
-                                    openFolder(filepath, detail)
-                                except Exception as e:
-                                    click.echo ("invalid file format!")
-
-
-def openFolder(filepath, detail):
-    folderpath= filepath
-    click.echo("drin")
-    docs=os.listdir(folderpath)
-    for x in docs:
-        docPath= folderpath +"/"+ x
-        print docPath
-        #getMetadata(docPath, detail2)
-        try:
-            getShapefilebbx(docPath, detail)
-        except Exception as e:
-            try:
-                getGeoJsonbbx(docPath, detail)
-            except Exception as e:
-                try:
-                    getNetCDFbbx(docPath, detail)
-                except Exception as e:
-                    try:
-                        getCSVbbx(docPath, detail)
-                    except Exception as e:
-                        try:
-                            getGeoPackageInfo.getGeopackagebbx(docPath, detail)
-                        except Exception as e:
-                            try:
-                                getGeoTiffbbx(docPath, detail)
-                            except Exception as e:
-                                try:
-                                    getIsobbx(filepath, detail)
-                                except Exception as e:
-                                    try:
-                                        openFolder(docPath, detail)
-                                    except Exception as e:
-                                        click.echo ("invalid file format!")
-
-
-
+                                click.echo ("invalid file format!")
 
 
 if __name__ == '__main__':
