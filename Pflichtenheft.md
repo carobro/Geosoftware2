@@ -73,7 +73,7 @@ Unser Ziel ist es, Zenodo um eine Funktion weiterzuentwickeln, die es dem Besuch
 
 **FA010** Alle benutzerbezogenen Funktionen sind über diese REST-konformen HTTP-API-Endpunkte verfügbar
 
-        Rekord:                 &quot;https://zenodo.org/record/[ID]&quot;
+        Rekord:                 https://zenodo.org/record/[ID]
 
 Metadaten:                 &quot;https://zenodo.org/record/[ID]/metadata&quot;,
             Daten:                         &quot;https://zenodo.org/api/files&quot;,
