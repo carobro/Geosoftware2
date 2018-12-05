@@ -1,8 +1,6 @@
-import click, shapefile
-import csv
+import click, shapefile, sqlite3, csv, pygeoj
 from osgeo import gdal
 import pandas as pd
-import pygeoj
 import numpy as np
 import xarray as xr
 
@@ -17,32 +15,32 @@ def getMetadata(path):
     try:
         getShapefiletime(filepath)
     except Exception as e:
-        try: 
-            getGeoTifftime(filepath)
+        try:
+            getCSVtime(filepath)
         except Exception as e:
             try:
-                getCSVtime(filepath)
+                getGeoJsontime(filepath)
             except Exception as e:
                 try:
-                    getGeoJsontime(filepath)
+                    getNetCDFtime(filepath)
                 except Exception as e:
                     try:
-                        getNetCDFtime(filepath)
+                        getGeopackagetime(filepath)
                     except Exception as e:
-                        try:
-                            getGeopackagetime(filepath)
+                        try: 
+                            getGeoTifftime(filepath)    
                         except Exception as e:
                             click.echo ("invalid file format!")
 
 def getShapefiletime(filepath):
-
+    click.echo(detail)
 
 def getGeoTifftime(filepath):
     ds =  gdal.Open(filepath)
     print(gdal.Info(ds))
 
 def getCSVtime(filepath):
-    path = open(filepath)
+    path = open(filepath)  
     reader = csv.reader(path)
     content = next(reader)[0].replace(";", ",").split(",")
 
@@ -66,11 +64,11 @@ def getNetCDFtime(filepath):
         
 def getGeopackagetime(filepath):
     conn = sqlite3.connect(filepath)
+    print(conn)
     c = conn.cursor()
-    c.execute("""SELECT ???
-                 FROM ??? """)
-    row = c.fetchall()
-    print(row)
+    c.execute("""SELECT last_change
+                    FROM gpkg_contents""")
+    print c.fetchone()
 
 if __name__ == '__main__':
     getMetadata()

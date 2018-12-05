@@ -29,10 +29,10 @@ def getMetadata(path, detail):
                     getCSVbbx(filepath, detail)
                 except Exception as e:
                     try:
-                        getGeoTiffbbx(filepath, detail)
+                        getGeopackagebbx(filepath, detail)
                     except Exception as e:
                         try:
-                            getGeopackagebbx(filepath, detail)
+                            getGeoTiffbbx(filepath, detail)
                         except Exception as e:
                             click.echo ("invalid file format!")
 
@@ -114,9 +114,10 @@ def getGeopackagebbx(filepath, detail):
     @see https://docs.python.org/2/library/sqlite3.html"""
     if detail =='bbox':
         conn = sqlite3.connect(filepath)
+        print(conn)
         c = conn.cursor()
         c.execute("""SELECT min(min_x), min(min_y), max(max_x), max(max_y), srs_id
-                     FROM gpkg_contents """)
+                     FROM gpkg_contents""")
         row = c.fetchall()
         print(row)
     if detail == 'feature':

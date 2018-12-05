@@ -33,5 +33,5 @@ pytest --help
 
 pytest --last-failed -> merkt sich den letzten falschen Test -> kann man dann ab diesen test starten lassen
 
-# voher - nacher Bedingung
+# vorher - nacher Bedingung
 um die Umgebung so zu erstellen wie sie für die tests gewollt ist 
