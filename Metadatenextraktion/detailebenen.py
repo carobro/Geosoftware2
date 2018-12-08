@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import ogr2ogrhttps://stackoverflow.com/questions/27943093/library-to-perform-coordinate-system-transformations
+import ogr2ogr
 ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
@@ -98,7 +98,6 @@ def getGeoTiffbbx(filepath, detail):
 
         # get the existing coordinate system
         ds = gdal.Open(filepath)
-        click.echo(ds)
         old_cs= osr.SpatialReference()
         old_cs.ImportFromWkt(ds.GetProjectionRef())
 
@@ -220,14 +219,11 @@ def getNetCDFbbx(filepath, detail):
         except Exception as e:
             lats = ds.coords["latitude"]
             lons = ds.coords["longitude"]
-        mytime = ds.coords["time"]
         # print(ds.values)
         minlat=min(lats).values
         minlon=min(lons).values
         maxlat=max(lats).values
         maxlon=max(lons).values
-        starttime=min(mytime)
-        endtime=max(mytime)
         # Bounding Box Ausgabe in Schoen
         print("Min Latitude: ")
         print(minlat)
@@ -241,13 +237,6 @@ def getNetCDFbbx(filepath, detail):
         # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
         bbox = [minlat,minlon,maxlat,maxlon]
         click.echo(bbox)
-        print("-------------------------------------------------")
-
-        # Zeitliche Ausdehnung
-        print("Timestamp: ")
-        print(starttime.values)
-        print(endtime.values)
-        print("__________________________________________________")
 
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
@@ -260,7 +249,7 @@ def getGeopackagebbx(filepath, detail):
         conn = sqlite3.connect(filepath)
         print(conn)
         c = conn.cursor()
-        c.execute("""SELECT min(min_x)
+        c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
                      FROM gpkg_contents""")
         row = c.fetchall()
         print(row)

@@ -1,13 +1,21 @@
 import math
+
+# Beispielkoordinaten
 bbox1 = [7.473785, 51.840145, 7.774364, 52.060024]
 bbox2 = [7.5234, 52.0326, 7.7556, 52.152]
-def similar(bbox1,bbox2): 
-    lat1 = mittlererBreitengrad(bbox1)
-    lat2 = 
-    lon1
-    lon2
-    breite1 = breite(bbox1)
-    breite2 = 
+
+def aehnlickeit (bbox1,bbox2):
+    if distanz(bbox1,bbox2) < 20000:
+        simdis = distanz(bbox1,bbox2)/20000
+    else:
+        simdis = 1
+    if abs(flaeche(bbox1) - flaeche(bbox2)) < 1000000:
+        simA = (abs(flaeche(bbox1) - flaeche(bbox2)))/1000000
+    else:
+        simA = 1
+    sim = (2 * simdis + simA)/3
+    return sim
+    print(sim)
 
 def mittlererBreitengrad (list):
     lat = (list[3]+list[1])/2
@@ -37,15 +45,5 @@ def distanz(bbox1,bbox2):
     dist = math.acos(seitenkosinussatz(bbox1,bbox2)) * 6378.388
     return dist
 
-def aehnlickeit (bbox1,bbox2):
-    if distanz (bbox1,bbox2) < 20000:
-        simdis = distanz (bbox1,bbox2)/20000
-    else:
-        simdis = 1
-    if abs (flaeche (bbox1) - flaeche(bbox2)) < 1000000:
-        simA = (abs (flaeche (bbox1) - flaeche (bbox2)))/1000000
-    else:
-        simA = 1
-    sim = (2 * simdis + simA)/3
-    return sim
-
+if __name__ == '__main__':
+    aehnlickeit(bbox1, bbox2)
