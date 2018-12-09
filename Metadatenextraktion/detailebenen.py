@@ -4,8 +4,8 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import ogr2ogr
-ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
+# import ogr2ogr
+# ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
@@ -117,23 +117,23 @@ def getGeoTiffbbx(filepath, detail):
         new_cs .ImportFromWkt(wgs84_wkt)
 
         # create a transform object to convert between coordinate systems
-        transform = osr.CoordinateTransformation(old_cs,new_cs) 
+        transform = osr.CoordinateTransformation(old_cs,new_cs)
 
         #get the point to transform, pixel (0,0) in this case
         width = ds.RasterXSize
         height = ds.RasterYSize
         gt = ds.GetGeoTransform()
         minx = gt[0]
-        miny = gt[3] + width*gt[4] + height*gt[5] 
+        miny = gt[3] + width*gt[4] + height*gt[5]
         maxx = gt[0] + width*gt[1] + height*gt[2]
-        maxy = gt[3] 
+        maxy = gt[3]
         #get the coordinates in lat long
         latlongmin = transform.TransformPoint(minx,miny)
         latlongmax = transform.TransformPoint(maxx,maxy)
         bbox = [latlongmin[0], latlongmin[1], latlongmax[0], latlongmax[1]]
         click.echo(bbox)
         return (bbox)
-       
+
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
 
@@ -144,11 +144,32 @@ def getCSVbbx(filepath, detail):
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
     if detail =='bbox':
+        # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
+        df = pd.read_csv(filepath, delimiter=';',engine='python')
+        print(df)
+        mycounter=0
+        listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
+        listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
+        for x in listlat:
+            if(x not in df.columns.values):
+                mycounter +=1
+                print("Hello")
+            lats=df[x]
+            for y in listlon:
+                lons=df[y]
+                print("Bounding Box: ")
+                bbox=[min(lons),min(lats),max(lons),max(lats)]
+                click.echo(bbox)
+                return bbox
+        """
         path = open(filepath)
         reader = csv.reader(path)
+        print(list(reader)[0][2])
+        for row in reader:
+               print(row)
+
         contentfirst = next(reader)[0].replace(";", ",")
         content = contentfirst.split(",")
-        print(content)
 
         #inhalt richtig in lng und lat speichern
         try:
@@ -167,11 +188,11 @@ def getCSVbbx(filepath, detail):
                     lats = "Latitude"
                 if x == "lat":
                     lats = "lat"
-            print(content)
+                if x == "Koordinate_Hochwert":
+                    lats = "Koordinate_Hochwert"
+            print(lats)
             if(lats == None or lons == None):
                 click.echo("There are no valid coordinates")
-            
-            print(content)
 
             for x in content:
                 print ("hallo")
@@ -180,18 +201,18 @@ def getCSVbbx(filepath, detail):
                         data = pd.read_csv(filepath, content=0)
                         getcoords(data)
 
-                    except:     
+                    except:
                         data = pd.read_csv(filepath, content=0, sep=';')
                         getcoords(data)
 
         except Exception as e:
             click.echo ("No latitude,longitude")
             return None
-               
+"""
 def getcoords(data):
         lats = data[lng].tolist()
         lons = data[lat].tolist()
-                
+
         bbox = [min(lons), min(lats), max(lons), max(lats)]
         click.echo(bbox)
         return bbox
