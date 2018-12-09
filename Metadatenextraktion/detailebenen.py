@@ -146,13 +146,13 @@ def getCSVbbx(filepath, detail):
     if detail =='bbox':
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, delimiter=';',engine='python')
-        print(df)
-        mycounter=0
         listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
         listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
+        if not intersect(listlat,df.columns.values):
+            print("No fitting header for latitudes")
+            # TODO: fehlerbehandlung  
         for x in listlat:
             if(x not in df.columns.values):
-                mycounter +=1
                 print("Hello")
             lats=df[x]
             for y in listlon:
@@ -209,6 +209,10 @@ def getCSVbbx(filepath, detail):
             click.echo ("No latitude,longitude")
             return None
 """
+# Hilfsfunktion fuer csv fehlerbehandlung
+def intersect(a, b):
+     return list(set(a) & set(b))
+
 def getcoords(data):
         lats = data[lng].tolist()
         lons = data[lat].tolist()
