@@ -49,45 +49,24 @@ def getGeoTifftime(filepath, detail):
 
 def getCSVtime(filepath, detail):
     if detail =='time':
-        path = open(filepath)  
-        reader = csv.reader(path)
-        contentfirst = next(reader)[0].replace(";", ",")
-        content = contentfirst.split(",")
-        print(content)
-        try:
-            for x in content:
-                if x == "time":
-                    time = "time"
-                    index = index+1
-                if x == "Time":
-                    time = "Time"
-                    index = index+1
-                if x == "date":
-                    time = "date"
-                    index = index+1
-                if x == "timestamp":
-                    time = "timestamp"
-                    index = index+1
-            
-            print(time)
-            if index == 0:
-                click.echo("no time-value!")
-                return None
-        
-        except:
-            if time == None:
-                click.echo("There are no valid coordinates")
+        # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
+        df = pd.read_csv(filepath, delimiter=';',engine='python')
+        listtime = ["time", "timestamp", "date", "Time"]
+        print("test")
+        if not intersect(listtime,df.columns.values):
+            print("No fitting header for time-values")
+            # TODO: fehlerbehandlung  
 
-        try:
-            data = pd.read_csv(filepath, content=0)
-            time = data[time].toList()
+        print("test2")
+        for t in listtime:
+            if(x not in df.columns.values):
+                click.echo("This file does not include time-values")
+            else:
+                time=df[t]
+                timeextend =[min(time), max(time)]
+                click.echo(timeextend)
+                return timeextend
 
-        except:     
-            data = pd.read_csv(filepath, content=0, sep=';')
-            time = data[time].toList()
-
-        click.echo(bbox)
-        return(bbox)
     """
     except Exception as e:
         click.echo ("There is no time-value or invalid file")
@@ -97,6 +76,8 @@ def getCSVtime(filepath, detail):
 def getGeoJsontime(filepath, detail):
     if detail =='time':
         geojson = pygeoj.load(filepath)
+        print(geojson.common_attributes)
+        print("hallo")
         data = json_decode(filepath)
         click.ech(data)
         try:
@@ -128,12 +109,14 @@ def getNetCDFtime(filepath, detail):
         ende = endtime.values
         print(anfang)
         print(ende)
+        return anfang, ende
     
 def getGeopackagetime(filepath, detail):
     if detail =='time':
         conn = sqlite3.connect(filepath)
         print(conn)
         c = conn.cursor()
+        # try: weil last_change unlogisch ist. Alternative finden!
         c.execute("""SELECT last_change
                     FROM gpkg_contents""")
         print c.fetchone()

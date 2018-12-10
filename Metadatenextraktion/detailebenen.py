@@ -149,7 +149,7 @@ def getCSVbbx(filepath, detail):
         listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
         listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
         if not intersect(listlat,df.columns.values):
-            print("No fitting header for latitudes")
+            click.echo("No fitting header for latitudes")
             # TODO: fehlerbehandlung  
         for x in listlat:
             if(x not in df.columns.values):
@@ -161,65 +161,10 @@ def getCSVbbx(filepath, detail):
                 bbox=[min(lons),min(lats),max(lons),max(lats)]
                 click.echo(bbox)
                 return bbox
-        """
-        path = open(filepath)
-        reader = csv.reader(path)
-        print(list(reader)[0][2])
-        for row in reader:
-               print(row)
-
-        contentfirst = next(reader)[0].replace(";", ",")
-        content = contentfirst.split(",")
-
-        #inhalt richtig in lng und lat speichern
-        try:
-            for x in content:
-                if x == 'longitude':
-                    lons = 'longitude'
-                if x == "Longitude":
-                    lons = "Longitude"
-                if x == "lon":
-                    lons = "lon"
-                if x == "lng":
-                    lons = "lng"
-                if x == 'latitude':
-                    lats = 'latitude'
-                if x == "Latitude":
-                    lats = "Latitude"
-                if x == "lat":
-                    lats = "lat"
-                if x == "Koordinate_Hochwert":
-                    lats = "Koordinate_Hochwert"
-            print(lats)
-            if(lats == None or lons == None):
-                click.echo("There are no valid coordinates")
-
-            for x in content:
-                print ("hallo")
-                if x != lons or x != lats:
-                    try:
-                        data = pd.read_csv(filepath, content=0)
-                        getcoords(data)
-
-                    except:
-                        data = pd.read_csv(filepath, content=0, sep=';')
-                        getcoords(data)
-
-        except Exception as e:
-            click.echo ("No latitude,longitude")
-            return None
-"""
+        
 # Hilfsfunktion fuer csv fehlerbehandlung
 def intersect(a, b):
      return list(set(a) & set(b))
-
-def getcoords(data):
-        lats = data[lng].tolist()
-        lons = data[lat].tolist()
-
-        bbox = [min(lons), min(lats), max(lons), max(lats)]
-        click.echo(bbox)
-        return bbox
 
 def getGeoJsonbbx(filepath, detail):
     """returns the bounding Box GeoJson
