@@ -73,7 +73,7 @@ def openFolder(filepath, detail):
                                 getGeoTiffbbx(docPath, detail)
                             except Exception as e:
                                 try:
-                                    getIsobbx(filepath, detail)
+                                    getIsobbx(docpath, detail)
                                 except Exception as e:
                                     try:
                                         openFolder(docPath, detail)
@@ -91,6 +91,7 @@ def getShapefilebbx(filepath, detail):
         click.echo(output)
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        return 0
 
 def getGeoTiffbbx(filepath, detail):
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
@@ -136,6 +137,7 @@ def getGeoTiffbbx(filepath, detail):
 
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        return 0
 
 def getCSVbbx(filepath, detail):
     """returns the bounding Box CSV
@@ -143,6 +145,7 @@ def getCSVbbx(filepath, detail):
     @param path Path to the file """
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        return 0
     if detail =='bbox':
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, delimiter=';',engine='python')
@@ -176,6 +179,7 @@ def getGeoJsonbbx(filepath, detail):
 
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        return 0
 
 def getNetCDFbbx(filepath, detail):
     """returns the bounding Box NetCDF
@@ -210,6 +214,7 @@ def getNetCDFbbx(filepath, detail):
 
     if detail == 'feature':
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        return 0
 
 def getGeopackagebbx(filepath, detail):
     """returns the bounding Box Geopackage
@@ -225,6 +230,7 @@ def getGeopackagebbx(filepath, detail):
         print(row)
     if detail == 'feature':
             click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+            return 0
 
 def getIsobbx(filepath, detail):
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
@@ -236,6 +242,7 @@ def getIsobbx(filepath, detail):
 
     if detail == 'feature':
            click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+           return 0
 
 if __name__ == '__main__':
     getMetadata()

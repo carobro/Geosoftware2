@@ -1,4 +1,8 @@
 {
+  "test_featureebene.py::test_answer": true, 
+  "test_featureebene.py::test_answer1": true, 
+  "test_featureebene.py::test_answer2": true, 
+  "test_featureebene.py::test_answer6": true, 
   "test_sample.py::test_answer": true, 
   "test_sample.py::test_answer1": true, 
   "test_sample.py::test_answer2": true
