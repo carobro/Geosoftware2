@@ -90,6 +90,7 @@ def getShapefilebbx(filepath, detail):
         output = sf.bbox
         click.echo(output)
     if detail == 'feature':
+        sf = shapefile.Reader(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
         return 0
 
@@ -136,7 +137,9 @@ def getGeoTiffbbx(filepath, detail):
         return (bbox)
 
     if detail == 'feature':
+        ds = gdal.Open(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        
         return 0
 
 def getCSVbbx(filepath, detail):
@@ -144,8 +147,26 @@ def getCSVbbx(filepath, detail):
     @see https://www.programiz.com/python-programming/reading-csv-files
     @param path Path to the file """
     if detail == 'feature':
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        df = pd.read_csv(filepath, delimiter=',',engine='python')
+        listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
+        listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
+        if not intersect(listlat,df.columns.values):
+            click.echo("No fitting header for latitudes")
+            # TODO: fehlerbehandlung  
+        for x in listlat:
+            if(x not in df.columns.values):
+                print("No valid coordinates")
+                return None
+            lats=df[x]
+            for y in listlon:
+                lons=df[y]
+                print("All Points")
+                points=[lons, lats]
+                click.echo(points)
+                #conhex_hull(points)
+                return points
         return 0
+
     if detail =='bbox':
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, delimiter=';',engine='python')
@@ -178,6 +199,7 @@ def getGeoJsonbbx(filepath, detail):
         click.echo(geojbbx)
 
     if detail == 'feature':
+        geojson = pygeoj.load(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
         return 0
 
@@ -213,6 +235,7 @@ def getNetCDFbbx(filepath, detail):
         click.echo(bbox)
 
     if detail == 'feature':
+        ds = xr.open_dataset(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
         return 0
 
@@ -229,6 +252,7 @@ def getGeopackagebbx(filepath, detail):
         row = c.fetchall()
         print(row)
     if detail == 'feature':
+            conn = sqlite3.connect(filepath)
             click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
             return 0
 
@@ -241,6 +265,7 @@ def getIsobbx(filepath, detail):
         click.echo(isobbx)
 
     if detail == 'feature':
+           ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
            click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
            return 0
 
