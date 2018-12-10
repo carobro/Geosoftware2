@@ -1,4 +1,4 @@
-import click, shapefile, json, sqlite3, csv, pygeoj
+import click, shapefile, json, sqlite3, csv, pygeoj, geojson
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
@@ -125,6 +125,7 @@ def getGeoTiffbbx(filepath, detail):
         width = ds.RasterXSize
         height = ds.RasterYSize
         gt = ds.GetGeoTransform()
+
         minx = gt[0]
         miny = gt[3] + width*gt[4] + height*gt[5]
         maxx = gt[0] + width*gt[1] + height*gt[2]
@@ -197,11 +198,16 @@ def getGeoJsonbbx(filepath, detail):
         geojson = pygeoj.load(filepath)
         geojbbx = (geojson).bbox
         click.echo(geojbbx)
+        return geojbbx
 
     if detail == 'feature':
         geojson = pygeoj.load(filepath)
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
-        return 0
+        #TO-DO feature.geometry.coordinates in variable speichern
+        points = 0
+        for feature in geojson:
+            click.echo(feature.geometry.coordinates)
+    #convex_hull(points)
+    return points
 
 def getNetCDFbbx(filepath, detail):
     """returns the bounding Box NetCDF
@@ -236,7 +242,18 @@ def getNetCDFbbx(filepath, detail):
 
     if detail == 'feature':
         ds = xr.open_dataset(filepath)
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        try:
+            lats = ds.coords["lat"]
+            lons = ds.coords["lon"]
+
+        except Exception as e:
+            lats = ds.coords["latitude"]
+            lons = ds.coords["longitude"]
+        print("Latitude:")
+        print(lats.values)
+        print("Longitude:")
+        print(lons.values)
+        #convex_hull(points)
         return 0
 
 def getGeopackagebbx(filepath, detail):
@@ -245,16 +262,20 @@ def getGeopackagebbx(filepath, detail):
     @see https://docs.python.org/2/library/sqlite3.html"""
     if detail =='bbox':
         conn = sqlite3.connect(filepath)
-        print(conn)
         c = conn.cursor()
         c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
                      FROM gpkg_contents""")
         row = c.fetchall()
         print(row)
     if detail == 'feature':
-            conn = sqlite3.connect(filepath)
-            click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
-            return 0
+        conn = sqlite3.connect(filepath)
+        c = conn.cursor()
+        c.execute("""SELECT min_x,min_y
+                     FROM gpkg_contents""")
+        points = c.fetchall()
+        print(points)
+        #convex_hull(points)
+        return points
 
 def getIsobbx(filepath, detail):
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
@@ -263,11 +284,17 @@ def getIsobbx(filepath, detail):
         iso = pygeoj.load(filepath="out.json")
         isobbx = (iso).bbox
         click.echo(isobbx)
+        return isobbx
 
     if detail == 'feature':
-           ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
-           click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
-           return 0
+        ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
+        iso = pygeoj.load(filepath="out.json")
+        #TO-DO feature.geometry.coordinates in variable speichern
+        points = 0
+        for feature in iso:
+            click.echo(feature.geometry.coordinates)
+        #convex_hull(points)
+        return points
 
 if __name__ == '__main__':
     getMetadata()
