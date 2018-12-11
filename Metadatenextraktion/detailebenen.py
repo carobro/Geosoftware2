@@ -4,10 +4,11 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
+import numpy as np
 # import ogr2ogr
 # ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
-""" Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
+""" Vorteil unseres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
 @click.command()
 @click.option('--path',required=True, help='Path to the data.')
@@ -229,16 +230,16 @@ def getNetCDFbbx(filepath, detail):
         maxlon=max(lons).values
         # Bounding Box Ausgabe in Schoen
         print("Min Latitude: ")
-        print(minlat)
+        print(type(minlat))
         print("Min Longitude: ")
-        print(minlon)
+        print(type(minlon))
         print("Max Latitude: ")
         print(maxlat)
         print("Max Longitude: ")
         print(maxlon)
 
         # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
-        bbox = [minlat,minlon,maxlat,maxlon]
+        bbox = [(minlat,minlon,maxlat,maxlon)]
         click.echo(bbox)
 
     if detail == 'feature':
