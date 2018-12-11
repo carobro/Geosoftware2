@@ -10,7 +10,7 @@ def getGeoJsonbbx(filepath, detail, folder):
         geojson = pygeoj.load(filepath)
         geojbbx = (geojson).bbox
         click.echo(geojbbx)
-        return geojbbx
+        """return geojbbx"""
         if folder=='single':
             click.echo(geojbbx)
         if folder=='whole':
