@@ -206,7 +206,8 @@ def getGeoJsonbbx(filepath, detail):
         #TO-DO feature.geometry.coordinates in variable speichern
         points = 0
         for feature in geojson:
-            click.echo(feature.geometry.coordinates)
+            points = np.array(feature.geometry.coordinates)
+            click.echo(points)
     #convex_hull(points)
     return points
 

@@ -7,7 +7,7 @@ import os
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
 #import getIsoInfo
 #import ogr2ogr
-#ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
+#ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion" h
 
 
 bboxSpeicher = []
@@ -41,10 +41,10 @@ def getMetadata(path, detail, folder):
                 getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
             except Exception as e:
                 try:
-                    getCSVbbx(filepath, detail)
+                    getCSVInfo.getCSVbbx(filepath, detail, folder)
                 except Exception as e:
                     try:
-                        getGeoTiffInfo.getGeoTiffbbx(filepath, detail)
+                        getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
                     except Exception as e:
                         try:
                             getGeoPackageInfo.getGeopackagebbx(filepath, detail)
