@@ -10,6 +10,8 @@ def getGeoJsonbbx(filepath, detail, folder):
     if detail =='bbox':
         geojson = pygeoj.load(filepath)
         geojbbx = (geojson).bbox
+        click.echo(geojbbx)
+        return geojbbx
         if folder=='single':
             click.echo(geojbbx)
         if folder=='whole':
@@ -17,8 +19,13 @@ def getGeoJsonbbx(filepath, detail, folder):
             print("halo")
             print(detailebenen.bboxSpeicher)
     if detail == 'feature':
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
-
+        geojson = pygeoj.load(filepath)
+        #TO-DO feature.geometry.coordinates in variable speichern
+        points = 0
+        for feature in geojson:
+            click.echo(feature.geometry.coordinates)
+    #convex_hull(points)
+    return points
 
 if __name__ == '__main__':
     getGeoJsonbbx()
