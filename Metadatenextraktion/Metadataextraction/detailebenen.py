@@ -9,6 +9,9 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFIn
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
+
+bboxSpeicher = []
+
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
 @click.command()
@@ -19,19 +22,23 @@ sondern auf den Inhalt"""
 @click.option('--single', 'folder', flag_value='single', default=True)
 @click.option('--whole', 'folder', flag_value='whole')
 
-def getMetadata(path, detail, folder):
 
+
+def getMetadata(path, detail, folder):
+    
+    
+    print(bboxSpeicher)
     filepath = path
     # Program that extracts the boudingbox of files.
 
     try:
-        getShapefileInfo.getShapefilebbx(filepath, detail)
+        getShapefileInfo.getShapefilebbx(filepath, detail, folder)
     except Exception as e:
         try:
-            getGeoJsonInfo.getGeoJsonbbx(filepath, detail)
+            getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder)
         except Exception as e:
             try:
-                getNetCDFInfo.getNetCDFbbx(filepath, detail)
+                getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
             except Exception as e:
                 try:
                     getCSVbbx(filepath, detail)
@@ -46,7 +53,7 @@ def getMetadata(path, detail, folder):
                             #getIsoInfo.getIsobbx(filepath, detail)
                             #except Exception as e:
                             try:
-                                openFolder.openFolder(filepath, detail)
+                                openFolder.openFolder(filepath, detail, folder)
                             except Exception as e:
                                 click.echo ("invalid file format!")
 

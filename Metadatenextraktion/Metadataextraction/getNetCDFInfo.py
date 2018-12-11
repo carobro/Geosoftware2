@@ -1,11 +1,11 @@
-import click, json, sqlite3, csv, pygeoj
+import click, json, sqlite3, csv, pygeoj, detailebenen
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
 
-def getNetCDFbbx(filepath, detail):
+def getNetCDFbbx(filepath, detail, folder):
     """returns the bounding Box NetCDF
     @param path Path to the file """
     if detail =='bbox':
@@ -35,11 +35,21 @@ def getNetCDFbbx(filepath, detail):
         print("Max Longitude: ")
         print(maxlon)
 
-        # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
         bbox = [minlat,minlon,maxlat,maxlon]
-        click.echo(bbox)
-        print("-------------------------------------------------")
 
+        if folder=='single':
+            # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
+            print(minlat)
+            click.echo(bbox)
+            print("-------------------------------------------------")
+
+        if folder=='whole':
+            print("ausdehnung")
+            #fuer Boundingbox des Ordners
+            detailebenen.bboxSpeicher.append(bbox)
+            
+            print(detailebenen.bboxSpeicher)
+        
         # Zeitliche Ausdehnung
         print("Timestamp: ")
         print(starttime.values)
