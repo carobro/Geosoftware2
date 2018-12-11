@@ -10,12 +10,16 @@ def getGeopackagebbx(filepath, detail, folder):
     @param path Path to the file
     @see https://docs.python.org/2/library/sqlite3.html"""
     if detail =='bbox':
-        conn = sqlite3.connect(filepath)
-        c = conn.cursor()
-        c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
-                     FROM gpkg_contents""")
-        row = c.fetchall()
-        print(row)
+        if folder=='single':
+            conn = sqlite3.connect(filepath)
+            c = conn.cursor()
+            c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
+                        FROM gpkg_contents""")
+            row = c.fetchall()
+            print(row)
+
+        if folder=='whole':
+            click.echo("hier fehlt noch was")
     if detail == 'feature':
         conn = sqlite3.connect(filepath)
         c = conn.cursor()

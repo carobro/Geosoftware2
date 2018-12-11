@@ -7,7 +7,6 @@ def getShapefilebbx(filepath, detail, folder):
     if detail =='bbox':
         sf = shapefile.Reader(filepath)
         output = sf.bbox
-        click.echo(output)
         if folder=='single':
             click.echo(output)
         if folder=='whole':
