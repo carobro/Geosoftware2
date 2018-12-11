@@ -1,11 +1,11 @@
-import click, json, sqlite3, csv, pygeoj
+import click, json, sqlite3, csv, pygeoj, detailebenen
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
 
-def getGeopackagebbx(filepath, detail):
+def getGeopackagebbx(filepath, detail, folder):
     """returns the bounding Box Geopackage
     @param path Path to the file
     @see https://docs.python.org/2/library/sqlite3.html"""
