@@ -10,8 +10,12 @@ Bounding Box Extraction
 """
 
 def test_answer():
+<<<<<<< HEAD
     print a
     assert detailebenen.getShapefilebbx('/home/paulsenmann/Documents/gs2/testdata/shapefile/Abgrabungen_Kreis_Kleve/Abgrabungen_Kreis_Kleve_Shape.shp', 'bbx') == a
+=======
+    assert detailebenen.getShapefilebbx('/home/paulsenmann/Documents/gs2/testdata/shapefile/Abgrabungen_Kreis_Kleve/Abgrabungen_Kreis_Kleve_Shape.shp', 'bbx') == "295896.274870878, 5694747.64703736, 325999.79578122497, 5747140.98659967"
+>>>>>>> 1c520e847ffa90ba08737befd3af233d37045ec3
 
 def test_answer1():
     print b    

@@ -14,10 +14,18 @@ def getIsobbx(filepath, detail):
         iso = pygeoj.load(filepath="out.json")
         isobbx = (iso).bbox
         click.echo(isobbx)
+        return isobbx
+
 
     if detail == 'feature':
-           click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
-
+        ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
+        iso = pygeoj.load(filepath="out.json")
+        #TO-DO feature.geometry.coordinates in variable speichern
+        points = 0
+        for feature in iso:
+            click.echo(feature.geometry.coordinates)
+        #convex_hull(points)
+        return points
 
 
 if __name__ == '__main__':

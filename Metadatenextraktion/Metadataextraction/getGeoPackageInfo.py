@@ -12,13 +12,19 @@ def getGeopackagebbx(filepath, detail):
     if detail =='bbox':
         conn = sqlite3.connect(filepath)
         c = conn.cursor()
-        c.execute("""SELECT min(min_x), min(min_y), max(max_x), max(max_y)
-                     FROM gpkg_contents """)
+        c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
+                     FROM gpkg_contents""")
         row = c.fetchall()
         print(row)
     if detail == 'feature':
-            click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
-
-
+        conn = sqlite3.connect(filepath)
+        c = conn.cursor()
+        c.execute("""SELECT min_x,min_y
+                     FROM gpkg_contents""")
+        points = c.fetchall()
+        print(points)
+        #convex_hull(points)
+        return points
+        
 if __name__ == '__main__':
     getGeopackagebbx()
