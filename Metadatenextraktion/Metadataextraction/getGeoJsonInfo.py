@@ -1,6 +1,4 @@
-import click, pygeoj, detailebenen
-
-
+import click, pygeoj, detailebenen, geojson
 
 def getGeoJsonbbx(filepath, detail, folder):
     """returns the bounding Box GeoJson
