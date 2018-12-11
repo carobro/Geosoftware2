@@ -7,7 +7,7 @@ Dies unterscheidet tabellarische Daten von anderen zeilenorientierten Formaten.
 
 Tabellendaten werden im Web routinemäßig in einem Textformat namens CSV übertragen. 
 Die Definition von CSV ist in der Praxis jedoch sehr locker. Einige Leute verwenden 
-den Begriff für jede Textdatei mit Trennzeichen. Andere halten sich stärker an die 
+den Begriff für jede Textdatei mit Trennzeichen. Andere halten sich stärker an die https://github.com/evert/csv123
 Standarddefinition von CSV, die es gibt, [ RFC4180 ]
 https://www.w3.org/TR/tabular-data-model/#standards Abschnitt B.1 RFC 4180
 
@@ -40,7 +40,8 @@ Daten . parse ({ "Spaltennamen" : [ "GID" , "on_street" , "species" , "trim_cycl
         
 http://www.greggkellogg.net/2015/04/implementing-csv-on-the-web/
 http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
-       
+
+## vielleicht auch nuetzlich: [Konsolen CSV viewer](https://github.com/evert/csv123)
           
     
      

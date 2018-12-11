@@ -1,11 +1,11 @@
-import click, shapefile, json, sqlite3, csv, pygeoj
+import click, shapefile, json, sqlite3, csv, pygeoj, geojson
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import ogr2ogr
-ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
+# import ogr2ogr
+# ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
@@ -73,7 +73,7 @@ def openFolder(filepath, detail):
                                 getGeoTiffbbx(docPath, detail)
                             except Exception as e:
                                 try:
-                                    getIsobbx(filepath, detail)
+                                    getIsobbx(docpath, detail)
                                 except Exception as e:
                                     try:
                                         openFolder(docPath, detail)
@@ -90,7 +90,9 @@ def getShapefilebbx(filepath, detail):
         output = sf.bbox
         click.echo(output)
     if detail == 'feature':
+        sf = shapefile.Reader(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        return 0
 
 def getGeoTiffbbx(filepath, detail):
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
@@ -98,7 +100,6 @@ def getGeoTiffbbx(filepath, detail):
 
         # get the existing coordinate system
         ds = gdal.Open(filepath)
-        click.echo(ds)
         old_cs= osr.SpatialReference()
         old_cs.ImportFromWkt(ds.GetProjectionRef())
 
@@ -118,84 +119,77 @@ def getGeoTiffbbx(filepath, detail):
         new_cs .ImportFromWkt(wgs84_wkt)
 
         # create a transform object to convert between coordinate systems
-        transform = osr.CoordinateTransformation(old_cs,new_cs) 
+        transform = osr.CoordinateTransformation(old_cs,new_cs)
 
         #get the point to transform, pixel (0,0) in this case
         width = ds.RasterXSize
         height = ds.RasterYSize
         gt = ds.GetGeoTransform()
+
         minx = gt[0]
-        miny = gt[3] + width*gt[4] + height*gt[5] 
+        miny = gt[3] + width*gt[4] + height*gt[5]
         maxx = gt[0] + width*gt[1] + height*gt[2]
-        maxy = gt[3] 
+        maxy = gt[3]
         #get the coordinates in lat long
         latlongmin = transform.TransformPoint(minx,miny)
         latlongmax = transform.TransformPoint(maxx,maxy)
         bbox = [latlongmin[0], latlongmin[1], latlongmax[0], latlongmax[1]]
         click.echo(bbox)
         return (bbox)
-       
+
     if detail == 'feature':
+        ds = gdal.Open(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        
+        return 0
 
 def getCSVbbx(filepath, detail):
     """returns the bounding Box CSV
     @see https://www.programiz.com/python-programming/reading-csv-files
     @param path Path to the file """
     if detail == 'feature':
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        df = pd.read_csv(filepath, delimiter=',',engine='python')
+        listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
+        listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
+        if not intersect(listlat,df.columns.values):
+            click.echo("No fitting header for latitudes")
+            # TODO: fehlerbehandlung  
+        for x in listlat:
+            if(x not in df.columns.values):
+                print("No valid coordinates")
+                return None
+            lats=df[x]
+            for y in listlon:
+                lons=df[y]
+                print("All Points")
+                points=[lons, lats]
+                click.echo(points)
+                #conhex_hull(points)
+                return points
+        return 0
+
     if detail =='bbox':
-        path = open(filepath)
-        reader = csv.reader(path)
-        contentfirst = next(reader)[0].replace(";", ",")
-        content = contentfirst.split(",")
-        print(content)
-
-        #inhalt richtig in lng und lat speichern
-        try:
-            for x in content:
-                if x == 'longitude':
-                    lons = 'longitude'
-                if x == "Longitude":
-                    lons = "Longitude"
-                if x == "lon":
-                    lons = "lon"
-                if x == "lng":
-                    lons = "lng"
-                if x == 'latitude':
-                    lats = 'latitude'
-                if x == "Latitude":
-                    lats = "Latitude"
-                if x == "lat":
-                    lats = "lat"
-            print(content)
-            if(lats == None or lons == None):
-                click.echo("There are no valid coordinates")
-            
-            print(content)
-
-            for x in content:
-                print ("hallo")
-                if x != lons or x != lats:
-                    try:
-                        data = pd.read_csv(filepath, content=0)
-                        getcoords(data)
-
-                    except:     
-                        data = pd.read_csv(filepath, content=0, sep=';')
-                        getcoords(data)
-
-        except Exception as e:
-            click.echo ("No latitude,longitude")
-            return None
-               
-def getcoords(data):
-        lats = data[lng].tolist()
-        lons = data[lat].tolist()
-                
-        bbox = [min(lons), min(lats), max(lons), max(lats)]
-        click.echo(bbox)
-        return bbox
+        # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
+        df = pd.read_csv(filepath, delimiter=';',engine='python')
+        listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
+        listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
+        if not intersect(listlat,df.columns.values):
+            click.echo("No fitting header for latitudes")
+            # TODO: fehlerbehandlung  
+        for x in listlat:
+            if(x not in df.columns.values):
+                print("Hello")
+            lats=df[x]
+            for y in listlon:
+                lons=df[y]
+                print("Bounding Box: ")
+                bbox=[min(lons),min(lats),max(lons),max(lats)]
+                click.echo(bbox)
+                return bbox
+        
+# Hilfsfunktion fuer csv fehlerbehandlung
+def intersect(a, b):
+     return list(set(a) & set(b))
 
 def getGeoJsonbbx(filepath, detail):
     """returns the bounding Box GeoJson
@@ -204,9 +198,16 @@ def getGeoJsonbbx(filepath, detail):
         geojson = pygeoj.load(filepath)
         geojbbx = (geojson).bbox
         click.echo(geojbbx)
+        return geojbbx
 
     if detail == 'feature':
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        geojson = pygeoj.load(filepath)
+        #TO-DO feature.geometry.coordinates in variable speichern
+        points = 0
+        for feature in geojson:
+            click.echo(feature.geometry.coordinates)
+    #convex_hull(points)
+    return points
 
 def getNetCDFbbx(filepath, detail):
     """returns the bounding Box NetCDF
@@ -220,14 +221,11 @@ def getNetCDFbbx(filepath, detail):
         except Exception as e:
             lats = ds.coords["latitude"]
             lons = ds.coords["longitude"]
-        mytime = ds.coords["time"]
         # print(ds.values)
         minlat=min(lats).values
         minlon=min(lons).values
         maxlat=max(lats).values
         maxlon=max(lons).values
-        starttime=min(mytime)
-        endtime=max(mytime)
         # Bounding Box Ausgabe in Schoen
         print("Min Latitude: ")
         print(minlat)
@@ -241,16 +239,22 @@ def getNetCDFbbx(filepath, detail):
         # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
         bbox = [minlat,minlon,maxlat,maxlon]
         click.echo(bbox)
-        print("-------------------------------------------------")
-
-        # Zeitliche Ausdehnung
-        print("Timestamp: ")
-        print(starttime.values)
-        print(endtime.values)
-        print("__________________________________________________")
 
     if detail == 'feature':
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        ds = xr.open_dataset(filepath)
+        try:
+            lats = ds.coords["lat"]
+            lons = ds.coords["lon"]
+
+        except Exception as e:
+            lats = ds.coords["latitude"]
+            lons = ds.coords["longitude"]
+        print("Latitude:")
+        print(lats.values)
+        print("Longitude:")
+        print(lons.values)
+        #convex_hull(points)
+        return 0
 
 def getGeopackagebbx(filepath, detail):
     """returns the bounding Box Geopackage
@@ -258,14 +262,20 @@ def getGeopackagebbx(filepath, detail):
     @see https://docs.python.org/2/library/sqlite3.html"""
     if detail =='bbox':
         conn = sqlite3.connect(filepath)
-        print(conn)
         c = conn.cursor()
-        c.execute("""SELECT min(min_x), min(min_y), max(max_x), max(max_y), srs_id
+        c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
                      FROM gpkg_contents""")
         row = c.fetchall()
         print(row)
     if detail == 'feature':
-            click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        conn = sqlite3.connect(filepath)
+        c = conn.cursor()
+        c.execute("""SELECT min_x,min_y
+                     FROM gpkg_contents""")
+        points = c.fetchall()
+        print(points)
+        #convex_hull(points)
+        return points
 
 def getIsobbx(filepath, detail):
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
@@ -274,9 +284,17 @@ def getIsobbx(filepath, detail):
         iso = pygeoj.load(filepath="out.json")
         isobbx = (iso).bbox
         click.echo(isobbx)
+        return isobbx
 
     if detail == 'feature':
-           click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
+        iso = pygeoj.load(filepath="out.json")
+        #TO-DO feature.geometry.coordinates in variable speichern
+        points = 0
+        for feature in iso:
+            click.echo(feature.geometry.coordinates)
+        #convex_hull(points)
+        return points
 
 if __name__ == '__main__':
     getMetadata()
