@@ -24,10 +24,10 @@ def openFolder(filepath, detail, folder):
                     getNetCDFInfo.getNetCDFbbx(docPath, detail, folder)
                 except Exception as e:
                     try:
-                        getCSVInfo.getCSVbbx(docPath, detail)
+                        getCSVInfo.getCSVbbx(docPath, detail, folder)
                     except Exception as e:
                         try:
-                            getGeoTiffInfo.getGeoTiffbbx(docPath, detail)
+                            getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder)
                         except Exception as e:
                             try:
                                 getGeoPackageInfo.getGeopackagebbx(docPath, detail)
