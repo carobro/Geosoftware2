@@ -6,6 +6,7 @@
 
 - virtuelle Environment mit Python3: 
 `python3 -m venv pytest-env`
+[See](https://semaphoreci.com/community/tutorials/testing-python-applications-with-pytest)
  
 ### Coding standards
 - [Python source code style](https://www.python.org/dev/peps/pep-0008/)
