@@ -7,7 +7,6 @@ import detailebenen
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 def getCSVbbx(filepath, detail, folder):
-    print("CSV")
     """returns the bounding Box CSV
     @see https://www.programiz.com/python-programming/reading-csv-files
     @param path Path to the file """

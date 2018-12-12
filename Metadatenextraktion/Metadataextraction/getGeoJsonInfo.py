@@ -3,8 +3,7 @@ import click, pygeoj, detailebenen, geojson
 def getGeoJsonbbx(filepath, detail, folder):
     """returns the bounding Box GeoJson
     @param path Path to the file """
-    print(detail)
-    print(folder)
+    points = 0
     if detail =='bbox':
         geojson = pygeoj.load(filepath)
         geojbbx = (geojson).bbox
@@ -19,7 +18,6 @@ def getGeoJsonbbx(filepath, detail, folder):
     if detail == 'feature':
         geojson = pygeoj.load(filepath)
         #TO-DO feature.geometry.coordinates in variable speichern
-        points = 0
         for feature in geojson:
             click.echo(feature.geometry.coordinates)
     #convex_hull(points)
