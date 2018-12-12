@@ -33,7 +33,7 @@ def openFolder(filepath, detail, folder):
                                 getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder)
                             except Exception as e:
                                 try:
-                                    getIsoInfo.getIsobbx(docPath, detail)
+                                    getIsoInfo.getIsobbx(docPath, detail, folder)
                                 except Exception as e:
                                     try:
                                         openFolder(docPath, detail, folder)
