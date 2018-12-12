@@ -44,10 +44,10 @@ def getMetadata(path, detail, folder):
                     getCSVInfo.getCSVbbx(filepath, detail, folder)
                 except Exception as e:
                     try:
-                        getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
+                        getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
                     except Exception as e:
                         try:
-                            getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
+                            getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
                         except Exception as e:
                             #try:
                             #getIsoInfo.getIsobbx(filepath, detail)

@@ -30,7 +30,7 @@ def openFolder(filepath, detail, folder):
                             getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder)
                         except Exception as e:
                             try:
-                                getGeoPackageInfo.getGeopackagebbx(docPath, detail)
+                                getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder)
                             except Exception as e:
                                 try:
                                     getIsoInfo.getIsobbx(docPath, detail)
@@ -43,12 +43,14 @@ def openFolder(filepath, detail, folder):
 
     if folder=='whole':
         bboxes=detailebenen.bboxSpeicher
+        print("2")
+        print(bboxes)
         min1=100000000
         min2=100000000
         max1=0
         max2=0
         lat1List=[lat1 for lat1, lng1, lat2, lng2 in bboxes]
-        #print(lat1List)
+        print(lat1List)
         for x in lat1List:
             if x<min1:
                 min1=x

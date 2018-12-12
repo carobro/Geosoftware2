@@ -47,6 +47,7 @@ def getGeoTiffbbx(filepath, detail, folder):
             return (bbox)
         if folder=='whole':
             detailebenen.bboxSpeicher.append(bbox)
+            print(detailebenen.bboxSpeicher)
             #print(detailebenen.bboxSpeicher)
             return (bbox)
 

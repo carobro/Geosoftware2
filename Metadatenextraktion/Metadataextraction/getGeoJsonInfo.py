@@ -1,5 +1,4 @@
-import click, pygeoj, detailebenen
-import numpy as np
+import click, pygeoj, detailebenen, geojson
 
 def getGeoJsonbbx(filepath, detail, folder):
     """returns the bounding Box GeoJson
@@ -9,21 +8,20 @@ def getGeoJsonbbx(filepath, detail, folder):
     if detail =='bbox':
         geojson = pygeoj.load(filepath)
         geojbbx = (geojson).bbox
-        click.echo(geojbbx)
-        """return geojbbx"""
+        #click.echo(geojbbx)
         if folder=='single':
             click.echo(geojbbx)
+            return (geojbbx)
         if folder=='whole':
             detailebenen.bboxSpeicher.append(geojbbx)
-            print("halo")
             print(detailebenen.bboxSpeicher)
+            return(geojbbx)
     if detail == 'feature':
         geojson = pygeoj.load(filepath)
         #TO-DO feature.geometry.coordinates in variable speichern
         points = 0
         for feature in geojson:
-            points = np.array(feature.geometry.coordinates)
-            click.echo(points)
+            click.echo(feature.geometry.coordinates)
     #convex_hull(points)
     return points
 

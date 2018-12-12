@@ -3,6 +3,8 @@ from osgeo import gdal, ogr, osr
 import pandas as pd
 import detailebenen
 
+#import ogr2ogr
+#ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 def getCSVbbx(filepath, detail, folder):
     print("CSV")
@@ -36,7 +38,7 @@ def getCSVbbx(filepath, detail, folder):
         listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
         listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
         if not intersect(listlat,df.columns.values)or not intersect(listlon,df.columns.values):
-            print(df.columns.values)
+            #click.echo("No fitting header for latitudes or longitudes")
             output="No fitting header for latitudes or longitudes"
             print(output)
             return output 
