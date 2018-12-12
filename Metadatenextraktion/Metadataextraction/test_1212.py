@@ -15,9 +15,9 @@ print("Ausgabe Shapefile: ")
 a = getShapefileInfo.getShapefilebbx(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'bbox', 'single')
 """erwartetes Ergebnis: [295896.274870878, 5694747.64703736, 325999.79578122497, 5747140.98659967]"""
 
-print("Ausgabe CSV: ")
-b = getCSVInfo.getCSVbbx(__location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv', 'bbox', 'single')
-"""erwartetes Ergebnis: No fitting header for latitudes or longitudes"""
+#print("Ausgabe CSV: ")
+#b = getCSVInfo.getCSVbbx(__location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv', 'bbox', 'single')
+#"""erwartetes Ergebnis: No fitting header for latitudes or longitudes"""
 
 # print("Ausgabe GeoPackage: ")
 # c = getGeoPackageInfo.getGeopackagebbx(__location__+'/testdata/Geopackage_Queensland_geopackage/census2016_cca_qld_short.gpkg', 'bbox', 'single')
