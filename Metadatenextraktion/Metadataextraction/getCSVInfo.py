@@ -18,7 +18,7 @@ def getCSVbbx(filepath, detail, folder):
             #click.echo("No fitting header for latitudes or longitudes")
             output="No fitting header for latitudes or longitudes"
             print(output)
-            return output 
+            #return output 
 
         for x in listlat:
             lats=df[x]
@@ -28,8 +28,8 @@ def getCSVbbx(filepath, detail, folder):
                 points=[lons, lats]
                 click.echo(points)
                 #conhex_hull(points)
-                return points
-        return 0
+                #return points
+        #return 0
 
     if detail =='bbox':
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
@@ -40,7 +40,7 @@ def getCSVbbx(filepath, detail, folder):
             #click.echo("No fitting header for latitudes or longitudes")
             output="No fitting header for latitudes or longitudes"
             print(output)
-            return output 
+            #return output 
         if folder=='single':
             for x in listlat:
                 lats=df[x]
@@ -49,7 +49,7 @@ def getCSVbbx(filepath, detail, folder):
                     print("Bounding Box: ")
                     bbox=[min(lons),min(lats),max(lons),max(lats)]
                     click.echo(bbox)
-                    return bbox
+                    #return bbox
         if folder=='whole':
             for x in listlat:
                 lats=df[x]
@@ -60,7 +60,7 @@ def getCSVbbx(filepath, detail, folder):
                     click.echo(bbox)
                     detailebenen.bboxSpeicher.append(bbox)
                     print(detailebenen.bboxSpeicher)
-                    return (bbox)
+                    #return (bbox)
 
         
 # Hilfsfunktion fuer csv fehlerbehandlung

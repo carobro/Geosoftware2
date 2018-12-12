@@ -2,11 +2,18 @@ import click, detailebenen
 from osgeo import gdal, ogr, osr
 
 def getGeoTiffbbx(filepath, detail, folder):
+<<<<<<< HEAD
+    ds = gdal.Open(filepath)
+    print("geotiff")
+    #print(ds)
+=======
+>>>>>>> master
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
-    if detail =='bbox':
 
+    if detail =='bbox':
+        #ds = gdal.Open(filepath)
         # get the existing coordinate system
-        ds = gdal.Open(filepath)
+        
         old_cs= osr.SpatialReference()
         old_cs.ImportFromWkt(ds.GetProjectionRef())
 
@@ -51,9 +58,15 @@ def getGeoTiffbbx(filepath, detail, folder):
             return (bbox)
 
     if detail == 'feature':
-        ds = gdal.Open(filepath)
+        print("tzt")
         click.echo('Sorry there is no second level of detail')
-        return 0
+        ds = gdal.Info(filepath)
+        return None
+        if ds!=null:
+            #click.echo(ds)
+            click.echo('Sorry there is no second level of detail')
+        else: 
+            return None
 
 if __name__ == '__main__':
     getGeoTiffbbx()

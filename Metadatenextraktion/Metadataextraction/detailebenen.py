@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
+import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
 #import getIsoInfo
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
@@ -44,18 +44,18 @@ def getMetadata(path, detail, folder):
                     getCSVInfo.getCSVbbx(filepath, detail, folder)
                 except Exception as e:
                     try:
-                        getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
+                        getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
                     except Exception as e:
                         try:
-                            getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
+                            getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
                         except Exception as e:
-                            #try:
-                            #getIsoInfo.getIsobbx(filepath, detail)
-                            #except Exception as e:
                             try:
-                                openFolder.openFolder(filepath, detail, folder)
+                                getIsoInfo.getIsobbx(filepath, detail, folder)
                             except Exception as e:
-                                click.echo ("invalid file format!")
+                                try:
+                                    openFolder.openFolder(filepath, detail, folder)
+                                except Exception as e:
+                                    click.echo ("invalid file format!")
 
 
 if __name__ == '__main__':
