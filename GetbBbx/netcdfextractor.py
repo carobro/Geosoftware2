@@ -15,6 +15,7 @@ for x in filepaths:
     ending=x.split("/")
     ds = xr.open_dataset(x)
     print(ending[len(ending)-1])
+    print(ds)
     try:
         lats = ds.coords["lat"]
         lons = ds.coords["lon"]
