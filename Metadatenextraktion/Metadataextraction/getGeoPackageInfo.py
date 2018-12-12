@@ -15,7 +15,19 @@ def getGeopackagebbx(filepath, detail, folder):
         c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
                      FROM gpkg_contents""")
         row = c.fetchall()
-        print(row)
+        lat1=row[0][0]
+        lng1=row[0][1]
+        lat2=row[0][2]
+        lng2=row[0][3]
+        bbox=[lat1,lng1,lat2,lng2]
+        if folder=='single':
+            print(bbox)
+            return (bbox)
+        if folder=='whole':
+            detailebenen.bboxSpeicher.append(bbox)
+            print(detailebenen.bboxSpeicher)
+            #print(detailebenen.bboxSpeicher)
+            return (bbox)
     if detail == 'feature':
         conn = sqlite3.connect(filepath)
         c = conn.cursor()

@@ -7,11 +7,11 @@ def getShapefilebbx(filepath, detail, folder):
     if detail =='bbox':
         sf = shapefile.Reader(filepath)
         output = sf.bbox
-        click.echo(output)
+        #click.echo(output)
         if folder=='single':
             click.echo(output)
         if folder=='whole':
-            #click.echo(output)
+            click.echo(output)
             detailebenen.bboxSpeicher.append(output)
             print(detailebenen.bboxSpeicher)
     if detail == 'feature':

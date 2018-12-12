@@ -17,11 +17,15 @@ def getNetCDFbbx(filepath, detail, folder):
         except Exception as e:
             lats = ds.coords["latitude"]
             lons = ds.coords["longitude"]
-        # print(ds.values)
+        #print(ds.values)
         minlat=min(lats).values
+        minlatFloat=float(minlat)
         minlon=min(lons).values
+        minlonFloat=float(minlon)
         maxlat=max(lats).values
+        maxlatFloat=float(maxlat)
         maxlon=max(lons).values
+        maxlonFloat=float(maxlon)
         # Bounding Box Ausgabe in Schoen
         print("Min Latitude: ")
         print(minlat)
@@ -32,23 +36,21 @@ def getNetCDFbbx(filepath, detail, folder):
         print("Max Longitude: ")
         print(maxlon)
 
+
         # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
-        bbox = [minlat,minlon,maxlat,maxlon]
+        bbox = [minlatFloat,minlonFloat,maxlatFloat,maxlonFloat]
         click.echo(bbox)
 
         if folder=='single':
             # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
-            print(minlat)
             click.echo(bbox)
             print("-------------------------------------------------")
-
+            return bbox
         if folder=='whole':
-            print("ausdehnung")
             #fuer Boundingbox des Ordners
             detailebenen.bboxSpeicher.append(bbox)
-            
             print(detailebenen.bboxSpeicher)
-
+            return bbox
     if detail == 'feature':
         ds = xr.open_dataset(filepath)
         try:
