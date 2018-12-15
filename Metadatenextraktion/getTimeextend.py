@@ -9,8 +9,7 @@ import os
 import sys
 import json
 import sqlite3
-import js2py
-#pip install Js2Py
+
 
 @click.command()
 @click.option('--path', prompt='Datapath', help='Path to the data.')
@@ -24,10 +23,10 @@ def getTimeextend(path, detail):
         getShapefiletime(filepath, detail)
     except Exception as e:
         try:
-            getCSVtime(filepath, detail)
+            getGeoJsontime(filepath, detail)
         except Exception as e:
             try:
-                getGeoJsontime(filepath, detail)
+                getCSVtime(filepath, detail)
             except Exception as e:
                 try:
                     getNetCDFtime(filepath, detail)
@@ -38,13 +37,18 @@ def getTimeextend(path, detail):
                         try: 
                             getGeoTifftime(filepath, detail)    
                         except Exception as e:
-                            click.echo ("invalid file format or no time-values included!")
+                            try: 
+                                getGeoTifftime(filepath, detail)    
+                            except Exception as e:
+                                try: 
+                                    getGeoTifftime(filepath, detail)    
+                                except Exception as e:
+                                    click.echo ("invalid file format or no time-values included!")
 
 def getShapefiletime(filepath, detail):
     click.echo(detail)
     if detail =='time':
         sf = shapefile.Reader(filepath)
-        print("test1")
         click.echo("There is no time-value or invalid file")
 
 def getGeoTifftime(filepath, detail):
@@ -84,12 +88,24 @@ def getCSVtime(filepath, detail):
                 return None   
 
 def getGeoJsontime(filepath, detail):
-    if detail =='time':
-        print("hallo")
         ds = open(filepath)
-        print(ds)
-        jsonDict = json.load(ds)
-        print(jsonDict)
+        geojson = json.load(ds)
+        print(" ")
+        print("The time value of this file is:")
+        try:
+            click.echo(geojson["features"][0]["date"])
+        except Exception as e:
+            try:
+                click.echo(geojson["features"][0]["time"])
+            except Exception as e:
+                try:
+                    click.echo(geojson["features"][0]["properties"]["date"])
+                except Exception as e:
+                    try:
+                        click.echo(geojson["features"][0]["properties"]["time"])
+                    except Exception as e:
+                        click.echo("there is no time-value")
+                
 
 def getNetCDFtime(filepath, detail):
     """returns the Time from NetCDF file
@@ -104,6 +120,7 @@ def getNetCDFtime(filepath, detail):
             # Zeitliche Ausdehnung
             anfang = starttime.values
             ende = endtime.values
+            print("the temporalextend is:")
             print(anfang)
             print(ende)
             return anfang, ende
@@ -120,6 +137,7 @@ def getGeopackagetime(filepath, detail):
                         FROM gpkg_contents""")
             print c.fetchone()
             row = c.fetchall()
+            print("The time value is:")
             print(row)
             return row
         except Exception as e:
@@ -130,7 +148,23 @@ def getGeopackagetime(filepath, detail):
 def getIsoTime(filepath, detail):
     if detail =='time':
         ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
-        iso = pygeoj.load(filepath="out.json")
+        ds = open(filepath="out.json")
+        geojson = json.load(ds)
+        print(" ")
+        print("The time value of this file is:")
+        try:
+            click.echo(geojson["features"][0]["date"])
+        except Exception as e:
+            try:
+                click.echo(geojson["features"][0]["time"])
+            except Exception as e:
+                try:
+                    click.echo(geojson["features"][0]["properties"]["date"])
+                except Exception as e:
+                    try:
+                        click.echo(geojson["features"][0]["properties"]["time"])
+                    except Exception as e:
+                        click.echo("there is no time-value")
 
 if __name__ == '__main__':
     getTimeextend()

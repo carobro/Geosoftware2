@@ -2,12 +2,9 @@ import click, detailebenen
 from osgeo import gdal, ogr, osr
 
 def getGeoTiffbbx(filepath, detail, folder):
-<<<<<<< HEAD
     ds = gdal.Open(filepath)
     print("geotiff")
     #print(ds)
-=======
->>>>>>> master
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
 
     if detail =='bbox':
