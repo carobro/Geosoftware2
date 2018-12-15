@@ -4,6 +4,13 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import ogr2ogr
+import csv
+import os
+import sys
+import json
+import sqlite3
+import js2py
+#pip install Js2Py
 
 @click.command()
 @click.option('--path', prompt='Datapath', help='Path to the data.')
@@ -37,91 +44,88 @@ def getShapefiletime(filepath, detail):
     click.echo(detail)
     if detail =='time':
         sf = shapefile.Reader(filepath)
-        output = sf.time
-        click.echo(output)
+        print("test1")
+        click.echo("There is no time-value or invalid file")
 
 def getGeoTifftime(filepath, detail):
     if detail =='time':
         ds =  gdal.Open(filepath)
-        print(gdal.Info(ds))
-        click.echo("Sorry there is no time-value")
-        return None
+        print(ds)
+        print("test2")
+        try:
+            print(gdal.Info(ds))
+            click.echo("no time-value found yet")
+            return None
+        except Exception as e:
+            click.echo ("There is no time-value or invalid file")
+            return None
 
 def getCSVtime(filepath, detail):
     if detail =='time':
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, delimiter=';',engine='python')
         listtime = ["time", "timestamp", "date", "Time"]
-        print("test")
+        print("testhallo")
         if not intersect(listtime,df.columns.values):
             print("No fitting header for time-values")
             # TODO: fehlerbehandlung  
+            try:
+                print("test2")
+                for t in listtime:
+                    if(x not in df.columns.values):
+                        click.echo("This file does not include time-values")
+                    else:
+                        time=df[t]
+                        timeextend =[min(time), max(time)]
+                        click.echo(timeextend)
+                        return timeextend
+            except Exception as e:
+                click.echo ("There is no time-value or invalid file")
+                return None   
 
-        print("test2")
-        for t in listtime:
-            if(x not in df.columns.values):
-                click.echo("This file does not include time-values")
-            else:
-                time=df[t]
-                timeextend =[min(time), max(time)]
-                click.echo(timeextend)
-                return timeextend
-
-    """
-    except Exception as e:
-        click.echo ("There is no time-value or invalid file")
-        return None
-        """
-        
 def getGeoJsontime(filepath, detail):
     if detail =='time':
-        geojson = pygeoj.load(filepath)
-        print(geojson.common_attributes)
         print("hallo")
-        data = json_decode(filepath)
-        click.ech(data)
-        try:
-            click.echo(data['time'])
-        except Exception as e:
-            try:
-                click.echo(data['timestamp'])
-            except Exception as e:
-                try:
-                    click.echo(data['Time'])
-                except Exception as e:
-                    try:
-                        click.echo(data['time'])
-                    except Exception as e:
-                        click.echo("error")
-        click.echo("Sorry there is no time-value")
+        ds = open(filepath)
+        print(ds)
+        jsonDict = json.load(ds)
+        print(jsonDict)
 
 def getNetCDFtime(filepath, detail):
     """returns the Time from NetCDF file
     @param path Path to the file """
     if detail =='time':
         ds = xr.open_dataset(filepath)
-        mytime = ds.coords["time"]
-        # print(ds.values)
-        starttime = min(mytime)
-        endtime = max(mytime)
-        # Zeitliche Ausdehnung
-        anfang = starttime.values
-        ende = endtime.values
-        print(anfang)
-        print(ende)
-        return anfang, ende
+        try:
+            mytime = ds.coords["time"]
+            # print(ds.values)
+            starttime = min(mytime)
+            endtime = max(mytime)
+            # Zeitliche Ausdehnung
+            anfang = starttime.values
+            ende = endtime.values
+            print(anfang)
+            print(ende)
+            return anfang, ende
+        except Exception as e:
+            click.echo ("There is no time-value or invalid file")
+            return None
     
 def getGeopackagetime(filepath, detail):
     if detail =='time':
         conn = sqlite3.connect(filepath)
-        print(conn)
         c = conn.cursor()
-        # try: weil last_change unlogisch ist. Alternative finden!
-        c.execute("""SELECT last_change
-                    FROM gpkg_contents""")
-        print c.fetchone()
-        row = c.fetchall()
-        print(row)
+        try:
+            c.execute("""SELECT time or timestamp or date
+                        FROM gpkg_contents""")
+            print c.fetchone()
+            row = c.fetchall()
+            print(row)
+            return row
+        except Exception as e:
+            click.echo ("There is no time-value or invalid file")
+            return None
+        
 
 def getIsoTime(filepath, detail):
     if detail =='time':

@@ -35,3 +35,7 @@ pytest --last-failed -> merkt sich den letzten falschen Test -> kann man dann ab
 
 # vorher - nacher Bedingung
 um die Umgebung so zu erstellen wie sie für die tests gewollt ist 
+
+## Imports
+- pip install pytest
+- pip install requests *(for testing the api)*

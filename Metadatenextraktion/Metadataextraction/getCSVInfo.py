@@ -1,67 +1,69 @@
-import click, pygeoj
+import click,json, sqlite3, pygeoj, csv
 from osgeo import gdal, ogr, osr
+import pandas as pd
+import detailebenen
+
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
-def getCSVbbx(filepath, detail):
+def getCSVbbx(filepath, detail, folder):
     """returns the bounding Box CSV
     @see https://www.programiz.com/python-programming/reading-csv-files
     @param path Path to the file """
     if detail == 'feature':
-        click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
+        df = pd.read_csv(filepath, delimiter=';',engine='python')
+        listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
+        listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
+        if not intersect(listlat,df.columns.values) or not intersect(listlon,df.columns.values):
+            #click.echo("No fitting header for latitudes or longitudes")
+            output="No fitting header for latitudes or longitudes"
+            print(output)
+            #return output 
+
+        for x in listlat:
+            lats=df[x]
+            for y in listlon:
+                lons=df[y]
+                print("All Points")
+                points=[lons, lats]
+                click.echo(points)
+                #conhex_hull(points)
+                #return points
+        #return 0
+
     if detail =='bbox':
-        path = open(filepath)
-        reader = csv.reader(path)
-        contentfirst = next(reader)[0].replace(";", ",")
-        content = contentfirst.split(",")
-        print(content)
+        # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
+        df = pd.read_csv(filepath, delimiter=';',engine='python')
+        listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
+        listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
+        if not intersect(listlat,df.columns.values)or not intersect(listlon,df.columns.values):
+            #click.echo("No fitting header for latitudes or longitudes")
+            output="No fitting header for latitudes or longitudes"
+            print(output)
+            #return output 
+        if folder=='single':
+            for x in listlat:
+                lats=df[x]
+                for y in listlon:
+                    lons=df[y]
+                    print("Bounding Box: ")
+                    bbox=[min(lons),min(lats),max(lons),max(lats)]
+                    click.echo(bbox)
+                    #return bbox
+        if folder=='whole':
+            for x in listlat:
+                lats=df[x]
+                for y in listlon:
+                    lons=df[y]
+                    print("Bounding Box: ")
+                    bbox=[min(lons),min(lats),max(lons),max(lats)]
+                    click.echo(bbox)
+                    detailebenen.bboxSpeicher.append(bbox)
+                    print(detailebenen.bboxSpeicher)
+                    #return (bbox)
 
-        #inhalt richtig in lng und lat speichern
-        try:
-            for x in content:
-                if x == 'longitude':
-                    lons = 'longitude'
-                if x == "Longitude":
-                    lons = "Longitude"
-                if x == "lon":
-                    lons = "lon"
-                if x == "lng":
-                    lons = "lng"
-                if x == 'latitude':
-                    lats = 'latitude'
-                if x == "Latitude":
-                    lats = "Latitude"
-                if x == "lat":
-                    lats = "lat"
-            print(content)
-            if(lats == None or lons == None):
-                click.echo("There are no valid coordinates")
-            
-            print(content)
-
-            for x in content:
-                print ("hallo")
-                if x != lons or x != lats:
-                    try:
-                        data = pd.read_csv(filepath, content=0)
-                        getcoords(data)
-
-                    except:     
-                        data = pd.read_csv(filepath, content=0, sep=';')
-                        getcoords(data)
-
-        except Exception as e:
-            click.echo ("No latitude,longitude")
-            return None
-
-
-def getcoords(data):
-        lats = data[lng].tolist()
-        lons = data[lat].tolist()
-                
-        bbox = [min(lons), min(lats), max(lons), max(lats)]
-        click.echo(bbox)
-        return bbox
         
-if __name__ == '__main__':
-    getCSVbbx()
+# Hilfsfunktion fuer csv fehlerbehandlung
+def intersect(a, b):
+     return list(set(a) & set(b))
+
