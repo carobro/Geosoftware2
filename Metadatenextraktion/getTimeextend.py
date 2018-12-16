@@ -1,3 +1,5 @@
+# @author Carolin Bronowicz
+# qversion 1.0
 import click, shapefile, sqlite3, csv
 from osgeo import gdal, ogr, osr
 import os
@@ -14,6 +16,9 @@ import json
 def getTimeextend(path, detail):
     filepath = path
     # Program that extracts the time-extend of files.
+    # same construction as in the "detailebenen.py" file
+    # if this file cannot find any time-values the file throws an 
+    # "invalid file format or no time-values included!" exception
     try:
         getShapefiletime(filepath, detail)
     except Exception as e:
@@ -39,6 +44,7 @@ def getTimeextend(path, detail):
                                 click.echo ("invalid file format or no time-values included!")
 
 def getShapefiletime(filepath, detail):
+    # Shapefiles have no time information so we we return no value
     click.echo("Shapefile")
     click.echo(detail)
     if detail =='time':
@@ -47,6 +53,8 @@ def getShapefiletime(filepath, detail):
         return None
 
 def getGeoTifftime(filepath, detail):
+    # Because we havent seen any testdata with time values included, 
+    # we asume or we rather commit that there are no time values
     click.echo("GeoTiff")
     if detail =='time':
         ds = gdal.Open(filepath)
@@ -55,6 +63,9 @@ def getGeoTifftime(filepath, detail):
         return None
 
 def getCSVtime(filepath, detail):
+    # After opening the file we search in the header for collumns with names like
+    # date, time or timestamp. If some of these collumns exists we collect
+    # all the values from inside and calculate the min and max
     click.echo("CSV")
     if detail =='time':
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
@@ -80,6 +91,8 @@ def getCSVtime(filepath, detail):
             return None
 
 def getGeoJsontime(filepath, detail):
+    # After opening the file check if the file seems to have the right format
+    # Then we search for words like date, creationDate or time at two different levels
     print("GeoJson")
     if detail =='time':
         ds = open(filepath)
@@ -122,6 +135,10 @@ def getGeoJsontime(filepath, detail):
                                     return None
                 
 def getNetCDFtime(filepath, detail):
+    # @author Jannis Froehlking
+    # After opening the file we are looking for 
+    # time values and calculate the temporal extend 
+    # with min and max functions
     click.echo("NetCDF")
     """returns the Time from NetCDF file
     @param path Path to the file """
@@ -144,6 +161,9 @@ def getNetCDFtime(filepath, detail):
             return None
     
 def getGeopackagetime(filepath, detail):
+    # We open the file with the sqlite function and search for
+    # words like time, timestamp or date and collect them
+    # to calculate the temporal extend
     click.echo("GeoPackage")
     if detail =='time':
         conn = sqlite3.connect(filepath)
@@ -162,6 +182,8 @@ def getGeopackagetime(filepath, detail):
         
 
 def getIsoTime(filepath, detail):
+    # We transform the gml file to a geojson file, then search for
+    # words like "date", "timestamp", "time" and collect them
     click.echo("Iso")
     if detail =='time':
         ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
