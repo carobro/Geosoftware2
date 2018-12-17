@@ -1,8 +1,9 @@
 # Geosoftware II - WiSe 2018/19
 ### Enhancing discovery of geospatial datasets in data repositories
 
-:arrow_forward: Die Gruppe 1
+:arrow_forward: Die Gruppe :one:
 
+# CLI-Tool
 ## Installationsbeschreibung
 
 Um unser CLI-Tool auszuführen muss die folgende Datei ausgeführt werden:
@@ -17,7 +18,22 @@ dort folgender Befehl ausgeführt werden
 
 hinten dran können dann noch speizifikationen hinzugefügt werden:
 
-`--bbox` -> für die Bounding Box der Datei ( ist auch als default eingestellt)   
-`--feature` -> um alle Koordinaten der Datei zu erhalten   
-`--single` -> um nur die Koordinaten einer Datei zu erhalten (auch default)
-`--whole` -> in Kombination mit --bbox oder --feature um das jeweilige aus einem desamten Verzeichnis zu lesen
+`--bbox` &larr; für die Bounding Box der Datei ( ist auch als default eingestellt)   
+`--feature` &larr; um alle Koordinaten der Datei zu erhalten   
+`--single` &larr; um nur die Koordinaten einer Datei zu erhalten (auch default)
+`--whole` &larr; in Kombination mit --bbox oder --feature um das jeweilige aus einem desamten Verzeichnis zu lesen
+`--time` &larr; um die Zeit einer Datei zu erhalten
+
+# Ähnlichkeitsberechnung
+
+Unser Code zur Ähnlichkeitsberechnung ist in der `similar.py` Datei zu finden.
+Die dazu gehörenden Tests befinden sich in der `test_similar.py` Datei.
+
+# Tests
+
+Unsere Tests können einfach mit dem Befehl
+
+`pytest` ausgeführt werden
+
+# Probleme ?
+Falls Probleme oder Fragen bei der Installation entstehen, erstellt doch direkt ein Issue damit wir euch helfen und Fehler korrigiern können :blush:
