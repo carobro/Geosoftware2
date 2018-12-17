@@ -5,10 +5,11 @@
 
 # CLI-Tool
 ## Installationsbeschreibung
+Diese Installtion wurde bisher nur mit Linux getestet, sollte aber auch unter Windows funktionieren.
 
 Um unser CLI-Tool auszuführen muss die folgende Datei ausgeführt werden:
    
-`python ./yaml_install_Datein.py`
+`pip install -r requirements.txt`
    
 In dieser Datei sind alle benötigten Plugins gelistet, die wir in unserem Tool nutzen
 Dann kann in einer beliebigen, gängigen Konsole in den Ordner des Tools navigiert werden und
