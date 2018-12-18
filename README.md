@@ -7,15 +7,15 @@
 ## Installationsbeschreibung
 Diese Installtion wurde bisher nur mit Linux getestet, sollte aber auch unter Windows funktionieren.
 
-Um unser CLI-Tool auszuführen muss die folgende Datei ausgeführt werden:
+Um unser CLI-Tool auszuführen muss im Projektordner die folgende Datei ausgeführt werden:
    
-`pip install -r requirements.txt`
+`pip install -r requirements.txt --user`
    
 In dieser Datei sind alle benötigten Plugins gelistet, die wir in unserem Tool nutzen
 Dann kann in einer beliebigen, gängigen Konsole in den Ordner des Tools navigiert werden und
 dort folgender Befehl ausgeführt werden 
 
-`python detailebenen.py --path=("Der Path zur Datei")`
+`python detailebenen.py --path="Der Path zur Datei"`
 
 hinten dran können dann noch speizifikationen hinzugefügt werden:
 
