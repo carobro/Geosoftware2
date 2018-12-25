@@ -2,6 +2,11 @@
 ### Enhancing discovery of geospatial datasets in data repositories
 
 :arrow_forward: Die Gruppe :one:
+# Zenodo - Installation:   
+Zur Zenodo-Installation bitte folgende Anleitung befolgen:   
+https://github.com/zenodo/zenodo/blob/master/INSTALL.rst   
+(Wer sich nerven sparen will, sollte es nicht unter Windows versuchen.
+ Unter Linux deutlich schneller und einfacher :wink: )
 
 # CLI-Tool
 ## Installationsbeschreibung
