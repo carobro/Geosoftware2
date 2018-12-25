@@ -5,8 +5,8 @@
 
 # CLI-Tool
 ## Installationsbeschreibung
-Diese Installtion wurde bisher nur mit Linux getestet, sollte aber auch unter Windows funktionieren.
-
+Diese Installtion wurde bisher nur mit Linux getestet, sollte aber auch unter Windows funktionieren.   
+pip für pip install wird vorausgesetzt.
 Um unser CLI-Tool auszuführen muss im Projektordner die folgende Datei ausgeführt werden:
    
 `pip install -r requirements.txt --user`
