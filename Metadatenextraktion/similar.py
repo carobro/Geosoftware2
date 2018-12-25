@@ -5,17 +5,23 @@ bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
 bbox2 = [7.5234, 52.0326, 7.7556, 52.152]
 
 def aehnlickeit (bbox1,bbox2):
-    if distanz(bbox1,bbox2) < 20000:
-        simdis = distanz(bbox1,bbox2)/20000
+    if isinstance(bbox1[0], float) and isinstance(bbox1[1], float) and isinstance(bbox1[2], float) and isinstance(bbox1[3], float):
+        if isinstance(bbox2[0], float) and isinstance(bbox2[1], float) and isinstance(bbox2[2], float) and isinstance(bbox2[3], float):
+
+            if distanz(bbox1,bbox2) < 20000:
+                simdis = distanz(bbox1,bbox2)/20000
+            else:
+                simdis = 1
+            if abs(flaeche(bbox1) - flaeche(bbox2)) < 1000000:
+                simA = (abs(flaeche(bbox1) - flaeche(bbox2)))/1000000
+            else:
+                simA = 1
+            sim = (2 * simdis + simA)/3
+            print(sim)
+            return sim
+        
     else:
-        simdis = 1
-    if abs(flaeche(bbox1) - flaeche(bbox2)) < 1000000:
-        simA = (abs(flaeche(bbox1) - flaeche(bbox2)))/1000000
-    else:
-        simA = 1
-    sim = (2 * simdis + simA)/3
-    return sim
-    print(sim)
+        return None
 
 def mittlererBreitengrad (list):
     lat = (list[3]+list[1])/2
