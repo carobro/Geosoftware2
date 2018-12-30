@@ -8,6 +8,7 @@ import os
 def getNetCDFbbx(filepath, detail, folder):
     """returns the bounding Box NetCDF
     @param path Path to the file """
+    #print("netcdf")
     if detail =='bbox':
         ds = xr.open_dataset(filepath)
         try:
@@ -27,29 +28,29 @@ def getNetCDFbbx(filepath, detail, folder):
         maxlon=max(lons).values
         maxlonFloat=float(maxlon)
         # Bounding Box Ausgabe in Schoen
-        print("Min Latitude: ")
-        print(minlat)
-        print("Min Longitude: ")
-        print(minlon)
-        print("Max Latitude: ")
-        print(maxlat)
-        print("Max Longitude: ")
-        print(maxlon)
+        #print("Min Latitude: ")
+        #print(minlat)
+        #print("Min Longitude: ")
+        #print(minlon)
+        #print("Max Latitude: ")
+        #print(maxlat)
+        #print("Max Longitude: ")
+        #print(maxlon)
 
 
-        # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
         bbox = [minlatFloat,minlonFloat,maxlatFloat,maxlonFloat]
-        click.echo(bbox)
+        #click.echo(bbox)
 
         if folder=='single':
-            # Speicherung als bbox noch nicht so schoen, da Ausgabe als vier Arrays mit einem Wert
+            print("----------------------------------------------------------------")
+            click.echo("Boundingbox of the NetCDF Object:")
             click.echo(bbox)
-            print("-------------------------------------------------")
+            print("----------------------------------------------------------------")
             return bbox
         if folder=='whole':
             #fuer Boundingbox des Ordners
             detailebenen.bboxSpeicher.append(bbox)
-            print(detailebenen.bboxSpeicher)
+            #print(detailebenen.bboxSpeicher)
             return bbox
     if detail == 'feature':
         ds = xr.open_dataset(filepath)

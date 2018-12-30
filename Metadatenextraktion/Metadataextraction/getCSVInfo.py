@@ -10,6 +10,7 @@ def getCSVbbx(filepath, detail, folder):
     """returns the bounding Box CSV
     @see https://www.programiz.com/python-programming/reading-csv-files
     @param path Path to the file """
+    #print("csv")
     if detail == 'feature':
         df = pd.read_csv(filepath, delimiter=';',engine='python')
         listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
@@ -46,20 +47,28 @@ def getCSVbbx(filepath, detail, folder):
                 lats=df[x]
                 for y in listlon:
                     lons=df[y]
-                    print("Bounding Box: ")
+                    
                     bbox=[min(lons),min(lats),max(lons),max(lats)]
+                    #click.echo(min(lons))
+                    print("----------------------------------------------------------------")
+                    click.echo("Boundingbox of the csv document:")
                     click.echo(bbox)
-                    #return bbox
+                    print("----------------------------------------------------------------")
         if folder=='whole':
             for x in listlat:
                 lats=df[x]
                 for y in listlon:
                     lons=df[y]
-                    print("Bounding Box: ")
+                    #print("Bounding Box: ")
                     bbox=[min(lons),min(lats),max(lons),max(lats)]
+
+                    #click.echo(bbox)
+                    print("----------------------------------------------------------------")
+                    click.echo("Boundingbox of the csv document:")
                     click.echo(bbox)
+                    print("----------------------------------------------------------------")
                     detailebenen.bboxSpeicher.append(bbox)
-                    print(detailebenen.bboxSpeicher)
+                    #print(detailebenen.bboxSpeicher)
                     #return (bbox)
 
         
