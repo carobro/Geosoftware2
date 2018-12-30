@@ -7,11 +7,13 @@ import os
 import ogr2ogr
 
 def getIsobbx(filepath, detail, folder):
+    gdal.UseExceptions()
     print("ISO")
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
     if detail =='bbox':
+        print ("hi")
         ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
-        #print("ee")
+        print("ee")
         iso = pygeoj.load(filepath="out.json")
         isobbx = (iso).bbox
         if folder=='single':
@@ -22,7 +24,7 @@ def getIsobbx(filepath, detail, folder):
             return isobbx
         if folder=='whole':
             detailebenen.bboxSpeicher.append(isobbx)
-            return (isobbx)
+            #return (isobbx)
 
 
     if detail == 'feature':
