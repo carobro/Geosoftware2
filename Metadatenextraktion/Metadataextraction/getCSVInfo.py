@@ -51,6 +51,8 @@ def getCSVbbx(filepath, detail, folder):
                     bbox=[min(lons),min(lats),max(lons),max(lats)]
                     #click.echo(min(lons))
                     print("----------------------------------------------------------------")
+                    click.echo("Filepath:")
+                    click.echo(filepath)
                     click.echo("Boundingbox of the csv document:")
                     click.echo(bbox)
                     print("----------------------------------------------------------------")
@@ -63,10 +65,8 @@ def getCSVbbx(filepath, detail, folder):
                     bbox=[min(lons),min(lats),max(lons),max(lats)]
 
                     #click.echo(bbox)
-                    print("----------------------------------------------------------------")
-                    click.echo("Boundingbox of the csv document:")
+                    click.echo(filepath)
                     click.echo(bbox)
-                    print("----------------------------------------------------------------")
                     detailebenen.bboxSpeicher.append(bbox)
                     #print(detailebenen.bboxSpeicher)
                     #return (bbox)

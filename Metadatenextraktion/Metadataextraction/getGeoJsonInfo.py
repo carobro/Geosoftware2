@@ -19,12 +19,8 @@ def getGeoJsonbbx(filepath, detail, folder):
             return (geojbbx)
         if folder=='whole':
             detailebenen.bboxSpeicher.append(geojbbx)
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
             click.echo(filepath)
-            click.echo("Boundingbox of the GeoJSON object:")
             click.echo(geojbbx)
-            print("----------------------------------------------------------------")
             #print(detailebenen.bboxSpeicher)
             return(geojbbx)
     if detail == 'feature':

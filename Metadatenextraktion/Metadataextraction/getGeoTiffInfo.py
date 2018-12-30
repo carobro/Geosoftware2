@@ -50,13 +50,16 @@ def getGeoTiffbbx(filepath, detail, folder):
         bbox = [latlongmin[0], latlongmin[1], latlongmax[0], latlongmax[1]]
         if folder=='single':
             print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
             click.echo("Boundingbox of the GeoTiff:")
             click.echo(bbox)
             print("----------------------------------------------------------------")
             return (bbox)
         if folder=='whole':
             detailebenen.bboxSpeicher.append(bbox)
-            print(detailebenen.bboxSpeicher)
+            click.echo(filepath)
+            print(bbox)
             #print(detailebenen.bboxSpeicher)
             return (bbox)
 

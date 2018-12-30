@@ -1,4 +1,4 @@
-import click, json, sqlite3, csv, pygeoj
+import click, json, sqlite3, csv, pygeoj, detailebenen
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
@@ -8,22 +8,23 @@ import ogr2ogr
 
 def getIsobbx(filepath, detail, folder):
     gdal.UseExceptions()
-    print("ISO")
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
     if detail =='bbox':
-        print ("hi")
         ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
-        print("ee")
         iso = pygeoj.load(filepath="out.json")
         isobbx = (iso).bbox
         if folder=='single':
             print("----------------------------------------------------------------")
+            click.echo("filepath:")
+            click.echo(filepath)
             click.echo("Boundingbox of the ISO object:")
             click.echo(isobbx)
             print("----------------------------------------------------------------")
-            return isobbx
+            #return isobbx
         if folder=='whole':
             detailebenen.bboxSpeicher.append(isobbx)
+            click.echo(filepath)
+            click.echo(isobbx)
             #return (isobbx)
 
 
