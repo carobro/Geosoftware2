@@ -10,10 +10,14 @@ def getGeopackagebbx(filepath, detail, folder):
     """returns the bounding Box Geopackage
     @param path Path to the file
     @see https://docs.python.org/2/library/sqlite3.html"""
+    #print ("geopackage")
     if detail =='bbox':
-        print(filepath)
+        #print(filepath)
+        #print("1")
         conn = sqlite3.connect(filepath)
+        #print("2")
         c = conn.cursor()
+        #print("3")
         c.execute("""SELECT min(min_x), min(min_y), max(min_x), max(min_x)
                      FROM gpkg_contents""")
         row = c.fetchall()
@@ -23,11 +27,21 @@ def getGeopackagebbx(filepath, detail, folder):
         lng2=row[0][3]
         bbox=[lat1,lng1,lat2,lng2]
         if folder=='single':
+            print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
+            click.echo("Boundingbox of the GeoPackage object:")
             print(bbox)
+            print("----------------------------------------------------------------")
             return (bbox)
         if folder=='whole':
+            print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
+            click.echo("Boundingbox of the GeoPackage object:")
+            print(bbox)
+            print("----------------------------------------------------------------")
             detailebenen.bboxSpeicher.append(bbox)
-            print(detailebenen.bboxSpeicher)
             #print(detailebenen.bboxSpeicher)
             return (bbox)
     if detail == 'feature':

@@ -12,6 +12,7 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo,
 
 bboxSpeicher = []
 
+
 """ Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""
 @click.command()
@@ -27,7 +28,7 @@ sondern auf den Inhalt"""
 def getMetadata(path, detail, folder):
     
     
-    print(bboxSpeicher)
+    # print(bboxSpeicher)
     filepath = path
     # Program that extracts the boudingbox of files.
 

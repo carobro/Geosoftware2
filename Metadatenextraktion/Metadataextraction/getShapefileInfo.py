@@ -4,16 +4,20 @@ def getShapefilebbx(filepath, detail, folder):
     """returns the bounding Box Shapefile.
     @param path Path to the file """
     #print(detailebenen.bboxSpeicher)
+    #print("shapefile")
     if detail =='bbox':
         sf = shapefile.Reader(filepath)
         output = sf.bbox
         #click.echo(output)
         if folder=='single':
+            print("----------------------------------------------------------------")
+            click.echo("Boundingbox of the Shapefile:")
             click.echo(output)
+            print("----------------------------------------------------------------")
         if folder=='whole':
             click.echo(output)
             detailebenen.bboxSpeicher.append(output)
-            print(detailebenen.bboxSpeicher)
+            #print(detailebenen.bboxSpeicher)
     if detail == 'feature':
         sf = shapefile.Reader(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
