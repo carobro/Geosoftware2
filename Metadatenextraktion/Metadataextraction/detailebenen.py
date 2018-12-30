@@ -33,30 +33,41 @@ def getMetadata(path, detail, folder):
     # Program that extracts the boudingbox of files.
 
     try:
+        #click.echo("2")
         getShapefileInfo.getShapefilebbx(filepath, detail, folder)
     except Exception as e:
         try:
+            #click.echo("2")
             getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder)
         except Exception as e:
             try:
+                #click.echo("2")
                 getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
             except Exception as e:
                 try:
+                    #click.echo("2")
                     getCSVInfo.getCSVbbx(filepath, detail, folder)
                 except Exception as e:
                     try:
+                        #click.echo("2")
                         getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
                     except Exception as e:
                         try:
+                            #click.echo("21")
                             getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
                         except Exception as e:
                             try:
+                                #click.echo("22")
                                 getIsoInfo.getIsobbx(filepath, detail, folder)
                             except Exception as e:
                                 try:
+                                    #click.echo("2")
                                     openFolder.openFolder(filepath, detail, folder)
                                 except Exception as e:
+                                    
+                                    #click.echo("2")
                                     click.echo ("invalid file format!")
+                                    return 0
 
 
 if __name__ == '__main__':

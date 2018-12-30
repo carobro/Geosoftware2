@@ -43,6 +43,8 @@ def getNetCDFbbx(filepath, detail, folder):
 
         if folder=='single':
             print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
             click.echo("Boundingbox of the NetCDF Object:")
             click.echo(bbox)
             print("----------------------------------------------------------------")
@@ -50,7 +52,8 @@ def getNetCDFbbx(filepath, detail, folder):
         if folder=='whole':
             #fuer Boundingbox des Ordners
             detailebenen.bboxSpeicher.append(bbox)
-            #print(detailebenen.bboxSpeicher)
+            click.echo(filepath)
+            print(bbox)
             return bbox
     if detail == 'feature':
         ds = xr.open_dataset(filepath)

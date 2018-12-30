@@ -35,12 +35,8 @@ def getGeopackagebbx(filepath, detail, folder):
             print("----------------------------------------------------------------")
             return (bbox)
         if folder=='whole':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
             click.echo(filepath)
-            click.echo("Boundingbox of the GeoPackage object:")
             print(bbox)
-            print("----------------------------------------------------------------")
             detailebenen.bboxSpeicher.append(bbox)
             #print(detailebenen.bboxSpeicher)
             return (bbox)
