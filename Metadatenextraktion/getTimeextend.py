@@ -123,7 +123,7 @@ def getGeoJsontime(filepath, detail):
                         except Exception as e:
                             try:
                                 click.echo(first[0]["properties"]["date"])
-                                time = geojson["features"][0]["properties"]["date"]
+                                time = first[0]["properties"]["date"]
                                 return time
                             except Exception as e:
                                 try:
@@ -131,9 +131,14 @@ def getGeoJsontime(filepath, detail):
                                     time = first[0]["properties"]["time"]
                                     return time
                                 except Exception as e:
-                                    click.echo("there is no time-value")
-                                    return None
-                
+                                    try:
+                                        click.echo(first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"])
+                                        time = first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"]
+                                        return time
+                                    except Exception as e:
+                                        click.echo("there is no time-value")
+                                        return None
+                    
 def getNetCDFtime(filepath, detail):
     # @author Jannis Froehlking
     # After opening the file we are looking for 
