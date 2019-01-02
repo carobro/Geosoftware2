@@ -25,8 +25,6 @@ sondern auf den Inhalt"""
 
 
 def getMetadata(path, detail, folder):
-    
-    
     print(bboxSpeicher)
     filepath = path
     # Program that extracts the boudingbox of files.
