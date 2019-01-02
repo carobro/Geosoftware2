@@ -35,7 +35,7 @@ def getIsobbx(filepath, detail, folder):
         #TO-DO feature.geometry.coordinates in variable speichern
         points = 0
         point = list()
-        for feature in geojson:
+        for feature in iso:
             point.append(feature.geometry.coordinates)
         #convex_hull(points)
         print point
