@@ -46,8 +46,12 @@ def getGeopackagebbx(filepath, detail, folder):
         c.execute("""SELECT min_x,min_y
                      FROM gpkg_contents""")
         points = c.fetchall()
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("All features of the GeoPackage object:")
         print(points)
-        #convex_hull(points)
+        print("----------------------------------------------------------------")
         return points
         
 if __name__ == '__main__':

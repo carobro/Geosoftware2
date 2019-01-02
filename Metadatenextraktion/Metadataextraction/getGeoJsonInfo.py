@@ -25,12 +25,13 @@ def getGeoJsonbbx(filepath, detail, folder):
             return(geojbbx)
     if detail == 'feature':
         geojson = pygeoj.load(filepath)
-        click.echo("This is a geoJSON object.")
         #TO-DO feature.geometry.coordinates in variable speichern
+        point = list()
         for feature in geojson:
-            click.echo(feature.geometry.coordinates)
-    #convex_hull(points)
-    return points
+            point.append(feature.geometry.coordinates)
+        #convex_hull(points)
+        print point
+        return point
 
 if __name__ == '__main__':
     getGeoJsonbbx()
