@@ -20,6 +20,7 @@ def getIsobbx(filepath, detail, folder):
             click.echo("Boundingbox of the ISO object:")
             click.echo(isobbx)
             print("----------------------------------------------------------------")
+            os.remove("out.json")
             #return isobbx
         if folder=='whole':
             detailebenen.bboxSpeicher.append(isobbx)
@@ -33,12 +34,13 @@ def getIsobbx(filepath, detail, folder):
         iso = pygeoj.load(filepath="out.json")
         #TO-DO feature.geometry.coordinates in variable speichern
         points = 0
-        #print("in ISO")
-        for feature in iso:
-            click.echo(feature.geometry.coordinates)
+        point = list()
+        for feature in geojson:
+            point.append(feature.geometry.coordinates)
         #convex_hull(points)
-        return points
-
+        print point
+        os.remove("out.json")
+        return point
 
 if __name__ == '__main__':
     getIsobbx()
