@@ -5,8 +5,7 @@ import numpy as np
 import xarray as xr
 import os
 import numpy as np
-# import ogr2ogr
-# ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
+import ogr2ogr
 
 """ Vorteil unseres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
 sondern auf den Inhalt"""

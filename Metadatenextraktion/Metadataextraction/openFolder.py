@@ -4,53 +4,62 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, detailebenen
+import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, detailebenen
 
 def openFolder(filepath, detail, folder):
     folderpath= filepath
-    click.echo("drin")
+    #click.echo("folder")
     docs=os.listdir(folderpath)
     for x in docs:
         docPath= folderpath +"/"+ x
-        print docPath
+        #print docPath
         #getMetadata(docPath, detail2)
         try:
+            #click.echo("folderShape")
             getShapefileInfo.getShapefilebbx(docPath, detail, folder)
         except Exception as e:
             try:
+                #click.echo("folderGeoJSON")
                 getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder)
             except Exception as e:
                 try:
+                    #click.echo("folderNetCDF")
                     getNetCDFInfo.getNetCDFbbx(docPath, detail, folder)
                 except Exception as e:
                     try:
+                        #click.echo("folderCSV")
                         getCSVInfo.getCSVbbx(docPath, detail, folder)
                     except Exception as e:
                         try:
+                            #click.echo("folderGeoTIFF")
                             getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder)
                         except Exception as e:
                             try:
+                                #click.echo("folderGeoPackage")
                                 getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder)
                             except Exception as e:
                                 try:
+                                    #click.echo("folderISO")
                                     getIsoInfo.getIsobbx(docPath, detail, folder)
                                 except Exception as e:
                                     try:
+                                        #click.echo("folderfolder")
                                         openFolder(docPath, detail, folder)
                                     except Exception as e:
+                                        #click.echo("fodlerInvalid")
                                         click.echo ("invalid file format in folder!")
 
 
     if folder=='whole':
         bboxes=detailebenen.bboxSpeicher
-        print("2")
-        print(bboxes)
+        #print("2")
+        #print(bboxes)
         min1=100000000
         min2=100000000
         max1=0
         max2=0
         lat1List=[lat1 for lat1, lng1, lat2, lng2 in bboxes]
-        print(lat1List)
+        #print(lat1List)
         for x in lat1List:
             if x<min1:
                 min1=x
@@ -76,8 +85,10 @@ def openFolder(filepath, detail, folder):
                 max2=x
 
         folderbbox=[min1, min2, max1, max2]
-        print("halo2")
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        print("boundingbox of the whole folder:")
         print(folderbbox)
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
 
 if __name__ == '__main__':

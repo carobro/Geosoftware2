@@ -10,3 +10,5 @@ pip install csv
 pip install scipy
 pip install geojson
 pip install gdal
+pip install pytest
+pip install jsonlib

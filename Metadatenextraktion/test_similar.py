@@ -25,3 +25,22 @@ def test_answer3():
     bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
     bbox2 = [-118.6, 14.39, -86.49, 32.72]
     assert similar.aehnlickeit(bbox1, bbox2) == 0.6488100389180073
+
+# Deutschland - ungueltige eingabe
+def test_answer4():
+    bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
+    bbox2 = ["abc"]
+    assert similar.aehnlickeit(bbox1, bbox2) == None
+
+# Deutschland - Deutschland
+def test_answer5():
+    bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
+    bbox2 = [5.8663155, 47.270111, 15.041932 , 55.099159]
+    assert similar.aehnlickeit(bbox1, bbox2) == 0
+
+# ungueltige eingabe - ungueltige eingabe
+def test_answer6():
+    bbox1 = ["cde"]
+    bbox2 = ["abc"]
+    assert similar.aehnlickeit(bbox1, bbox2) == None
+

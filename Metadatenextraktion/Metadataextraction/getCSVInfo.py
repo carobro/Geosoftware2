@@ -63,11 +63,14 @@ def getCSVbbx(filepath, detail, folder):
                 lats=df[x]
                 for y in listlon:
                     lons=df[y]
-                    print("Bounding Box: ")
+                    #print("Bounding Box: ")
                     bbox=[min(lons),min(lats),max(lons),max(lats)]
+
+                    #click.echo(bbox)
+                    click.echo(filepath)
                     click.echo(bbox)
                     detailebenen.bboxSpeicher.append(bbox)
-                    print(detailebenen.bboxSpeicher)
+                    #print(detailebenen.bboxSpeicher)
                     #return (bbox)
 # Hilfsfunktion fuer csv fehlerbehandlung
 def intersect(a, b):

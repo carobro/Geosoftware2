@@ -3,6 +3,7 @@ from osgeo import gdal
 import pandas as pd
 import numpy as np
 import xarray as xr
+import os
 
 import detailebenen
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder

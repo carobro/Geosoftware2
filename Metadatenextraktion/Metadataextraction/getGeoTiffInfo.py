@@ -2,8 +2,11 @@ import click, detailebenen
 from osgeo import gdal, ogr, osr
 
 def getGeoTiffbbx(filepath, detail, folder):
+    gdal.UseExceptions()
+    #click.echo("fehler?!")
     ds = gdal.Open(filepath)
-    print("geotiff")
+    #click.echo("nach fehler")
+    #print("geotiff")
     #print(ds)
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
 
@@ -46,11 +49,17 @@ def getGeoTiffbbx(filepath, detail, folder):
         latlongmax = transform.TransformPoint(maxx,maxy)
         bbox = [latlongmin[0], latlongmin[1], latlongmax[0], latlongmax[1]]
         if folder=='single':
+            print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
+            click.echo("Boundingbox of the GeoTiff:")
             click.echo(bbox)
+            print("----------------------------------------------------------------")
             return (bbox)
         if folder=='whole':
             detailebenen.bboxSpeicher.append(bbox)
-            print(detailebenen.bboxSpeicher)
+            click.echo(filepath)
+            print(bbox)
             #print(detailebenen.bboxSpeicher)
             return (bbox)
 
