@@ -8,7 +8,7 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo,
 #import getIsoInfo
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
-
+#test
 
 bboxSpeicher = []
 
