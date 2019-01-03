@@ -1,5 +1,5 @@
 # @author Carolin Bronowicz
-# qversion 1.0
+# @version 1.0
 import click, shapefile, sqlite3, csv
 from osgeo import gdal, ogr, osr
 import os
@@ -22,7 +22,6 @@ def getTimeextend(path, detail):
     try:
         getShapefiletime(filepath, detail)
     except Exception as e:
-        
         try:
             getCSVtime(filepath, detail)
         except Exception as e:
@@ -89,6 +88,8 @@ def getCSVtime(filepath, detail):
                 return None   
         else:
             return None
+def intersect(a, b):
+     return list(set(a) & set(b))
 
 def getGeoJsontime(filepath, detail):
     # After opening the file check if the file seems to have the right format
@@ -99,46 +100,53 @@ def getGeoJsontime(filepath, detail):
         geojson = json.load(ds)
         print(" ")
         print("The time value of this file is:")
+        timelist = list()
         if geojson["type"] == "FeatureCollection":
             first = geojson["features"]
-            try:
-                click.echo(first[0]["Date"])
-                time = first[0]["Date"]
-                return time
-            except Exception as e:
+            for time in geojson: 
                 try:
-                    click.echo(first[0]["creationDate"])
-                    time = time[0]["creationDate"]
-                    return time
+                    #click.echo(first[0]["Date"])
+                    time = first[0]["Date"]
+                    timelist.append(time)
                 except Exception as e:
                     try:
-                        click.echo(first[0]["date"])
-                        time = first[0]["date"]
-                        return time
+                        #click.echo(first[0]["creationDate"])
+                        time = time[0]["creationDate"]
+                        timelist.append(time)
                     except Exception as e:
                         try:
-                            click.echo(first[0]["time"])
-                            time = first[0]["time"]
-                            return time
+                            #click.echo(first[0]["date"])
+                            time = first[0]["date"]
+                            timelist.append(time)
                         except Exception as e:
                             try:
-                                click.echo(first[0]["properties"]["date"])
-                                time = first[0]["properties"]["date"]
-                                return time
+                                #click.echo(first[0]["time"])
+                                time = first[0]["time"]
+                                timelist.append(time)
                             except Exception as e:
                                 try:
-                                    click.echo(first[0]["properties"]["time"])
-                                    time = first[0]["properties"]["time"]
-                                    return time
+                                    #click.echo(first[0]["properties"]["date"])
+                                    time = first[0]["properties"]["date"]
+                                    timelist.append(time)
                                 except Exception as e:
                                     try:
-                                        click.echo(first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"])
-                                        time = first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"]
-                                        return time
+                                        #click.echo(first[0]["properties"]["time"])
+                                        time = first[0]["properties"]["time"]
+                                        timelist.append(time)
                                     except Exception as e:
-                                        click.echo("there is no time-value")
-                                        return None
-                    
+                                        try:
+                                            #click.echo(first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"])
+                                            time = first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"]
+                                            timelist.append(time)
+                                        except Exception as e:
+                                            click.echo("there is no time-value")
+                                            return None         
+        timemax = min(timelist)
+        timemin = max(timelist)
+        #click.echo(min(timelist))
+        click.echo(max(timelist))
+        return timemax #, timemin
+
 def getNetCDFtime(filepath, detail):
     # @author Jannis Froehlking
     # After opening the file we are looking for 

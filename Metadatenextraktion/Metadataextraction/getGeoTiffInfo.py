@@ -70,6 +70,7 @@ def getGeoTiffbbx(filepath, detail, folder):
         return None
         if ds!=null:
             #click.echo(ds)
+            #GeoTiff is a rastadata, so:
             click.echo('Sorry there is no second level of detail')
         else: 
             return None
