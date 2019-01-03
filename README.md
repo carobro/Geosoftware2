@@ -16,7 +16,14 @@ Um unser CLI-Tool auszuführen muss im Projektordner die folgende Datei ausgefü
    
 `pip install -r requirements.txt --user`
    
-In dieser Datei sind alle benötigten Plugins gelistet, die wir in unserem Tool nutzen
+In dieser Datei sind alle benötigten Plugins gelistet, die wir in unserem Tool nutzen.
+
+Außerdem müssen noch folgende Befehle ausgeführt werden:
+`apt-get install python-gdal`
+`apt-get install gdal-bin`
+
+`pip install pytest`
+
 Dann kann in einer beliebigen, gängigen Konsole in den Ordner des Tools navigiert werden und
 dort folgender Befehl ausgeführt werden 
 

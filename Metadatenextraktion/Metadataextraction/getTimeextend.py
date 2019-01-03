@@ -43,7 +43,7 @@ def getTimeextend(path, detail):
                                 click.echo ("invalid file format or no time-values included!")
 
 def getShapefiletime(filepath, detail):
-    # Shapefiles have no time information so we we return no value
+    # Shapefilesoes not have any time information so we return none
     click.echo("Shapefile")
     click.echo(detail)
     if detail =='time':
