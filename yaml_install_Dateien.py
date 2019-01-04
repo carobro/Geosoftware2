@@ -12,3 +12,4 @@ pip install geojson
 pip install gdal
 pip install pytest
 pip install jsonlib
+pip install -e .
