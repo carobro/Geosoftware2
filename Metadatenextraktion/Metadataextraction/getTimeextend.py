@@ -1,6 +1,6 @@
 # @author Carolin Bronowicz
 # @version 1.0
-import click, shapefile, sqlite3, csv
+import click, shapefile, sqlite3, csv, json, pygeoj
 from osgeo import gdal, ogr, osr
 import os
 import pandas as pd
@@ -52,6 +52,7 @@ def getShapefiletime(filepath, detail):
         return None
 
 def getGeoTifftime(filepath, detail):
+    gdal.UseExceptions()
     # Because we havent seen any testdata with time values included, 
     # we asume or we rather commit that there are no time values
     click.echo("GeoTiff")
@@ -66,10 +67,18 @@ def getCSVtime(filepath, detail):
     # date, time or timestamp. If some of these collumns exists we collect
     # all the values from inside and calculate the min and max
     click.echo("CSV")
+    click.echo("hallo")
     if detail =='time':
+        click.echo("hallo")
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, delimiter=';',engine='python')
-        listtime = ["time", "timestamp", "date", "Time"]
+        click.echo("1")
+
+        listtime = ["time", "timestamp", "date", "Time", "Jahr"]
+        click.echo(listtime)
+        click.echo("intersection")
+        click.echo(df.columns.values)
+        click.echo(intersect(listtime,df.columns.values))
         if not intersect(listtime,df.columns.values):
             print("No fitting header for time-values")
             # TODO: fehlerbehandlung  
@@ -84,7 +93,7 @@ def getCSVtime(filepath, detail):
                         click.echo(timeextend)
                         return timeextend
             except Exception as e:
-                click.echo ("There is no time-value or invalid file")
+                click.echo ("There is no time-value or invalid file.")
                 return None   
         else:
             return None
@@ -165,7 +174,7 @@ def getNetCDFtime(filepath, detail):
             # Zeitliche Ausdehnung
             anfang = starttime.values
             ende = endtime.values
-            print("the temporalextend is:")
+            print("the temporal extend of the NetCDF object is:")
             print(anfang)
             print(ende)
             return anfang, ende
@@ -179,6 +188,7 @@ def getGeopackagetime(filepath, detail):
     # to calculate the temporal extend
     click.echo("GeoPackage")
     if detail =='time':
+        #click.echo("DRIN")
         conn = sqlite3.connect(filepath)
         c = conn.cursor()
         c.execute("""SELECT time or timestamp or date

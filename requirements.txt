@@ -12,5 +12,6 @@ pytest==3.3.2
 scipy==1.1.0
 wrapt==1.10.11
 xarray==0.11.0
+pyproj==1.9.5.1
 git
 virtualenv

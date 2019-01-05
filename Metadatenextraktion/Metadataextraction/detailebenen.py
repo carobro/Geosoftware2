@@ -8,7 +8,7 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo,
 #import getIsoInfo
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
-
+#test
 
 bboxSpeicher = []
 
@@ -26,9 +26,7 @@ sondern auf den Inhalt"""
 
 
 def getMetadata(path, detail, folder):
-    
-    
-    # print(bboxSpeicher)
+    print(bboxSpeicher)
     filepath = path
     # Program that extracts the boudingbox of files.
 
@@ -64,7 +62,7 @@ def getMetadata(path, detail, folder):
                                     #click.echo("2")
                                     openFolder.openFolder(filepath, detail, folder)
                                 except Exception as e:
-                                    
+
                                     #click.echo("2")
                                     click.echo ("invalid file format!")
                                     return 0

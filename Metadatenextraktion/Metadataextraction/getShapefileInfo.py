@@ -30,6 +30,6 @@ def getShapefilebbx(filepath, detail, folder):
         #sf = shapefile.Reader(filepath)
         click.echo('hier kommt eine Ausgabe der Boundingbox eines einzelnen features hin.')
         return 0
-        
+
 if __name__ == '__main__':
     getShapefilebbx()
