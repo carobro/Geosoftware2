@@ -8,7 +8,6 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo,
 #import getIsoInfo
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
-#test
 
 bboxSpeicher = []
 
@@ -22,6 +21,7 @@ sondern auf den Inhalt"""
 @click.option('--feature', 'detail', flag_value='feature', help='returns a more detailed representation of the extent of one object.')
 @click.option('--single', 'folder', flag_value='single', default=True, help='returns all the boundingboxes from objects of a folder')
 @click.option('--whole', 'folder', flag_value='whole', help='returns one overall boundingbox from all objects of a folder')
+@click.option('--time', 'detail', flag_value='time', help='returns the time extend of one object')
 
 
 
