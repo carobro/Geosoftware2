@@ -14,14 +14,25 @@ def getIsobbx(filepath, detail, folder):
         iso = pygeoj.load(filepath="out.json")
         isobbx = (iso).bbox
         # Identification of CRS and transformation
-        isocrs = (iso).crs
-        mycrs= isocrs["properties"]["name"]
-        mycrsString=mycrs.encode('ascii','ignore')
-        # Extracting the epsg id
-        CRSID= mycrsString.split('::')
-        lat1t,lng1t=detailebenen.transformToWGS84(isobbx[0],isobbx[1],CRSID[1])
-        lat2t,lng2t=detailebenen.transformToWGS84(isobbx[2],isobbx[3],CRSID[1])
-        mybbx=[lat1t,lng1t,lat2t,lng2t]
+        # In some test data the epsg id was stored in an unicode object like this one'urn:ogc:def:crs:EPSG::4258'
+        try:
+            isocrs = (iso).crs
+            mycrs= isocrs["properties"]["name"]
+            print(mycrs)
+            mycrsString=mycrs.encode('ascii','ignore')
+            # Extracting the epsg id
+            mySplit= mycrsString.split(':')
+            CRSID=mySplit[len(mySplit)-1]
+            # Especially the KML data files have this id, which is wgs84
+            # No need to transform
+            if (CRSID=="CRS84" or CRSID == 4326):
+                mybbx=[isobbx[0],isobbx[1],isobbx[2],isobbx[3]]
+            else:
+                lat1t,lng1t=detailebenen.transformToWGS84(isobbx[0],isobbx[1],CRSID)
+                lat2t,lng2t=detailebenen.transformToWGS84(isobbx[2],isobbx[3],CRSID)
+                mybbx=[lat1t,lng1t,lat2t,lng2t]
+        except:
+            print("While splitting the string an error occurred")
 
         if folder=='single':
             print("----------------------------------------------------------------")
