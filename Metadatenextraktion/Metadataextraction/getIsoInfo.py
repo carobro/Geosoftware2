@@ -13,18 +13,28 @@ def getIsobbx(filepath, detail, folder):
         ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
         iso = pygeoj.load(filepath="out.json")
         isobbx = (iso).bbox
+        # Identification of CRS and transformation
+        isocrs = (iso).crs
+        mycrs= isocrs["properties"]["name"]
+        mycrsString=mycrs.encode('ascii','ignore')
+        # Extracting the epsg id
+        CRSID= mycrsString.split('::')
+        lat1t,lng1t=detailebenen.transformToWGS84(isobbx[0],isobbx[1],CRSID[1])
+        lat2t,lng2t=detailebenen.transformToWGS84(isobbx[2],isobbx[3],CRSID[1])
+        mybbx=[lat1t,lng1t,lat2t,lng2t]
+
         if folder=='single':
             print("----------------------------------------------------------------")
             click.echo("filepath:")
             click.echo(filepath)
             click.echo("Boundingbox of the ISO object:")
-            click.echo(isobbx)
+            click.echo(mybbx)
             print("----------------------------------------------------------------")
             #return isobbx
         if folder=='whole':
-            detailebenen.bboxSpeicher.append(isobbx)
+            detailebenen.bboxSpeicher.append(mybbx)
             click.echo(filepath)
-            click.echo(isobbx)
+            click.echo(mybbx)
             #return (isobbx)
 
 
