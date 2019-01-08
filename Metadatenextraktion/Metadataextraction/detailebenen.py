@@ -43,7 +43,7 @@ def getMetadata(path, detail, folder):
             getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder)
         except Exception as e:
             print (e)
-            return 0
+            #return 0
             try:
                 #click.echo("2")
                 getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
