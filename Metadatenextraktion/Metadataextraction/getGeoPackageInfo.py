@@ -12,7 +12,7 @@ def getGeopackagebbx(filepath, detail, folder):
     """returns the bounding Box Geopackage
     @param path Path to the file
     @see https://docs.python.org/2/library/sqlite3.html"""
-    #print ("geopackage")
+    print ("geopackage")
     if detail =='bbox':
         #print(filepath)
         #print("1")
