@@ -24,9 +24,9 @@ a = getShapefileInfo.getShapefilebbx(__location__+'/testdata/Abgrabungen_Kreis_K
 # c = getGeoPackageInfo.getGeopackagebbx(__location__+'/testdata/Geopackage_Queensland_geopackage/census2016_cca_qld_short.gpkg', 'bbox', 'single')
 # """erwartetes Ergebnis: [295896.274870878, 5694747.64703736, 325999.79578122497, 5747140.98659967]"""
 
-print("Ausgabe GeoJson: ")
-d = getGeoJsonInfo.getGeoJsonbbx(__location__+'/testdata/schutzhuetten_aachen.json', 'bbox', 'single')
-"""erwartetes Ergebnis: [292063.81225905, 5618144.09259115, 302531.3161606, 5631223.82854667]"""
+#print("Ausgabe GeoJson: ")
+#d = getGeoJsonInfo.getGeoJsonbbx(__location__+'/testdata/schutzhuetten_aachen.json', 'bbox', 'single')
+#"""erwartetes Ergebnis: [292063.81225905, 5618144.09259115, 302531.3161606, 5631223.82854667]"""
 
 print("Ausgabe GeoTiff: ")
 e = getGeoTiffInfo.getGeoTiffbbx(__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif', 'bbox', 'single')
