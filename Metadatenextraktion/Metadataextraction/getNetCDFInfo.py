@@ -64,12 +64,11 @@ def getNetCDFbbx(filepath, detail, folder):
         except Exception as e:
             lats = ds.coords["latitude"]
             lons = ds.coords["longitude"]
-        print("Latitude:")
-        print(lats.values)
-        print("Longitude:")
-        print(lons.values)
-        #convex_hull(points)
-        return 0
+            #convex_hull(points)
+            #GeoTiff is a rastadata, so:
+        
+        click.echo('Sorry there is no second level of detail')
+        return None
 
 if __name__ == '__main__':
     getNetCDFbbx()

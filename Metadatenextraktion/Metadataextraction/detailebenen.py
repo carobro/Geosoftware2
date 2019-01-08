@@ -5,11 +5,10 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
+import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder, getTimeextend
 #import getIsoInfo
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
-
 
 bboxSpeicher = []
 
@@ -23,7 +22,13 @@ sondern auf den Inhalt"""
 @click.option('--feature', 'detail', flag_value='feature', help='returns a more detailed representation of the extent of one object.')
 @click.option('--single', 'folder', flag_value='single', default=True, help='returns all the boundingboxes from objects of a folder')
 @click.option('--whole', 'folder', flag_value='whole', help='returns one overall boundingbox from all objects of a folder')
+@click.option('--time', 'detail', flag_value='time', help='returns the time extend of one object')
 
+def timeOrBbox(path, detail, folder):
+    if detail=='time':
+        getTimeextend.getTimeextend(path, detail)
+    else:
+        getMetadata(path,detail,folder)
 
 def getMetadata(path, detail, folder):
     print(bboxSpeicher)
@@ -38,6 +43,8 @@ def getMetadata(path, detail, folder):
             #click.echo("2")
             getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder)
         except Exception as e:
+            print (e)
+            #return 0
             try:
                 #click.echo("2")
                 getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
@@ -58,6 +65,7 @@ def getMetadata(path, detail, folder):
                                 #click.echo("22")
                                 getIsoInfo.getIsobbx(filepath, detail, folder)
                             except Exception as e:
+                                print(e)
                                 try:
                                     #click.echo("2")
                                     openFolder.openFolder(filepath, detail, folder)
@@ -82,4 +90,4 @@ def transformToWGS84(lat, lng, sourceCRS):
     return(latT,lngT)
 
 if __name__ == '__main__':
-    getMetadata()
+    timeOrBbox()

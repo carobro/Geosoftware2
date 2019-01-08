@@ -6,7 +6,7 @@ def getGeoTiffbbx(filepath, detail, folder):
     #click.echo("fehler?!")
     ds = gdal.Open(filepath)
     #click.echo("nach fehler")
-    #print("geotiff")
+    print("geotiff")
     #print(ds)
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
 
@@ -70,6 +70,7 @@ def getGeoTiffbbx(filepath, detail, folder):
         return None
         if ds!=null:
             #click.echo(ds)
+            #GeoTiff is a rastadata, so:
             click.echo('Sorry there is no second level of detail')
         else: 
             return None
