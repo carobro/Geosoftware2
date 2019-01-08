@@ -9,9 +9,9 @@ import xarray as xr
 import ogr2ogr
 import json
 
-@click.command()
-@click.option('--path', prompt='Datapath', help='Path to the data.')
-@click.option('--time', 'detail', flag_value='time', default=True)
+#@click.command()
+#@click.option('--path', prompt='Datapath', help='Path to the data.')
+#@click.option('--time', 'detail', flag_value='time', default=True)
 
 def getTimeextend(path, detail):
     filepath = path
