@@ -3,10 +3,16 @@
 
 :arrow_forward: Die Gruppe :one:   
 # Zenodo - Installation:      
+Here you can find our Zenodo-Repository:
+https://github.com/corneliazy/zenodo   
+
 For Zenodo installation, please follow the instructions below: 
-https://github.com/zenodo/zenodo/blob/master/INSTALL.rst   
-(Who wants to save time, should not try is under Windows.   
- On Linux its much faster and easier :wink: )
+https://github.com/corneliazy/zenodo/blob/master/INSTALL.rst 
+(Who wants to save time, should not try is under Windows. On Linux its much faster and easier :wink: )
+ 
+After installation execute:   
+`pip install -e .`   
+Now you can open http://localhost:5000/. There you can create your own profile and upload files.
 
 # CLI-Tool   
 ## Installation Description   
