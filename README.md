@@ -27,7 +27,7 @@ In addition, the following commands must be executed:
 Then you can navigate in any common console in the folder of the tool ("Metadataextraction") and
 there, the following command must be executed   
 
-`python detailebenen.py --path="Der Path zur Datei"`
+`python detailebenen.py --path="<filepath>"`
 
 behind it can still be added specifications:
 
