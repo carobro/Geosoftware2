@@ -18,7 +18,7 @@ To run our CLI tool, the following file must be executed in the project folder:
    
 In this file all required plugins are listed, which we use in our tool.      
 
-In addition, the following commands must be executed:    
+In addition, the following commands must be executed (if necessary with sudo):
 `apt-get install python-gdal`   
 `apt-get install gdal-bin`   
 
