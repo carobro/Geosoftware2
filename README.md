@@ -1,52 +1,50 @@
 # Geosoftware II - WiSe 2018/19
 ### Enhancing discovery of geospatial datasets in data repositories
 
-:arrow_forward: Die Gruppe :one:
-# Zenodo - Installation:   
-Zur Zenodo-Installation bitte folgende Anleitung befolgen:    
+:arrow_forward: Die Gruppe :one:   
+# Zenodo - Installation:      
+For Zenodo installation, please follow the instructions below: 
 https://github.com/zenodo/zenodo/blob/master/INSTALL.rst   
-(Wer sich nerven sparen will, sollte es nicht unter Windows versuchen.
- Unter Linux deutlich schneller und einfacher :wink: )
+(Who wants to save time, should not try is under Windows.   
+ On Linux its much faster and easier :wink: )
 
-# CLI-Tool
-## Installationsbeschreibung
-Diese Installtion wurde bisher nur mit Linux getestet, sollte aber auch unter Windows funktionieren.   
-pip für pip install wird vorausgesetzt.   
-Um unser CLI-Tool auszuführen muss im Projektordner die folgende Datei ausgeführt werden:
+# CLI-Tool   
+## Installation Description   
+This installation was previously tested only with Linux, but should also work under Windows.   
+pip for pip install is required.   
+To run our CLI tool, the following file must be executed in the project folder:   
    
-`pip install -r requirements.txt --user`
+`pip install -r requirements.txt --user` (or `sudo pip install -r requirements.txt`)   
    
-In dieser Datei sind alle benötigten Plugins gelistet, die wir in unserem Tool nutzen.   
+In this file all required plugins are listed, which we use in our tool.      
 
-Außerdem müssen noch folgende Befehle ausgeführt werden:   
-`apt-get install python-gdal`
-`apt-get install gdal-bin`
+In addition, the following commands must be executed:    
+`apt-get install python-gdal`   
+`apt-get install gdal-bin`   
 
-`pip install pytest`
+`pip install pytest`   
       
-Dann kann in einer beliebigen, gängigen Konsole in den Ordner des Tools navigiert werden und
-dort folgender Befehl ausgeführt werden 
+Then you can navigate in any common console in the folder of the tool ("Metadataextraction") and
+there, the following command must be executed   
 
 `python detailebenen.py --path="Der Path zur Datei"`
 
-hinten dran können dann noch Spezifikationen hinzugefügt werden:
+behind it can still be added specifications:
 
-`--bbox` &larr; für die Bounding Box der Datei ( ist auch als default eingestellt)   
-`--feature` &larr; um alle Koordinaten der Datei zu erhalten   
-`--single` &larr; um nur die Koordinaten einer Datei zu erhalten (auch default)   
-`--whole` &larr; in Kombination mit --bbox oder --feature um das jeweilige aus einem gesamten Verzeichnis zu lesen   
-`--time` &larr; um die Zeit einer Datei zu erhalten
+`--bbox` &larr; for the bounding box of the file (is also set as default)
+`--feature` &larr; to get all the coordinates of the file
+`--single` &larr; to get only the coordinates of a file (also default)
+`--whole` &larr; in combination with --bbox or --feature to read the respective one from an entire directory
+`--time` &larr; to get the time of a file
 
-# Ähnlichkeitsberechnung
+# similarity calculation
 
-Unser Code zur Ähnlichkeitsberechnung ist in der `similar.py` Datei zu finden.   
-Die dazu gehörenden Tests befinden sich in der `test_similar.py` Datei.
+Our similarity calculation code can be found in the `similar.py`file.
+The associated tests are in the `test_similar.py` file.
 
 # Tests
 
-Unsere Tests können einfach mit dem Befehl
+Our tests can be executed with the command `pytest`    
 
-`pytest` ausgeführt werden
-
-# Probleme ?
-Falls Probleme oder Fragen bei der Installation entstehen, erstellt doch direkt ein Issue damit wir euch helfen und Fehler korrigiern können :blush:
+# Problems?
+If problems or questions arise during installation, create an issue directly so we can help you and correct mistakes :blush:
