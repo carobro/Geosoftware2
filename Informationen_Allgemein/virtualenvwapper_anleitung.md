@@ -4,15 +4,16 @@
 
 $ export WORKON_HOME=~/Envs
 $ mkdir -p $WORKON_HOME
-$ source '/home/cornelia/.local/bin/virtualenvwrapper.sh'  
+$ source '/home/cornelia/.local/bin/virtualenvwrapper.sh'
+
+-> Pfad kann auch anders aussehen  
 
 
-ZUM IN-DIE-KONSOLE-KOPIEREN____________________________________
+## ZUM IN-DIE-KONSOLE-KOPIEREN
 export WORKON_HOME=~/Envs
 mkdir -p $WORKON_HOME
 source '/home/cornelia/.local/bin/virtualenvwrapper.sh'  
-_______________________________________________________________
--> Pfad kann auch anders aussehen.
+
 
 
 ## Erstellen eines neuen virtualenvs (hier zendo genannt):
