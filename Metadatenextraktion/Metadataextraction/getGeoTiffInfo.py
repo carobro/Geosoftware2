@@ -3,17 +3,13 @@ from osgeo import gdal, ogr, osr
 
 def getGeoTiffbbx(filepath, detail, folder):
     gdal.UseExceptions()
-    #click.echo("fehler?!")
     ds = gdal.Open(filepath)
-    #click.echo("nach fehler")
     print("geotiff")
-    #print(ds)
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
 
     if detail =='bbox':
-        #ds = gdal.Open(filepath)
-        # get the existing coordinate system
-        
+        """CRS Transformation"""
+        #get the existing coordinate system
         old_cs= osr.SpatialReference()
         old_cs.ImportFromWkt(ds.GetProjectionRef())
 
@@ -57,22 +53,28 @@ def getGeoTiffbbx(filepath, detail, folder):
             print("----------------------------------------------------------------")
             return (bbox)
         if folder=='whole':
-            detailebenen.bboxSpeicher.append(bbox)
+            detailebenen.bboxArray.append(bbox)
             click.echo(filepath)
             print(bbox)
-            #print(detailebenen.bboxSpeicher)
             return (bbox)
 
-    if detail == 'feature':
-        print("tzt")
-        click.echo('Sorry there is no second level of detail')
-        ds = gdal.Info(filepath)
-        return None
-        if ds!=null:
-            #click.echo(ds)
-            #GeoTiff is a rastadata, so:
-            click.echo('Sorry there is no second level of detail')
-        else: 
+    """second level of detail is not reasonable for geotiffs because they are rasterdata."""
+    if detail == 'convexHull':
+        click.echo('Sorry there is no second level of detail for geotiffs')
+        #ds = gdal.Info(filepath)
+        #return None
+        #if ds!=null:
+            #click.echo('Sorry there is no second level of detail for geotiffs')
+        #else: 
+            #return None
+
+    if detail=='time':
+        gdal.UseExceptions()
+        click.echo("GeoTiff")
+        if detail =='time':
+            ds = gdal.Open(filepath)
+            gdal.Info(ds)
+            click.echo("there is no time value for GeoTIFF files")
             return None
 
 if __name__ == '__main__':

@@ -12,8 +12,9 @@ import json
 #@click.command()
 #@click.option('--path', prompt='Datapath', help='Path to the data.')
 #@click.option('--time', 'detail', flag_value='time', default=True)
+timeextendArray=[]
 
-def getTimeextend(path, detail):
+def getTimeextend(path, detail, folder):
     filepath = path
     # Program that extracts the time-extend of files.
     # same construction as in the "detailebenen.py" file
@@ -23,7 +24,7 @@ def getTimeextend(path, detail):
         getShapefiletime(filepath, detail)
     except Exception as e:
         try:
-            getCSVtime(filepath, detail)
+            getCSVtime(filepath, detail, folder)
         except Exception as e:
             try:
                 getNetCDFtime(filepath, detail)
@@ -51,54 +52,63 @@ def getShapefiletime(filepath, detail):
         click.echo("There is no time-value or invalid file")
         return None
 
+"""Because we havent seen any testdata with time values included, we asume or we rather commit that there are no time values"""
 def getGeoTifftime(filepath, detail):
     gdal.UseExceptions()
-    # Because we havent seen any testdata with time values included, 
-    # we asume or we rather commit that there are no time values
     click.echo("GeoTiff")
     if detail =='time':
         ds = gdal.Open(filepath)
         gdal.Info(ds)
-        click.echo("no time-value found yet")
+        click.echo("there is no time value for GeoTIFF files")
         return None
 
-def getCSVtime(filepath, detail):
+def getCSVtime(filepath, detail, folder):
     # After opening the file we search in the header for collumns with names like
     # date, time or timestamp. If some of these collumns exists we collect
     # all the values from inside and calculate the min and max
+    #FUNKTIONIERT NICHT BEI LEEREN ZELLEN
     click.echo("CSV")
-    click.echo("hallo")
     if detail =='time':
         click.echo("hallo")
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
-        df = pd.read_csv(filepath, delimiter=';',engine='python')
-        click.echo("1")
-
-        listtime = ["time", "timestamp", "date", "Time", "Jahr"]
+        df = pd.read_csv(filepath, sep=';|,',engine='python')
+        listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum"]
         click.echo(listtime)
-        click.echo("intersection")
         click.echo(df.columns.values)
-        click.echo(intersect(listtime,df.columns.values))
-        if not intersect(listtime,df.columns.values):
+        intersection=intersect(listtime, df.columns.values)
+        click.echo(intersection)
+        if not intersection:
             print("No fitting header for time-values")
             # TODO: fehlerbehandlung  
-            try:
-                print("test2")
-                for t in listtime:
-                    if(x not in df.columns.values):
-                        click.echo("This file does not include time-values")
-                    else:
-                        time=df[t]
-                        timeextend =[min(time), max(time)]
-                        click.echo(timeextend)
-                        return timeextend
-            except Exception as e:
-                click.echo ("There is no time-value or invalid file.")
-                return None   
+            #try:
+                #print("test2")
+                #for t in listtime:
+                    #if(x not in df.columns.values):
+                        #click.echo("This file does not include time-values")
+                    #else:
+                        #time=df[t]
+                        #timeextend =[min(time), max(time)]
+                        #click.echo(timeextend)
+                        #return timeextend
+            #except Exception as e:
+                #click.echo ("There is no time-value or invalid file.")
+                #return None   
         else:
-            return None
+            time=df[intersection[0]]
+            timeextend=[min(time), max(time)]
+            if folder=='single':
+                print("----------------------------------------------------------------")
+                click.echo("Timeextend of this CSV file:")
+                click.echo(timeextend)
+                print("----------------------------------------------------------------")
+                return timeextend
+            if folder=='whole':
+                timeextendArray.append(timeextend)
+                print("timeextendArray:")
+                print(timeextendArray)
+
 def intersect(a, b):
-     return list(set(a) & set(b))
+    return list(set(a) & set(b))
 
 def getGeoJsontime(filepath, detail):
     # After opening the file check if the file seems to have the right format
