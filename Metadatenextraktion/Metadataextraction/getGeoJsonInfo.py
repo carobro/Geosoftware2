@@ -1,7 +1,6 @@
 import click, pygeoj, detailebenen, json
 from osgeo import ogr
 from scipy.spatial import ConvexHull
-#from geojson import Feature, Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection
 import geojson as gj
 
 def getGeoJsonbbx(filepath, detail, folder):
