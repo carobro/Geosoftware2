@@ -44,3 +44,36 @@ def test_answer6():
     bbox2 = ["abc"]
     assert similar.aehnlickeit(bbox1, bbox2) == None
 
+def test_answer7():
+    input1 = "raster"
+    input2 = "raster"
+    assert similar.whatDataType(input1, input2, 0.6) == 0.6
+
+def test_answer8():
+    input1 = "vector"
+    input2 = "vector"
+    assert similar.whatDataType(input1, input2, 0.6) == 0.6
+
+def test_answer9():
+    input1 = "vector"
+    input2 = "raster"
+    assert similar.whatDataType(input1, input2, 0.6) == 0.75
+
+def test_answer10():
+    input1 = "raster"
+    input2 = "vector"
+    assert similar.whatDataType(input1, input2, 0.6) == 0.75
+
+def test_answer11():
+    input1 = "vector"
+    input2 = "raster"
+    assert similar.whatDataType(input1, input2, 0.9) == 1
+
+def test_answer12():
+    input1 = "vector"
+    input2 = "raster"
+    assert similar.whatDataType(input1, input2, 0) == 0
+
+
+
+
