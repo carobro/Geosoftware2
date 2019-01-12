@@ -71,6 +71,19 @@ def getMetadata(path, detail, folder):
                                     click.echo ("invalid file format!!!!!")
                                     return 0
 
+"""
+@desc: Method for transform the coordinate reference system to WGS84 using the PyProj (https://github.com/jswhit/pyproj)
+@param: latitude, longitude and the source ref system
+"""
+def transformToWGS84(lat, lng, sourceCRS):
+    # formatting the input CRS
+    inputProj='epsg:'
+    inputProj+=str(sourceCRS)
+    inProj = Proj(init=inputProj)
+    # epsg:4326 is WGS84
+    outProj = Proj(init='epsg:4326')
+    latT, lngT = transform(inProj,outProj,lat,lng)
+    return(latT,lngT)
 
 if __name__ == '__main__':
     getMetadata()
