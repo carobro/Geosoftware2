@@ -70,7 +70,5 @@ def getMetadata(path, detail, folder):
                                     #click.echo("2")
                                     click.echo ("invalid file format!!!!!")
                                     return 0
-
-
 if __name__ == '__main__':
     getMetadata()
