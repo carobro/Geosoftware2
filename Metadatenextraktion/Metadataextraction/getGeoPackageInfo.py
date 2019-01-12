@@ -6,12 +6,17 @@ import xarray as xr
 import os
 import sqlite3
 from pyproj import Proj, transform
+from scipy.spatial import ConvexHull
 
 
 def getGeopackagebbx(filepath, detail, folder):
     """returns the bounding Box Geopackage
     @param path Path to the file
     @see https://docs.python.org/2/library/sqlite3.html"""
+    conn = sqlite3.connect(filepath)
+    c = conn.cursor()
+    c.execute("""SELECT min(min_y), min(min_x), max(max_y), max(max_x), srs_id
+                     FROM gpkg_contents""")
     print ("geopackage")
     if detail =='bbox':
         #print(filepath)
@@ -43,22 +48,78 @@ def getGeopackagebbx(filepath, detail, folder):
         if folder=='whole':
             click.echo(filepath)
             print(bbox)
-            detailebenen.bboxSpeicher.append(bbox)
-            #print(detailebenen.bboxSpeicher)
+            detailebenen.bboxArray.append(bbox)
+            
             return (bbox)
-    if detail == 'feature':
+    if detail == 'convexHull':
+        click.echo("convexHull geop")
         conn = sqlite3.connect(filepath)
         c = conn.cursor()
         c.execute("""SELECT min_x,min_y
                      FROM gpkg_contents""")
+        print("3")
         points = c.fetchall()
+        print(points)
+        print(points[0][0])
+        print(points[0][1])
+        #print(points[0][2])
+        print(points[1])
+        print(points[2])
+        for z in points:
+            print(z)
+            lat=points[z][0]
+            lng=points[z][1]
+        # Assuming that the CRS won't change
+        inputProj='epsg:'
+        inputProj+=str(myCRS)
+        print(inputProj)
+        inProj = Proj(init=inputProj)
+        outProj = Proj(init='epsg:4326')
+        lat,lng = transform(inProj,outProj,lat,lng)
+        print("4")
+        print(points)
+        hull=ConvexHull(points[0])
+        print("5")
+        hull_points=hull.vertices
+        convHull=[]
+
+        print("11111111111111")
+        for y in hull_points:
+            point=[points[y][0], points[y][1]]
+            convHull.append(point)
         print("----------------------------------------------------------------")
         click.echo("Filepath:")
         click.echo(filepath)
-        click.echo("All features of the GeoPackage object:")
-        print(points)
+        click.echo("Convex hull of the GeoPackage object:")
+        print(point)
         print("----------------------------------------------------------------")
-        return points
+        #return points
+    if detail=='time':
+        # We open the file with the sqlite function and search for
+        # words like time, timestamp or date and collect them
+        # to calculate the temporal extend
+        click.echo("GeoPackage")
+        #click.echo("DRIN")
+        conn = sqlite3.connect(filepath)
+        c = conn.cursor()
+        c.execute("""SELECT time or timestamp or date
+                        FROM gpkg_contents""")
+        try:
+            #print c.fetchone()
+            row = c.fetchall()
+            if folder=='single':
+                print("The time value is:")
+                print(row)
+            if folder=='whole':
+                timeextend=[min(timelist), max(timelist)]
+                detailebenen.timeextendArray.append(timeextend)
+                print("timeextendArray:")
+                print(detailebenen.timeextendArray)
+            return row
+        except Exception as e:
+            click.echo(e)
+            click.echo ("There is no time-value or invalid file")
+            return None
 
 if __name__ == '__main__':
     getGeopackagebbx()

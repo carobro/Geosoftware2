@@ -1,78 +1,74 @@
-import click, json, sqlite3, csv, pygeoj
-from osgeo import gdal, ogr, osr
-from pyproj import Proj, transform
-import pandas as pd
-import numpy as np
-import xarray as xr
-import os
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder, getTimeextend
-#import getIsoInfo
-#import ogr2ogr
-#ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
+#import click, json, sqlite3, csv, pygeoj
+#from osgeo import gdal, ogr, osr
+#import pandas as pd
+#import numpy as np
+#import xarray as xr
+#import os
+import click
+import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
 
-bboxSpeicher = []
+"""global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder"""
+bboxArray = []
+timeextendArray=[]
 
+""" Advantage of our code is that the file extension is not important for the metadataextraction but the content of the file"""
 
-""" Vorteil uneres Codes: Es wird nicht auf die Endung (.shp etc.) geachtet,
-sondern auf den Inhalt"""
-@click.command()
+@click.command(name='1')
 @click.option('--path',required=True, help='please insert the path to the data here.')
-@click.option('--bbox', 'detail', flag_value='bbox',
-              default=True, help='returns the extent of an object as a boundingbox')
-@click.option('--feature', 'detail', flag_value='feature', help='returns a more detailed representation of the extent of one object.')
-@click.option('--single', 'folder', flag_value='single', default=True, help='returns all the boundingboxes from objects of a folder')
-@click.option('--whole', 'folder', flag_value='whole', help='returns one overall boundingbox from all objects of a folder')
-@click.option('--time', 'detail', flag_value='time', help='returns the time extend of one object')
-
-def timeOrBbox(path, detail, folder):
-    if detail=='time':
-        getTimeextend.getTimeextend(path, detail)
-    else:
-        getMetadata(path,detail,folder)
+#@click.option('--single', 'folder', flag_value='single', default=True, help='returns all the boundingboxes from objects of a folder')
+#@click.option('--whole', 'folder', flag_value='whole', help='returns one overall boundingbox from all objects of a folder')
+@click.option('--detail', type=click.Choice(['bbox', 'convexHull', 'time']), default='bbox', help='select which information you want to get')
+@click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
 
 def getMetadata(path, detail, folder):
-    print(bboxSpeicher)
+    #print(bboxArray)
     filepath = path
     # Program that extracts the boudingbox of files.
 
     try:
-        #click.echo("2")
+        #click.echo("detailShape")
         getShapefileInfo.getShapefilebbx(filepath, detail, folder)
     except Exception as e:
         try:
-            #click.echo("2")
+            print("This is no valid Shapefile.")
+            #click.echo("detailjson")
             getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder)
         except Exception as e:
-            print (e)
+            #print (e)
             #return 0
             try:
-                #click.echo("2")
+                #click.echo("netcd")
                 getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
             except Exception as e:
                 try:
-                    #click.echo("2")
+                    #print("cdf fehler")
+                    #print(e)
+                    #print("aussencsv")
+                    #print("2")
                     getCSVInfo.getCSVbbx(filepath, detail, folder)
                 except Exception as e:
                     try:
+                        #print(e)
+                        #print("aussengeop")
                         #click.echo("2")
                         getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
                     except Exception as e:
                         try:
-                            #click.echo("21")
+                            #click.echo("geop fehler:")
+                            click.echo(e)
                             getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
                         except Exception as e:
                             try:
-                                #click.echo("22")
+                                #click.echo("hhihihih")
                                 getIsoInfo.getIsobbx(filepath, detail, folder)
                             except Exception as e:
                                 print(e)
                                 try:
-                                    #click.echo("2")
                                     openFolder.openFolder(filepath, detail, folder)
                                 except Exception as e:
-
+                                    click.echo(e)
                                     #click.echo("2")
-                                    click.echo ("invalid file format!")
+                                    click.echo ("invalid file format!!!!!")
                                     return 0
 
 """
@@ -90,4 +86,4 @@ def transformToWGS84(lat, lng, sourceCRS):
     return(latT,lngT)
 
 if __name__ == '__main__':
-    timeOrBbox()
+    getMetadata()
