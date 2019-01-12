@@ -8,9 +8,10 @@ import os
 def getNetCDFbbx(filepath, detail, folder):
     """returns the bounding Box NetCDF
     @param path Path to the file """
-    #print("netcdf")
+    print("netcdf")
+    ds = xr.open_dataset(filepath)
     if detail =='bbox':
-        ds = xr.open_dataset(filepath)
+        print("bbox")
         try:
             lats = ds.coords["lat"]
             lons = ds.coords["lon"]
@@ -27,15 +28,6 @@ def getNetCDFbbx(filepath, detail, folder):
         maxlatFloat=float(maxlat)
         maxlon=max(lons).values
         maxlonFloat=float(maxlon)
-        # Bounding Box Ausgabe in Schoen
-        #print("Min Latitude: ")
-        #print(minlat)
-        #print("Min Longitude: ")
-        #print(minlon)
-        #print("Max Latitude: ")
-        #print(maxlat)
-        #print("Max Longitude: ")
-        #print(maxlon)
 
 
         bbox = [minlatFloat,minlonFloat,maxlatFloat,maxlonFloat]
@@ -48,27 +40,56 @@ def getNetCDFbbx(filepath, detail, folder):
             click.echo("Boundingbox of the NetCDF Object:")
             click.echo(bbox)
             print("----------------------------------------------------------------")
-            return bbox
+            #print("test")
+            #return bbox
         if folder=='whole':
             #fuer Boundingbox des Ordners
-            detailebenen.bboxSpeicher.append(bbox)
+            detailebenen.bboxArray.append(bbox)
             click.echo(filepath)
             print(bbox)
-            return bbox
-    if detail == 'feature':
-        ds = xr.open_dataset(filepath)
-        try:
-            lats = ds.coords["lat"]
-            lons = ds.coords["lon"]
+            #return bbox
+    if detail == 'convexHull':
+        #ds = xr.open_dataset(filepath)
+        #try:
+            #lats = ds.coords["lat"]
+            #lons = ds.coords["lon"]
 
-        except Exception as e:
-            lats = ds.coords["latitude"]
-            lons = ds.coords["longitude"]
+        #except Exception as e:
+            #lats = ds.coords["latitude"]
+            #lons = ds.coords["longitude"]
             #convex_hull(points)
             #GeoTiff is a rastadata, so:
         
-        click.echo('Sorry there is no second level of detail')
-        return None
+        click.echo('Sorry there is no second level of detail for NetCDF files')
+        #return None
+
+        
+    # @author Jannis Froehlking
+    # After opening the file we are looking for 
+    # time values and calculate the temporal extend 
+    # with min and max functions
+    click.echo("NetCDF")
+    """returns the Time from NetCDF file
+    @param path Path to the file """
+    if detail =='time':
+        ds = xr.open_dataset(filepath)
+        try:
+            mytime = ds.coords["time"]
+            # print(ds.values)
+            starttime = min(mytime)
+            endtime = max(mytime)
+            # Zeitliche Ausdehnung
+            anfang = starttime.values
+            ende = endtime.values
+            print("the temporal extend of the NetCDF object is:")
+            print(anfang)
+            print(ende)
+            return anfang, ende
+        except Exception as e:
+            click.echo ("There is no time-value or invalid file")
+            return None
+    ds.close()
+    #print("fertig")
 
 if __name__ == '__main__':
     getNetCDFbbx()

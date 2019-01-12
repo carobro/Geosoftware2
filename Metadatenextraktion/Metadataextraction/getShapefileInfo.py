@@ -1,23 +1,23 @@
-import click, shapefile, detailebenen
+import click
+import shapefile
+import detailebenen
 from scipy.spatial import ConvexHull
 
 def getShapefilebbx(filepath, detail, folder):
-    """returns the bounding Box Shapefile.
-    @param path Path to the file """
+    """Extracts metadata from shapefiles.
+
+    :param filepath: Path to the file
+    :param detail: bbox, convexHull or time
+    :param folder: whole or single
+    :return: selected detail of the shapefile
+    """
+
+    #if the file is a valid shapefile it will be opened with this function.
+    #otherwise an exception will be thrown.
     sf = shapefile.Reader(filepath)
-    #just for debugging
-    #print("shapefile")
 
     if detail =='bbox':
-        
         output = sf.bbox
-        #length=len(sf)
-        #shapes=sf.shapes()
-        #points=shapes[8].points
-        #click.echo(points)
-        #click.echo(length)
-
-        click.echo(sf.shape(8))
         if folder=='single':
             print("----------------------------------------------------------------")
             click.echo("Filepath:")
@@ -27,16 +27,12 @@ def getShapefilebbx(filepath, detail, folder):
             print("----------------------------------------------------------------")
             return output
         if folder=='whole':
-            #adds the boundingbox of the shapefile to the bboxSpeicher array
-            detailebenen.bboxSpeicher.append(output)
-
-            #just for debugging -> delete in the end!
-            click.echo(filepath)
-            click.echo(output)
-            return output
+            #adds the boundingbox of the shapefile to the bboxArray
+            detailebenen.bboxArray.append(output)
+        return output
             
     #calculation of the convex hull of the shapefile
-    if detail == 'feature':
+    if detail == 'convexHull':
         shapes=sf.shapes()
         allPts=[]
         for z in shapes:
@@ -48,9 +44,22 @@ def getShapefilebbx(filepath, detail, folder):
         for y in hull_points:
             point=[allPts[y][0], allPts[y][1]]
             convHull.append(point)
-        click.echo("convex hull:")    
-        click.echo(convHull)
-        return 0
+        if folder =='single':
+            print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
+            click.echo("The convex hull of the Shapefile is:")    
+            click.echo(convHull)
+            print("----------------------------------------------------------------")
+        if folder=='whole':
+            detailebenen.bboxArray=detailebenen.bboxArray+convHull
+            click.echo(detailebenen.bboxArray)
+        return convHull
 
+    #returns information about not existing timevalues for shapefiles.
+    if detail=='time':
+        echo="There is no timevalue for Shapefiles"
+        click.echo(echo)
+        return echo
 if __name__ == '__main__':
     getShapefilebbx()
