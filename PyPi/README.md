@@ -20,7 +20,7 @@ In addition, the following commands must be executed (if necessary with sudo):
 `python detailebenen.py --path="<filepath>"`
 
 behind it can still be added specifications:
-`
+
 Options:
 `--bbox` &larr; for the bounding box of the file (is also set as default)      
 `--feature` &larr; to get all the coordinates of the file      
