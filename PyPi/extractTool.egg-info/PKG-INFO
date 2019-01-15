@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: extractTool
+Version: 0.1.8
+Summary: Package for extracting the time and spatial extent of Geodata
+Home-page: https://github.com/carobro/Geosoftware2
+Author: Die Gruppe 1
+Author-email: c_bron02@uni-muenster.de
+License: UNKNOWN
+Description: # Example Package
+        
+        This is a simple example package. You can use
+        [Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
+        to write your content.
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
