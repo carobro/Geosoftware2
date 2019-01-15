@@ -2,16 +2,17 @@ import click,json, sqlite3, pygeoj, csv
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
-import detailebenen
+import extractTool
 from scipy.spatial import ConvexHull
 import dateparser
+from pyproj import Proj, transform
 #import sys
 
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
 
-def getCSVbbx(filepath, detail, folder):
+def getCSVbbx(filepath, detail, folder, time):
 
     """returns the bounding Box CSV
     @see https://www.programiz.com/python-programming/reading-csv-files
@@ -67,11 +68,65 @@ def getCSVbbx(filepath, detail, folder):
             #output="No fitting header for latitudes or longitudes"
             #raise Exception('No fim')
         
-            raise Exception("evtl kein csv")
-            print("keine Koordinaten vorhanden")
+            raise Exception("evtl kein csv oder ungueltiges Trennzeichen.")
+            #print("keine Koordinaten vorhanden")
             #print(output)
             #return output
         print (exce)
+
+    if detail =='bbox':
+        click.echo("bbox")
+        # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
+        #if folder=='single':
+        mylat=intersect(listlat,df.columns.values)
+        mylon=intersect(listlon,df.columns.values)
+        lats=df[mylat[0]]
+        lons=df[mylon[0]]
+        bbox=[min(lats),min(lons),max(lats),max(lons)]
+        # CRS transformation if there is information about crs
+        if(CRSinfo):
+            mycrsID=intersect(listCRS,df.columns.values)
+            myCRS=df[mycrsID[0]]
+            lat1t,lng1t = extractTool.transformToWGS84(min(lats),min(lons), myCRS)
+            lat2t,lng2t = extractTool.transformToWGS84(max(lats),max(lons), myCRS)
+            bbox=[lat1t,lng1t,lat2t,lng2t]
+            if folder=='single':
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Boundingbox of the CSV object:")
+                click.echo(bbox)
+                print("----------------------------------------------------------------")
+                extractTool.ret_value.append(bbox)
+            if folder=='whole':
+                extractTool.bboxArray.append(bbox)
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Boundingbox of the CSV:")
+                click.echo(bbox)
+                print("----------------------------------------------------------------")
+        else:
+            if folder=='single':
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Boundingbox of the CSV object:")
+                print(bbox)
+                print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+                print("----------------------------------------------------------------")
+                extractTool.ret_value.append([None])
+            if folder=='whole':
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Boundingbox of the CSV file:")
+                click.echo(bbox)
+                click.echo("because of a missing crs this CSV is not part of the folder calculation.")
+                print("----------------------------------------------------------------")
+
+    else:
+        extractTool.ret_value.append([None])
 
     #returns the convex hull of the coordinates from the CSV object.
     if detail == 'convexHull':
@@ -98,58 +153,50 @@ def getCSVbbx(filepath, detail, folder):
             outProj = Proj(init='epsg:4326')
             for z in coords:
                 z[0],z[1] = transform(inProj,outProj,z[0],z[1])
+            if folder=='single':
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("convex Hull of the csv file: ")
+                click.echo(convHull)
+                print("----------------------------------------------------------------")
+                extractTool.ret_value.append(convHull)
+            if folder=='whole':
+                extractTool.bboxArray=extractTool.bboxArray+convHull
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("convex hull of the CSV:")
+                click.echo(convHull)
+                print("----------------------------------------------------------------")
+                #return convHull
+        else:
+            if folder=='single':
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Convex hull of the CSV object:")
+                print(convHull)
+                print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+                print("----------------------------------------------------------------")
+                extractTool.ret_value.append([None])
+            if folder=='whole':
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Convex hull of the CSV file:")
+                click.echo(convHull)
+                click.echo("because of a missing crs this CSV is not part of the folder calculation.")
+                print("----------------------------------------------------------------")
 
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("convex Hull of the csv file: ")
-            click.echo(convHull)
-            print("----------------------------------------------------------------")
-        if folder=='whole':
-            detailebenen.bboxArray=detailebenen.bboxArray+convHull
-            click.echo(detailebenen.bboxArray)
-            return convHull
 
-    if detail =='bbox':
-        click.echo("bbox")
-        # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
-        #if folder=='single':
-        mylat=intersect(listlat,df.columns.values)
-        mylon=intersect(listlon,df.columns.values)
-        lats=df[mylat[0]]
-        lons=df[mylon[0]]
-        bbox=[min(lats),min(lons),max(lats),max(lons)]
-        # CRS transformation if there is information about crs
-        if(CRSinfo):
-            mycrsID=intersect(listCRS,df.columns.values)
-            myCRS=df[mycrsID[0]]
-            #transformToWGS84(lat, lng, sourceCRS)???
-            inputProj='epsg:'
-            inputProj+=str(myCRS[0])
-            print(inputProj)
-            inProj = Proj(init=inputProj)
-            outProj = Proj(init='epsg:4326')
-            lat1t,lng1t = transform(inProj,outProj,bbox[0],bbox[1])
-            lat2t,lng2t = transform(inProj,outProj,bbox[2],bbox[3])
-            bbox=[lat1t,lng1t,lat2t,lng2t]
+    else:
+        extractTool.ret_value.append([None])
 
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV object:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
-        if folder=='whole':
-            #click.echo(bbox)
-            click.echo(filepath)
-            click.echo(bbox)
-            detailebenen.bboxArray.append(bbox)
-            #print(detailebenen.bboxArray)
-            #return (bbox)
+
+
     
-    if detail =='time':
+    if (time):
         click.echo("hallo")
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, sep=';|,',engine='python')
@@ -159,6 +206,7 @@ def getCSVbbx(filepath, detail, folder):
         click.echo(intersection)
         if not intersection:
             print("No fitting header for time-values")
+            extractTool.ret_value.append([None])
             # TODO: fehlerbehandlung  
             #try:
                 #for t in listtime:
@@ -189,11 +237,17 @@ def getCSVbbx(filepath, detail, folder):
                 click.echo("Timeextend of this CSV file:")
                 click.echo(timeextend)
                 print("----------------------------------------------------------------")
-                return timeextend
+                extractTool.ret_value.append([timeextend])
+                #return timeextend
             if folder=='whole':
-                detailebenen.timeextendArray.append(timeextend)
+                extractTool.timeextendArray.append(timeextend)
                 print("timeextendArray:")
-                print(detailebenen.timeextendArray)
+                print(extractTool.timeextendArray)
+
+    else:
+        extractTool.ret_value.append([None])
+    print(extractTool.ret_value)
+    return extractTool.ret_value
 # Hilfsfunktion fuer csv fehlerbehandlung
 def intersect(a, b):
      return list(set(a) & set(b))

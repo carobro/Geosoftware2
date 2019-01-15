@@ -5,7 +5,7 @@ import numpy as np
 import xarray as xr
 import os
 
-import detailebenen
+import extractTool
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -13,7 +13,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 print(__location__+'/testdata/')
 
 def test_featureShape():
-    assert getShapefileInfo.getShapefilebbx(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'feature', 'single') == 0
+    assert getShapefileInfo.getShapefilebbx(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'feature', 'single', False) == 0
 
 def test_featureCSV():    
     assert getCSVInfo.getCSVbbx(__location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv', 'feature', 'single') == "nich fertig"
@@ -32,3 +32,36 @@ def test_featureIso():
 
 def test_featureNetCDF():    
     assert getNetCDFInfo.getNetCDFbbx(__location__+'/testdata/ECMWF_ERA-40_subset.nc', 'feature', 'single') == None
+
+#--detail=bboxSingle no time value
+def test_bboxSingleShapefile():
+     assert getShapefileInfo.getShapefilebbx(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'bbox', 'single', False)
+
+def test_bboxSingleGeoJson():
+
+def test_bboxSingleNetCDF():
+
+def test_bboxSingleCSV():
+
+def test_bboxSingle0Geopackage():
+
+def test_bboxSingleGeoTiff():
+
+def test_bboxSingleIso():
+
+
+#--detail=bboxWhole
+
+def test_bboxWholeShapefile():
+
+def test_bboxWholeGeoJson():
+
+def test_bboxWholeNetCDF():
+
+def test_bboxWholeCSV():
+
+def test_bboxWhole0Geopackage():
+
+def test_bboxWholeGeoTiff():
+
+def test_bboxWholeIso():

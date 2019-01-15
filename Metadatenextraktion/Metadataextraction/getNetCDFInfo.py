@@ -1,4 +1,4 @@
-import click, json, sqlite3, csv, pygeoj, detailebenen
+import click, json, sqlite3, csv, pygeoj, extractTool
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
@@ -6,9 +6,10 @@ import xarray as xr
 import os
 import dateparser
 
-def getNetCDFbbx(filepath, detail, folder):
+def getNetCDFbbx(filepath, detail, folder, time):
     """returns the bounding Box NetCDF
     @param path Path to the file """
+    print("drin")
     #validation if file is netcdf
     ds = xr.open_dataset(filepath)
     if detail =='bbox':
@@ -41,32 +42,28 @@ def getNetCDFbbx(filepath, detail, folder):
             click.echo("Boundingbox of the NetCDF Object:")
             click.echo(bbox)
             print("----------------------------------------------------------------")
+            extractTool.ret_value.append(bbox)
             #print("test")
             #return bbox
         if folder=='whole':
             #fuer Boundingbox des Ordners
-            detailebenen.bboxArray.append(bbox)
+            extractTool.bboxArray.append(bbox)
             click.echo(filepath)
             print(bbox)
             #return bbox
+    else:
+        extractTool.ret_value.append([None])
     if detail == 'convexHull':
         ds = xr.open_dataset(filepath)
-            
-        #try:
-            #lats = ds.coords["lat"]
-            #lons = ds.coords["lon"]
-
-        #except Exception as e:
-            #lats = ds.coords["latitude"]
-            #lons = ds.coords["longitude"]
-            #convex_hull(points)
-            #GeoTiff is a rastadata, so:
         print("----------------------------------------------------------------")
         click.echo("Filepath:")
         click.echo(filepath)
         click.echo('Sorry there is no second level of detail for NetCDF files')
         print("----------------------------------------------------------------")
-        #return None
+        extractTool.ret_value.append([None])
+    
+    else:
+        extractTool.ret_value.append([None])
 
         
     # @author Jannis Froehlking
@@ -75,7 +72,7 @@ def getNetCDFbbx(filepath, detail, folder):
     # with min and max functions
     """returns the Time from NetCDF file
     @param path Path to the file """
-    if detail =='time':
+    if (time):
         #ds = xr.open_dataset(filepath)
         try:
             mytime = ds.coords["time"]
@@ -95,18 +92,26 @@ def getNetCDFbbx(filepath, detail, folder):
                 print(timemin_formatted)
                 print(timemax_formatted)
                 print("----------------------------------------------------------------")
+                extractTool.ret_value.append([timemin_formatted, timemax_formatted])
 
             if folder=='whole':
                 timeextend=[timemin_formatted, timemax_formatted]
-                detailebenen.timeextendArray.append(timeextend)
+                extractTool.timeextendArray.append(timeextend)
                 #print(timeextend[0])
                 print("timeextendArray:")
-                print(detailebenen.timeextendArray)
+                print(extractTool.timeextendArray)
                 #return anfang, ende
         except Exception as e:
+            extractTool.ret_value.append([None])
             click.echo ("There is no time-value or invalid file")
-            return None
+            #return None
+    else:
+        extractTool.ret_value.append([None])
+
+    
     ds.close()
+    print(extractTool.ret_value)
+    return extractTool.ret_value
     #print("fertig")
 
 if __name__ == '__main__':

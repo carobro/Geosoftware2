@@ -1,4 +1,4 @@
-import click, pygeoj, detailebenen, json
+import click, pygeoj, extractTool, json
 import dateparser
 from osgeo import ogr
 from scipy.spatial import ConvexHull
@@ -19,9 +19,12 @@ def extract_coordinates(geoj):
     
 
 
-def getGeoJsonbbx(filepath, detail, folder):
+def getGeoJsonbbx(filepath, detail, folder, time):
     """returns the bounding Box GeoJson
-    @param path Path to the file """
+    @param path Path to the file 
+
+    As mentioned in the geojson specification the standard crs is wgs84.
+    https://tools.ietf.org/html/rfc7946#section-4"""
     #TODO
     #pygeoj only works with two-dimensional coordinates
     geojson = pygeoj.load(filepath)
@@ -37,15 +40,18 @@ def getGeoJsonbbx(filepath, detail, folder):
             click.echo("Boundingbox of the GeoJSON object:")
             click.echo(geojbbx)
             print("----------------------------------------------------------------")
-            #return (geojbbx)
+            extractTool.ret_value.append(geojbbx)
         if folder=='whole':
             print("geojson bbox whole")
-            detailebenen.bboxArray.append(geojbbx)
+            extractTool.bboxArray.append(geojbbx)
             click.echo(filepath)
             click.echo(geojbbx)
-            print(detailebenen.bboxArray)
-        return(geojbbx)
-            
+            print(extractTool.bboxArray)
+        #return(geojbbx)
+
+    else:
+        extractTool.ret_value.append([None])  
+
     if detail == 'convexHull':
         print("geojson convexHull")
         geojson = pygeoj.load(filepath)
@@ -60,15 +66,10 @@ def getGeoJsonbbx(filepath, detail, folder):
                 #TODO
                 #hier besser raise exception?!
                 print("There is a feature without coordinates in the geojson.")
-            #point.append(feature.geometry.coordinates)
             
         #calculation of the convex hull
-        #funktioniert bisher nur bei jagdbezirke viersen...
-        print("hull teil")
         hull=ConvexHull(point)
-        #print(hull)
         hull_points=hull.vertices
-        #print(hull_points)
         convHull=[]
         for z in hull_points:
             hullcoord=[point[z][0], point[z][1]]
@@ -80,19 +81,20 @@ def getGeoJsonbbx(filepath, detail, folder):
             click.echo("Convex hull of the GeoJSON object:")
             click.echo(convHull)
             print("----------------------------------------------------------------")
+            extractTool.ret_value.append(convHull)
         if folder=='whole':
             print("----------------------------------------------------------------")
-            detailebenen.bboxArray=detailebenen.bboxArray+convHull
+            extractTool.bboxArray=extractTool.bboxArray+convHull
             click.echo("convex hull whole")
             click.echo(convHull)
-            print(detailebenen.bboxArray)
-
-        return convHull
+            print(extractTool.bboxArray)
+    else:
+        extractTool.ret_value.append([None])  
 
     # After opening the file check if the file seems to have the right format
     # Then we search for words like date, creationDate or time at two different levels
     #print("GeoJsonTIMES")
-    if detail =='time':
+    if (time):
         ds = open(filepath)
         geojson = json.load(ds)
         timelist = list()
@@ -135,7 +137,12 @@ def getGeoJsonbbx(filepath, detail, folder):
                                             timelist.append(time)
                                         except Exception as e:
                                             click.echo("there is no time-value")
-                                            return None 
+                                            extractTool.ret_value.append([None])
+                                            if folder=='single': 
+                                                print(extractTool.ret_value)
+                                                return extractTool.ret_value
+                                            if folder=='whole':
+                                                return None
 
         timemax = str(max(timelist))
         timemin = str(min(timelist))
@@ -145,17 +152,23 @@ def getGeoJsonbbx(filepath, detail, folder):
         if folder=='single':   
             print("The time value of this file is:")     
             if timemax==timemin:
+                #timeextend=[timemax_formatted, timemin_formatted]
+                #extractTool.ret_value.append(timeextend)
                 print(timemin_formatted)
             else:
                 click.echo(timemin_formatted)
                 click.echo(timemax_formatted)
-            return timemin_formatted, timemax_formatted 
+            extractTool.ret_value.append([timemax_formatted, timemin_formatted]) 
 
         if folder=='whole':
             timeextend=[timemin_formatted, timemax_formatted]
-            detailebenen.timeextendArray.append(timeextend)
+            extractTool.timeextendArray.append(timeextend)
             print("timeextendArray:")
-            print(detailebenen.timeextendArray)
+            print(extractTool.timeextendArray)
+    else:
+        extractTool.ret_value.append([None]) 
+    print(extractTool.ret_value)        
+    return extractTool.ret_value
 
 
 if __name__ == '__main__':

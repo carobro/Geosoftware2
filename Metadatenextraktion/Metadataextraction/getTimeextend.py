@@ -17,7 +17,7 @@ timeextendArray=[]
 def getTimeextend(path, detail, folder):
     filepath = path
     # Program that extracts the time-extend of files.
-    # same construction as in the "detailebenen.py" file
+    # same construction as in the "extractTool.py" file
     # if this file cannot find any time-values the file throws an 
     # "invalid file format or no time-values included!" exception
     try:

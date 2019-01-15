@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, detailebenen
+import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, extractTool
 from scipy.spatial import ConvexHull
 
 def openFolder(filepath, detail, folder):
@@ -13,8 +13,6 @@ def openFolder(filepath, detail, folder):
     docs=os.listdir(folderpath)
     for x in docs:
         docPath= folderpath +"/"+ x
-        #print docPath
-        #getMetadata(docPath, detail2)
         try:
             click.echo("folderShape")
             getShapefileInfo.getShapefilebbx(docPath, detail, folder)
@@ -29,9 +27,6 @@ def openFolder(filepath, detail, folder):
                     getNetCDFInfo.getNetCDFbbx(docPath, detail, folder)
                 except Exception as e:
                     try:
-                        #print("hu")
-                        #print(e)
-                        #print("ha")
                         click.echo("folderCSV")
                         getCSVInfo.getCSVbbx(docPath, detail, folder)
                     except Exception as e:
@@ -54,10 +49,11 @@ def openFolder(filepath, detail, folder):
                                     except Exception as e:
                                         click.echo("fodlerInvalid")
                                         click.echo ("invalid file format in folder!")
+                                        return None
     if folder=='whole':
         if detail=='bbox':
             print("if")
-            bboxes=detailebenen.bboxArray
+            bboxes=extractTool.bboxArray
             print("222222222")
             print(bboxes)
             min1=100000000
@@ -95,9 +91,10 @@ def openFolder(filepath, detail, folder):
             print("boundingbox of the whole folder:")
             print(folderbbox)
             print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            return folderbbox
         if detail=='convexHull':
             print("tzttztztztz")
-            points=detailebenen.bboxArray
+            points=extractTool.bboxArray
             print("gi")
             print(points)
             print(ConvexHull(points))
@@ -113,8 +110,9 @@ def openFolder(filepath, detail, folder):
             click.echo("convex hull of the folder:")    
             click.echo(convHull)
             print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            return convHull
         if detail=='time':
-            times=detailebenen.timeextendArray
+            times=extractTool.timeextendArray
             mindate=[]
             maxdate=[]
             for z in times:
@@ -131,8 +129,6 @@ def openFolder(filepath, detail, folder):
             return folder_timeextend
 
         
-        
-        return 0
 
 
 if __name__ == '__main__':

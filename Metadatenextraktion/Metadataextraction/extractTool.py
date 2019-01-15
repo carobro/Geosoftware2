@@ -11,15 +11,17 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo,
 """global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder"""
 bboxArray = []
 timeextendArray=[]
+ret_value=[]
 
 """ Advantage of our code is that the file extension is not important for the metadataextraction but the content of the file"""
 
-@click.command(name='1')
+@click.command()
 @click.option('--path',required=True, help='please insert the path to the data here.')
-@click.option('--detail', type=click.Choice(['bbox', 'convexHull', 'time']), default='bbox', help='select which information you want to get')
+@click.option('--time', is_flag=True, help='returns the time extend of one object')
+@click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
 @click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
 
-def getMetadata(path, detail, folder):
+def getMetadata(path, detail, folder, time):
     """ 
     
     """
@@ -28,36 +30,36 @@ def getMetadata(path, detail, folder):
 
     try:
         click.echo("detailShape")
-        getShapefileInfo.getShapefilebbx(filepath, detail, folder)
+        getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
     except Exception as e:
         try:
             print("This is no valid Shapefile.")
             click.echo("detailjson")
-            getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder)
+            getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder, time)
         except Exception as e:
             try:
                 print("error")
                 print(e)
                 click.echo("detail_netcdf")
-                getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
+                getNetCDFInfo.getNetCDFbbx(filepath, detail, folder, time)
             except Exception as e:
                 try:
                     print("detail_csv")
-                    getCSVInfo.getCSVbbx(filepath, detail, folder)
+                    getCSVInfo.getCSVbbx(filepath, detail, folder, time)
                 except Exception as e:
                     try:
                         print("detail geopackage")
-                        getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
+                        getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
                     except Exception as e:
                         try:
                             print (e)
                             print("neu")
                             click.echo("detail geotiff")
-                            getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
+                            getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder, time)
                         except Exception as e:
                             try:
                                 click.echo("detailiso")
-                                getIsoInfo.getIsobbx(filepath, detail, folder)
+                                getIsoInfo.getIsobbx(filepath, detail, folder, time)
                             except Exception as e:
                                 try:
                                     click.echo(e)
