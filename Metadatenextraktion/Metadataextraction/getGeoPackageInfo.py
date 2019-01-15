@@ -1,4 +1,4 @@
-import click, json, sqlite3, csv, pygeoj, detailebenen
+import click, json, sqlite3, csv, pygeoj, detailebenen as de
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
@@ -28,18 +28,8 @@ def getGeopackagebbx(filepath, detail, folder):
         lat2=row[0][2]
         lng2=row[0][3]
         myCRS=row[0][4]
-        bbox=[lat1,lng1,lat2,lng2]
-        print("Unmodified BBOX: ")
-        print(bbox)
-        # Assuming that the CRS won't change
-        inputProj='epsg:'
-        inputProj+=str(myCRS)
-        print(inputProj)
-        inProj = Proj(init=inputProj)
-        outProj = Proj(init='epsg:4326')
-        lat1t,lng1t = transform(inProj,outProj,lat1,lng1)
-        lat2t,lng2t = transform(inProj,outProj,lat2,lng2)
-        print("Modified BBOX: ")
+        lat1t,lng1t = de.transformToWGS84(lat1,lng1,myCRS)
+        lat2t,lng2t = de.transformToWGS84(lat2,lng2,myCRS)
         bbox=[lat1t,lng1t,lat2t,lng2t]
 
         if folder=='single':

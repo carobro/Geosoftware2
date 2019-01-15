@@ -1,9 +1,46 @@
 import math
+import detailebenen
+import click
+import typ 
 
 # Beispielkoordinaten
-bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
-bbox2 = [7.5234, 52.0326, 7.7556, 52.152]
+# bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
+# bbox2 = [7.5234, 52.0326, 7.7556, 52.152]
 
+# def mastersim(filepath):
+    # bbox1 = detailebenen(filepath) blabla Hier muessen die Bboxen berechet werden
+    # bbox2 = detailebee(filepath) blabla also detailebenen Aufrufen
+    # sim = aehnlickeit(bbox1, bbox2)
+    # Hier muss typ.py
+    # input1 = typ.getTyp(filepath)
+    # input2 = typ.getTyp(filepath)
+    # whatDataType(input1, input2, sim)
+
+"""returns the new calculated similarity score
+:param input1: filepath from a file
+:param input2: filepath from a file
+:param imput3: similarity score from two bounding boxes
+"""
+def whatDataType(input1, input2, sim):
+    if input1 == "raster" and input2 == "raster":
+        click.echo("These files are rasterdata")
+        return sim
+    if input1 == "vector" and input2 == "vector":
+        click.echo("These files are vectordata")
+        return sim
+    if input1 == "raster" and input2 == "vector" or input1 == "vector" and input2 == "raster":
+        click.echo("These files are not the same datatype")
+        sim = sim*5/4
+        if sim > 1:
+            sim = 1
+        return sim
+
+"""
+Function to calculate the similarity score
+:param bbox1: Bounding Box from a file
+:param bbox2: Bounding Box from a file
+:returns: similarity score from the two Bounding Boxes
+"""
 def aehnlickeit (bbox1,bbox2):
     """
     if bbox1[0]==bbox2[0] and bbox1[1]==bbox2[1] and bbox1[2]==bbox2[2] and bbox1[3]==bbox2[3]:
@@ -26,30 +63,67 @@ def aehnlickeit (bbox1,bbox2):
     else:
         return None
 
+"""
+Function to calculate the mean latitude
+:param list: 
+:returns: the mean Latitude
+"""
 def mittlererBreitengrad (list):
     lat = (list[3]+list[1])/2
     return lat
 
+"""
+Function to calculate the mean longitude
+:param list: 
+:returns: the mean Longitude
+"""
 def mittlererLaengengrad (list):
     lon = (list[2]+list[0])/2
     return lon
 
+"""
+Function to calculate the latitude
+:param list: 
+:returns: the Latitude
+"""
 def breite (list):
     x = (list[2]-list[0])*111.3 * (math.cos(mittlererBreitengrad(list)*math.pi/180))
     return x
 
+"""
+Function to calculate the mean longitude
+:param list: 
+:returns: the longitude
+"""
 def laenge (list):
     y =(list[3]-list[1])*111.3
     return y
 
+"""
+Function to calculate area
+:param list: 
+:returns: the area
+"""
 def flaeche (list):
     A = breite(list) * laenge(list)
     return A
 
+"""
+auxiliary calculation
+:param bbox1: Bounding Box from a file
+:param bbox2: Bounding Box from a file
+:returns: the cosinus
+"""
 def seitenkosinussatz(bbox1,bbox2):
     cos = math.sin((mittlererBreitengrad(bbox1) * math.pi/180))*math.sin((mittlererBreitengrad(bbox2)*math.pi/180)) + math.cos((mittlererBreitengrad(bbox1)*math.pi/180)) * math.cos((mittlererBreitengrad(bbox2)*math.pi/180)) * math.cos((mittlererLaengengrad(bbox1)*math.pi/180)-(mittlererLaengengrad(bbox2)*math.pi/180))
     return cos
 
+"""
+function to calculate the distace between two Bounding Boxes
+:param bbox1: Bounding Box from a file
+:param bbox2: Bounding Box from a file
+:returns: the distance
+"""
 def distanz(bbox1,bbox2):
     dist = math.acos(seitenkosinussatz(bbox1,bbox2)) * 6378.388
     return dist
