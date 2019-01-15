@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import detailebenen
 from scipy.spatial import ConvexHull
+import dateparser
 #import sys
 
 #import ogr2ogr
@@ -15,24 +16,28 @@ def getCSVbbx(filepath, detail, folder):
     """returns the bounding Box CSV
     @see https://www.programiz.com/python-programming/reading-csv-files
     @param path Path to the file """
+    
+    #format validation
+    pd.read_csv(filepath)
     click.echo("csv")
     CRSinfo = True
     listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
     listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
     listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
+    listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum"]
     try:
         deli=';'
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
         #tests if there is a column named Coordinatesystem or similar
         click.echo("hi")
-        click.echo(df.columns.values)
-        click.echo(intersect(listCRS,df.columns.values))
+        #click.echo(df.columns.values)
+        #click.echo(intersect(listCRS,df.columns.values))
         if not intersect(listCRS,df.columns.values):
             CRSinfo= False
             print("hu")
             print("No fitting header for a reference system")
 
-        if not intersect(listlat,df.columns.values) or not intersect(listlon,df.columns.values):
+        if not(((intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)))or (intersect(listtime, df.columns.values))):
             #output="No fitting header for latitudes or longitudes"
             raise Exception('No fitting ')
             #print(output)
@@ -43,17 +48,28 @@ def getCSVbbx(filepath, detail, folder):
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
         #tests if there is a column named Coordinatesystem or similar
         click.echo("hi")
-        click.echo(df.columns.values)
-        click.echo(intersect(listCRS,df.columns.values))
+        #click.echo(df.columns.values)
+        #click.echo(intersect(listCRS,df.columns.values))
         if not intersect(listCRS,df.columns.values):
             CRSinfo= False
             
-            print("No fitting header for a reference system")
+            print("No fitting header for a reference system2")
+            z=intersect(listtime, df.columns.values)
+            print (z)
+            t=intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)
+            print (intersect(listlat,df.columns.values))
+            print("_______________")
+            print(t)
+            if not t:
+                print("false")
 
-        if not intersect(listlat,df.columns.values) or not intersect(listlon,df.columns.values):
+        if not(((intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)))or (intersect(listtime, df.columns.values))):
             #output="No fitting header for latitudes or longitudes"
-            raise Exception('No fim')
-            print(output)
+            #raise Exception('No fim')
+        
+            raise Exception("evtl kein csv")
+            print("keine Koordinaten vorhanden")
+            #print(output)
             #return output
         print (exce)
 
@@ -84,9 +100,12 @@ def getCSVbbx(filepath, detail, folder):
                 z[0],z[1] = transform(inProj,outProj,z[0],z[1])
 
         if folder=='single':
-            click.echo("convex Hull: ")
+            print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
+            click.echo("convex Hull of the csv file: ")
             click.echo(convHull)
-            click.echo("csv")
+            print("----------------------------------------------------------------")
         if folder=='whole':
             detailebenen.bboxArray=detailebenen.bboxArray+convHull
             click.echo(detailebenen.bboxArray)
@@ -105,6 +124,7 @@ def getCSVbbx(filepath, detail, folder):
         if(CRSinfo):
             mycrsID=intersect(listCRS,df.columns.values)
             myCRS=df[mycrsID[0]]
+            #transformToWGS84(lat, lng, sourceCRS)???
             inputProj='epsg:'
             inputProj+=str(myCRS[0])
             print(inputProj)
@@ -133,7 +153,6 @@ def getCSVbbx(filepath, detail, folder):
         click.echo("hallo")
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, sep=';|,',engine='python')
-        listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum"]
         click.echo(listtime)
         click.echo(df.columns.values)
         intersection=intersect(listtime, df.columns.values)
@@ -142,7 +161,6 @@ def getCSVbbx(filepath, detail, folder):
             print("No fitting header for time-values")
             # TODO: fehlerbehandlung  
             #try:
-                #print("test2")
                 #for t in listtime:
                     #if(x not in df.columns.values):
                         #click.echo("This file does not include time-values")
@@ -155,8 +173,17 @@ def getCSVbbx(filepath, detail, folder):
                 #click.echo ("There is no time-value or invalid file.")
                 #return None   
         else:
+            
+            
             time=df[intersection[0]]
-            timeextend=[min(time), max(time)]
+            print(min(time))
+            print(max(time))
+            timemin=str(min(time))
+            timemax=str(max(time))
+            timemax_formatted=dateparser.parse(timemax)
+            timemin_formatted=dateparser.parse(timemin)
+            timeextend=[timemin_formatted, timemax_formatted]
+            print(timeextend)
             if folder=='single':
                 print("----------------------------------------------------------------")
                 click.echo("Timeextend of this CSV file:")

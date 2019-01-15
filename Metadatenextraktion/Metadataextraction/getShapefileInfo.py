@@ -11,12 +11,12 @@ def getShapefilebbx(filepath, detail, folder):
     :param folder: whole or single
     :return: selected detail of the shapefile
     """
-
     #if the file is a valid shapefile it will be opened with this function.
     #otherwise an exception will be thrown.
     sf = shapefile.Reader(filepath)
 
     if detail =='bbox':
+        print("shapefile bbox")
         output = sf.bbox
         if folder=='single':
             print("----------------------------------------------------------------")
@@ -27,8 +27,17 @@ def getShapefilebbx(filepath, detail, folder):
             print("----------------------------------------------------------------")
             return output
         if folder=='whole':
+            print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
+            click.echo("Boundingbox of the Shapefile:")
+            click.echo(output)
+            click.echo("Shapefiles cannot be used for the calculation of the whole folder because of the missing crs.")
+            print("----------------------------------------------------------------")
+            #TODO
+            #print("shapefile bbox whole")
             #adds the boundingbox of the shapefile to the bboxArray
-            detailebenen.bboxArray.append(output)
+            #detailebenen.bboxArray.append(output)
         return output
             
     #calculation of the convex hull of the shapefile
@@ -52,8 +61,16 @@ def getShapefilebbx(filepath, detail, folder):
             click.echo(convHull)
             print("----------------------------------------------------------------")
         if folder=='whole':
-            detailebenen.bboxArray=detailebenen.bboxArray+convHull
-            click.echo(detailebenen.bboxArray)
+            print("----------------------------------------------------------------")
+            click.echo("Filepath:")
+            click.echo(filepath)
+            click.echo("The convex hull of the Shapefile is:")    
+            click.echo(convHull)
+            click.echo("Shapefiles cannot be used for the calculation of the folder because of the missing crs.")
+            print("----------------------------------------------------------------")
+            #TODO
+            #detailebenen.bboxArray=detailebenen.bboxArray+convHull
+            #click.echo(detailebenen.bboxArray)
         return convHull
 
     #returns information about not existing timevalues for shapefiles.

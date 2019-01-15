@@ -1,22 +1,35 @@
 import click, pygeoj, detailebenen, json
+import dateparser
 from osgeo import ogr
 from scipy.spatial import ConvexHull
 import geojson as gj
 
+
+point = list()
+
+#in diese methode muss ein feature.geometry.coordinates wert eingefuegt werden.
+def extract_coordinates(geoj):
+    if (len(geoj)==2) and (type(geoj[0])==int or type(geoj[0])==float):
+        new_point=[geoj[0], geoj[1]]
+        point.append(geoj)
+        return new_point
+    else:
+        for z in geoj:
+            extract_coordinates(z)
+    
+
+
 def getGeoJsonbbx(filepath, detail, folder):
     """returns the bounding Box GeoJson
     @param path Path to the file """
+    #TODO
+    #pygeoj only works with two-dimensional coordinates
     geojson = pygeoj.load(filepath)
-    #new=gj.dumps(data, sort_keys=True)
-    #print(new)
 
     if detail =='bbox':
-        click.echo("hallo")
+        click.echo("geojson bbox")
         geojson = pygeoj.load(filepath)
-        click.echo("hu")
-        #click.echo(str(geojson))
         geojbbx = (geojson).bbox
-        #click.echo(geojbbx)
         if folder=='single':
             print("----------------------------------------------------------------")
             click.echo("Filepath:")
@@ -26,36 +39,36 @@ def getGeoJsonbbx(filepath, detail, folder):
             print("----------------------------------------------------------------")
             #return (geojbbx)
         if folder=='whole':
+            print("geojson bbox whole")
             detailebenen.bboxArray.append(geojbbx)
             click.echo(filepath)
             click.echo(geojbbx)
             print(detailebenen.bboxArray)
-            print("ghgh")
-            return(geojbbx)
+        return(geojbbx)
             
     if detail == 'convexHull':
-        print("geojsonfeature")
+        print("geojson convexHull")
         geojson = pygeoj.load(filepath)
-        point = list()
-        print("pointlist")
-        print(point)
+        #point = list()
 
+        
         for feature in geojson:
-            #print(point)
-            print("coords")
-            print(feature.geometry.coordinates)
-            point.append(feature.geometry.coordinates)
-            print("da")
+            try:
+                r= feature.geometry.coordinates
+                extract_coordinates(r)
+            except Exception:
+                #TODO
+                #hier besser raise exception?!
+                print("There is a feature without coordinates in the geojson.")
+            #point.append(feature.geometry.coordinates)
             
-        print(point)
         #calculation of the convex hull
         #funktioniert bisher nur bei jagdbezirke viersen...
-        print("test")
+        print("hull teil")
         hull=ConvexHull(point)
-        print(hull)
+        #print(hull)
         hull_points=hull.vertices
-        print(hull_points)
-        print(point[0])
+        #print(hull_points)
         convHull=[]
         for z in hull_points:
             hullcoord=[point[z][0], point[z][1]]
@@ -69,12 +82,12 @@ def getGeoJsonbbx(filepath, detail, folder):
             print("----------------------------------------------------------------")
         if folder=='whole':
             print("----------------------------------------------------------------")
-            print("----------------------------------------------------------------")
-            detailebenen.bboxArray.append(convHull)
+            detailebenen.bboxArray=detailebenen.bboxArray+convHull
             click.echo("convex hull whole")
             click.echo(convHull)
             print(detailebenen.bboxArray)
-            #print("ghgh")
+
+        return convHull
 
     # After opening the file check if the file seems to have the right format
     # Then we search for words like date, creationDate or time at two different levels
@@ -124,18 +137,22 @@ def getGeoJsonbbx(filepath, detail, folder):
                                             click.echo("there is no time-value")
                                             return None 
 
+        timemax = str(max(timelist))
+        timemin = str(min(timelist))
+        timemax_formatted=dateparser.parse(timemax)
+        timemin_formatted=dateparser.parse(timemin)
+
         if folder=='single':   
             print("The time value of this file is:")     
-            timemax = min(timelist)
-            timemin = max(timelist)
             if timemax==timemin:
-                click.echo(min(timelist))
+                print(timemin_formatted)
             else:
-                click.echo(min(timelist))
-                click.echo(max(timelist))
-            return timemax, timemin
+                click.echo(timemin_formatted)
+                click.echo(timemax_formatted)
+            return timemin_formatted, timemax_formatted 
+
         if folder=='whole':
-            timeextend=[min(timelist), max(timelist)]
+            timeextend=[timemin_formatted, timemax_formatted]
             detailebenen.timeextendArray.append(timeextend)
             print("timeextendArray:")
             print(detailebenen.timeextendArray)

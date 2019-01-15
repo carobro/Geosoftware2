@@ -4,6 +4,7 @@
 #import numpy as np
 #import xarray as xr
 #import os
+from pyproj import Proj, transform
 import click
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
 
@@ -15,59 +16,55 @@ timeextendArray=[]
 
 @click.command(name='1')
 @click.option('--path',required=True, help='please insert the path to the data here.')
-#@click.option('--single', 'folder', flag_value='single', default=True, help='returns all the boundingboxes from objects of a folder')
-#@click.option('--whole', 'folder', flag_value='whole', help='returns one overall boundingbox from all objects of a folder')
 @click.option('--detail', type=click.Choice(['bbox', 'convexHull', 'time']), default='bbox', help='select which information you want to get')
 @click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
 
 def getMetadata(path, detail, folder):
-    #print(bboxArray)
+    """ 
+    
+    """
     filepath = path
     # Program that extracts the boudingbox of files.
 
     try:
-        #click.echo("detailShape")
+        click.echo("detailShape")
         getShapefileInfo.getShapefilebbx(filepath, detail, folder)
     except Exception as e:
         try:
             print("This is no valid Shapefile.")
-            #click.echo("detailjson")
+            click.echo("detailjson")
             getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder)
         except Exception as e:
-            #print (e)
-            #return 0
             try:
-                #click.echo("netcd")
+                print("error")
+                print(e)
+                click.echo("detail_netcdf")
                 getNetCDFInfo.getNetCDFbbx(filepath, detail, folder)
             except Exception as e:
                 try:
-                    #print("cdf fehler")
-                    #print(e)
-                    #print("aussencsv")
-                    #print("2")
+                    print("detail_csv")
                     getCSVInfo.getCSVbbx(filepath, detail, folder)
                 except Exception as e:
                     try:
-                        #print(e)
-                        #print("aussengeop")
-                        #click.echo("2")
+                        print("detail geopackage")
                         getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder)
                     except Exception as e:
                         try:
-                            #click.echo("geop fehler:")
-                            click.echo(e)
+                            print (e)
+                            print("neu")
+                            click.echo("detail geotiff")
                             getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder)
                         except Exception as e:
                             try:
-                                #click.echo("hhihihih")
+                                click.echo("detailiso")
                                 getIsoInfo.getIsobbx(filepath, detail, folder)
                             except Exception as e:
-                                print(e)
                                 try:
+                                    click.echo(e)
+                                    click.echo("detail folder")
                                     openFolder.openFolder(filepath, detail, folder)
                                 except Exception as e:
                                     click.echo(e)
-                                    #click.echo("2")
                                     click.echo ("invalid file format!!!!!")
                                     return 0
 
@@ -77,13 +74,16 @@ def getMetadata(path, detail, folder):
 """
 def transformToWGS84(lat, lng, sourceCRS):
     # formatting the input CRS
-    inputProj='epsg:'
-    inputProj+=str(sourceCRS)
-    inProj = Proj(init=inputProj)
-    # epsg:4326 is WGS84
-    outProj = Proj(init='epsg:4326')
-    latT, lngT = transform(inProj,outProj,lat,lng)
-    return(latT,lngT)
+    try:
+        inputProj='epsg:'
+        inputProj+=str(sourceCRS)
+        inProj = Proj(init=inputProj)
+        # epsg:4326 is WGS84
+        outProj = Proj(init='epsg:4326')
+        latT, lngT = transform(inProj,outProj,lat,lng)
+        return(latT,lngT)
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     getMetadata()

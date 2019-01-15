@@ -4,11 +4,12 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
+import dateparser
 
 def getNetCDFbbx(filepath, detail, folder):
     """returns the bounding Box NetCDF
     @param path Path to the file """
-    print("netcdf")
+    #validation if file is netcdf
     ds = xr.open_dataset(filepath)
     if detail =='bbox':
         print("bbox")
@@ -49,7 +50,8 @@ def getNetCDFbbx(filepath, detail, folder):
             print(bbox)
             #return bbox
     if detail == 'convexHull':
-        #ds = xr.open_dataset(filepath)
+        ds = xr.open_dataset(filepath)
+            
         #try:
             #lats = ds.coords["lat"]
             #lons = ds.coords["lon"]
@@ -59,8 +61,11 @@ def getNetCDFbbx(filepath, detail, folder):
             #lons = ds.coords["longitude"]
             #convex_hull(points)
             #GeoTiff is a rastadata, so:
-        
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
         click.echo('Sorry there is no second level of detail for NetCDF files')
+        print("----------------------------------------------------------------")
         #return None
 
         
@@ -68,23 +73,36 @@ def getNetCDFbbx(filepath, detail, folder):
     # After opening the file we are looking for 
     # time values and calculate the temporal extend 
     # with min and max functions
-    click.echo("NetCDF")
     """returns the Time from NetCDF file
     @param path Path to the file """
     if detail =='time':
-        ds = xr.open_dataset(filepath)
+        #ds = xr.open_dataset(filepath)
         try:
             mytime = ds.coords["time"]
             # print(ds.values)
             starttime = min(mytime)
             endtime = max(mytime)
             # Zeitliche Ausdehnung
-            anfang = starttime.values
-            ende = endtime.values
-            print("the temporal extend of the NetCDF object is:")
-            print(anfang)
-            print(ende)
-            return anfang, ende
+            anfang = str(starttime.values)
+            ende = str(endtime.values)
+            timemax_formatted=dateparser.parse(ende)
+            timemin_formatted=dateparser.parse(anfang)
+            if folder=='single':
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                print("the temporal extend of the NetCDF object is:")
+                print(timemin_formatted)
+                print(timemax_formatted)
+                print("----------------------------------------------------------------")
+
+            if folder=='whole':
+                timeextend=[timemin_formatted, timemax_formatted]
+                detailebenen.timeextendArray.append(timeextend)
+                #print(timeextend[0])
+                print("timeextendArray:")
+                print(detailebenen.timeextendArray)
+                #return anfang, ende
         except Exception as e:
             click.echo ("There is no time-value or invalid file")
             return None

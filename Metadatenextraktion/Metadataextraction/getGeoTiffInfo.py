@@ -1,10 +1,12 @@
 import click, detailebenen
 from osgeo import gdal, ogr, osr
 
+#Boolean variable that shows if the crs of the bbox is in wgs84
+wgs_84=False
+
 def getGeoTiffbbx(filepath, detail, folder):
     gdal.UseExceptions()
     ds = gdal.Open(filepath)
-    print("geotiff")
     """@see https://stackoverflow.com/questions/2922532/obtain-latitude-and-longitude-from-a-geotiff-file"""
 
     if detail =='bbox':
@@ -53,29 +55,42 @@ def getGeoTiffbbx(filepath, detail, folder):
             print("----------------------------------------------------------------")
             return (bbox)
         if folder=='whole':
-            detailebenen.bboxArray.append(bbox)
-            click.echo(filepath)
-            print(bbox)
-            return (bbox)
+            if wgs_84==True:
+                detailebenen.bboxArray.append(bbox)
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Boundingbox of the GeoTiff:")
+                click.echo(bbox)
+                print("----------------------------------------------------------------")
+            else:
+                print("----------------------------------------------------------------")
+                click.echo("Filepath:")
+                click.echo(filepath)
+                click.echo("Boundingbox of the GeoTiff:")
+                click.echo(bbox)
+                click.echo("because of a missing crs this GeoTiff is not part of the folder calculation.")
+                print("----------------------------------------------------------------")
+            return None
+
 
     """second level of detail is not reasonable for geotiffs because they are rasterdata."""
     if detail == 'convexHull':
-        click.echo('Sorry there is no second level of detail for geotiffs')
-        #ds = gdal.Info(filepath)
-        #return None
-        #if ds!=null:
-            #click.echo('Sorry there is no second level of detail for geotiffs')
-        #else: 
-            #return None
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo('There is no convex hull for GeoTIFF files.')
+        print("----------------------------------------------------------------")
+        return None
 
+    #TODO
     if detail=='time':
-        gdal.UseExceptions()
-        click.echo("GeoTiff")
-        if detail =='time':
-            ds = gdal.Open(filepath)
-            gdal.Info(ds)
-            click.echo("there is no time value for GeoTIFF files")
-            return None
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo('There is no time value for GeoTIFF files')
+        print("----------------------------------------------------------------")
+        return None
 
 if __name__ == '__main__':
     getGeoTiffbbx()

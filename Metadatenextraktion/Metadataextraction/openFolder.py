@@ -29,6 +29,9 @@ def openFolder(filepath, detail, folder):
                     getNetCDFInfo.getNetCDFbbx(docPath, detail, folder)
                 except Exception as e:
                     try:
+                        #print("hu")
+                        #print(e)
+                        #print("ha")
                         click.echo("folderCSV")
                         getCSVInfo.getCSVbbx(docPath, detail, folder)
                     except Exception as e:
@@ -39,6 +42,7 @@ def openFolder(filepath, detail, folder):
                             try:
                                 click.echo("folderGeoPackage")
                                 getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder)
+                                print("aufter geopackage")
                             except Exception as e:
                                 try:
                                     click.echo("folderISO")
@@ -58,8 +62,8 @@ def openFolder(filepath, detail, folder):
             print(bboxes)
             min1=100000000
             min2=100000000
-            max1=0
-            max2=0
+            max1=-10000000
+            max2=-10000000
             lat1List=[lat1 for lat1, lng1, lat2, lng2 in bboxes]
             #print(lat1List)
             for x in lat1List:
@@ -92,10 +96,16 @@ def openFolder(filepath, detail, folder):
             print(folderbbox)
             print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         if detail=='convexHull':
+            print("tzttztztztz")
             points=detailebenen.bboxArray
+            print("gi")
+            print(points)
+            print(ConvexHull(points))
             hull=ConvexHull(points)
+            print("hi")
             hull_points=hull.vertices
             convHull=[]
+            print("concon")
             for y in hull_points:
                 point=[points[y][0], points[y][1]]
                 convHull.append(point)
@@ -104,7 +114,21 @@ def openFolder(filepath, detail, folder):
             click.echo(convHull)
             print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         if detail=='time':
-            print("zeitordnerausgabe fehlt noch")
+            times=detailebenen.timeextendArray
+            mindate=[]
+            maxdate=[]
+            for z in times:
+                mindate.append(z[0])
+                maxdate.append(z[1])
+            min_mindate=min(mindate)
+            max_maxdate=max(maxdate)
+            folder_timeextend=[min_mindate, max_maxdate]
+            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            click.echo("timeextend of the folder:")    
+            click.echo(min_mindate)
+            click.echo(max_maxdate)
+            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            return folder_timeextend
 
         
         

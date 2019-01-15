@@ -8,41 +8,83 @@ import ogr2ogr
 #new for this module
 import tempfile
 from scipy.spatial import ConvexHull
-import geojson
+import geojson as gj
 
 #https://gis.stackexchange.com/questions/130963/write-geojson-into-a-geojson-file-with-python
 
-def write_json(self, features):
-   # feature is a shapely geometry type
-   geom_in_geojson = geojson.Feature(geometry=features, properties={})
-   tmp_file = tempfile.mkstemp(suffix='.geojson')
-   with open(tmp_file[1], 'w') as outfile:
-      geojson.dump(geom_in_geojson, outfile)
-   return tmp_file[1]
+point=list()
+#in diese methode muss ein feature.geometry.coordinates wert eingefuegt werden.
+def extract_coordinates(geoj):
+    if (len(geoj)==2) and (type(geoj[0])==int or type(geoj[0])==float):
+        new_point=[geoj[0], geoj[1]]
+        point.append(geoj)
+        return new_point
+    else:
+        for z in geoj:
+            extract_coordinates(z)
+
+
+#without this function getIsobbx would open a folder and extract metadata the wrong way.
+def is_folder_check(filepath):
+    is_folder=False
+    try:
+        os.listdir(filepath)
+        is_folder=True
+    except Exception:
+        pass
+    return is_folder
 
 def getIsobbx(filepath, detail, folder):
     gdal.UseExceptions()
     click.echo("iso")
+    value=is_folder_check(filepath)
+
+    if (is_folder_check(filepath)):
+        raise Exception ("This is a folder! ------> first opening it")
+    
+    ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
+    print("nochda")
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
     if detail =='bbox':
+        print("hi")
         #HIER NOCH TEMPORAERE FILES ERSTELLEN
-        #with tempfile.TemporaryFile() as folder:
-            #click.echo("folder")
-            #click.echo(folder)
-        #d=folder
-        fp=tempfile.TemporaryFile()
-        #pa=tempfile.gettempdir()
-        #ogr2ogr.main(["","-f", "GeoJSON", fp, filepath])
-        ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
-        #ogr2ogr.main(["","-f","GeoJSON", folder])
+        #fp=tempfile.TemporaryFile()
+        #content=open(filepath, 'r')
+        #iso_content=content.read()
+        #print(iso_content)
+        #tmp_file = tempfile.TemporaryFile(suffix='.geojson', prefix='help')
+        #print("tmo")
+        #print(tmp_file)
+        #print("1")
+        #tmp_file.write(iso_content)
+        #print("2")
+        #tmp_file.seek(0)
+        #print(tmp_file.read())
+        #print("3")
+        #inhalt=tmp_file.read()
+        #print("Inhalt:")
+        #print(inhalt)
 
-        iso = pygeoj.load(filepath="out.json")
+       
+        #print("hu")
+        #ogr2ogr.main(["","-f", "GeoJSON","out.json", filepath])
+        #print("huhu")
+        #ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
+        #ogr2ogr.main(["","-f", "GeoJSON", tmp_file, filepath])
+        try:
+            iso = pygeoj.load(filepath="out.json")
+        except Exception as e:
+            #print(e)
+            raise Exception("Sorry! The ISO file is too big.")
+        print("nach ist")
         isobbx = (iso).bbox
+        print("w")
         # Identification of CRS and transformation
         # In some test data the epsg id was stored in an unicode object like this one'urn:ogc:def:crs:EPSG::4258'
         try:
             isocrs = (iso).crs
             mycrs= isocrs["properties"]["name"]
+            print("mycrs")
             print(mycrs)
             mycrsString=mycrs.encode('ascii','ignore')
             # Extracting the epsg id
@@ -69,67 +111,83 @@ def getIsobbx(filepath, detail, folder):
             os.remove("out.json")
             #return isobbx
         if folder=='whole':
-            detailebenen.bboxArray.append(isobbx)
+            print("----------------------------------------------------------------")
+            click.echo("filepath:")
+            click.echo(filepath)
+            click.echo("Boundingbox of the ISO object:")
+            click.echo(mybbx)
+            print("----------------------------------------------------------------")
+            detailebenen.bboxArray.append(mybbx)
             click.echo(filepath)
             click.echo(mybbx)
+            print("ho")
             #return (isobbx)
 
 
     if detail == 'convexHull':
+        print("conv iso")
         ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
         iso = pygeoj.load(filepath="out.json")
         #TO-DO feature.geometry.coordinates in variable speichern
-        points = 0
-        point = list()
+        #points = 0
         for feature in iso:
-            print("looop")
-            print(len(feature.geometry.coordinates))
-            point.append(feature.geometry.coordinates)
-            print(point)
-        print(point)
+            try:
+                f=feature.geometry.coordinates
+                extract_coordinates(f)
+            except Exception:
+                #TODO
+                #hier besser raise exception?!
+                print("There is a feature without coordinates in the iso file")
+            #point.append(feature.geometry.coordinates)
+            #print(point)
+        #print(point)
         #calculation of the convex hull
-        #funktioniert bisher nur bei jagdbezirke viersen...
-        #print("test")
+        print("hull")
         hull=ConvexHull(point)
-        print("after hull")
-        print(hull)
         hull_points=hull.vertices
         print(hull_points)
-        print(point[0])
         convHull=[]
+        print("afterhull")
         for z in hull_points:
             hullcoord=[point[z][0], point[z][1]]
             convHull.append(hullcoord)
+            print("in hull_points_loop")
         if folder=='single':
             print("----------------------------------------------------------------")
             click.echo("Filepath:")
             click.echo(filepath)
-            click.echo("Convex hull of the GeoJSON object:")
+            click.echo("Convex hull of the ISO object:")
             click.echo(convHull)
             print("----------------------------------------------------------------")
         if folder=='whole':
             print("----------------------------------------------------------------")
-            print("----------------------------------------------------------------")
-            detailebenen.bboxArray.append(convHull)
+            detailebenen.bboxArray=detailebenen.bboxArray+convHull
+            #detailebenen.bboxArray.append(convHull)
             click.echo("convex hull whole")
             click.echo(convHull)
+            print("bboxArray")
             print(detailebenen.bboxArray)
-        #convex_hull(points)
-        #print point
+            print("----------------------------------------------------------------")
         os.remove("out.json")
+        #iso.close()
         return point
 
     # We transform the gml file to a geojson file, then search for
     # words like "date", "timestamp", "time" and collect them
     if detail =='time':
-        ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
+        try:
+            ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
+        except Exception as a:
+            print (a)
         iso = open("time.json")
+        print("DRINNEN")
         geojson = json.load(iso)
+        print("nach load")
         # @see https://www.w3schools.com/python/python_file_remove.asp
         os.remove("time.json")
-        print(" ")
-        print("The time value of this file is:")
+        print("nach remove")
         if geojson["type"] == "FeatureCollection":
+            #print(geojson["features"][0][])
             first = geojson["features"]  
             time = []
             for i in range(0,5):            
@@ -168,8 +226,17 @@ def getIsobbx(filepath, detail, folder):
                                             time = first[i]["properties"]["Date"]
                                             return time
                                         except Exception as e:
-                                            click.echo("there is no time-value ISO")
-                                            return None   
+                                            try:
+                                                click.echo(first[i]["timeStamp"])
+                                                time = first[i]["timeStamp"]
+                                                return time
+                                            except Exception as e:
+                                                #this exception is important for folder time extraction of cvs files...DONT DELETE IT!
+                                                raise Exception ("There is no time-value ISO")
+                                                click.echo("there is no time-value ISO")
+                                                return None   
+            
+            print("The time value of this ISO file is:")
             print(time)
             return time
 
