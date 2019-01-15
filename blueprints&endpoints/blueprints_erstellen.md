@@ -157,3 +157,21 @@ def edit(pid=None, record=None, depid=None, deposit=None):
 Und im folgenden geupdated.
 
 Das ist in etwa die Struktur, die wir benoetigen - ein Endpunkt fuer die Kalkulationsergebnisse, wenn dann die Uebereinstimmung von zwei Datensaetzen errechnet wird, updatet das Blueprint den Endpunkt mit dem Ergebnis und man ruft mit einem weiteren dieses Ergebnis ab. Diesmal ['GET'] anstatt ['POST'].
+
+
+Konsolen-Ausgabe eines Dateiuploads mit Speicherung als record in zenodo
+
+```
+127.0.0.1 - - [13/Jan/2019 17:01:05] "PUT /api/deposit/depositions/20 HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /record/20 HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /static/img/openaire-horizontal-old.png HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /badge/DOI/10.5072/zenodo.20.svg HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /record/20/preview/eric.png HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /_debug_toolbar/static/css/toolbar.css?0.5577483203139662 HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /_debug_toolbar/static/css/toolbar.css?0.3240897717185367 HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /static/templates/invenio_csl/citeproc.html HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /static/node_modules/invenio-csl-js/dist/templates/error.html HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /static/node_modules/invenio-csl-js/dist/templates/loading.html HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /static/node_modules/invenio-csl-js/dist/templates/typeahead.html HTTP/1.1" 304 -
+127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /api/iiif/v2/caa7d04d-3e6d-4e54-8425-d99e1802e665:da66ca39-ed63-484b-b884-98935bf28976:eric.png/full/750,/0/default.png HTTP/1.1" 200 -
+```
