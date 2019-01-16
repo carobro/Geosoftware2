@@ -1,0 +1,2 @@
+# starting zenodo
+cd zenodo/

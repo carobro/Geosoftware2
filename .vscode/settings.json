@@ -1,3 +1,7 @@
 {
+<<<<<<< HEAD
+    "python.linting.enabled": false
+=======
     "python.linting.enabled": true
+>>>>>>> master
 }
