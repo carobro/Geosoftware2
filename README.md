@@ -14,7 +14,11 @@ After installation execute:`pip install -e .`
 Now you can open `http://localhost:5000/`. There you can create your own profile and upload files.
 
 # CLI-Tool   
-## Installation Description   
+## Installation Description (PyPi)  
+https://pypi.org/project/extractTool/   
+`pip install extractTool`   
+(you can write this command in your console and follow the installation description on the webside OR    you can download the file and install the CLI tool local: )   
+## Installation Description (local)
 This installation was previously tested only with Linux, but should also work under Windows.   
 pip for pip install is required.   
 To run our CLI tool, the following file must be executed in the project folder:   
