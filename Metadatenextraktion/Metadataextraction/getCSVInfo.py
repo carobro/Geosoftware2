@@ -246,8 +246,9 @@ def getCSVbbx(filepath, detail, folder, time):
 
     else:
         extractTool.ret_value.append([None])
-    print(extractTool.ret_value)
-    return extractTool.ret_value
+    if folder=='single':
+        print(extractTool.ret_value)
+        return extractTool.ret_value
 # Hilfsfunktion fuer csv fehlerbehandlung
 def intersect(a, b):
      return list(set(a) & set(b))

@@ -109,8 +109,10 @@ def getGeoTiffbbx(filepath, detail, folder, time):
         extractTool.ret_value.append(timeval)
     else:
         extractTool.ret_value.append([None])
-    print(extractTool.ret_value)
-    return extractTool.ret_value
+
+    if folder=='single':
+        print(extractTool.ret_value)
+        return extractTool.ret_value
 
 if __name__ == '__main__':
     getGeoTiffbbx()

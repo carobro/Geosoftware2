@@ -245,8 +245,9 @@ def getIsobbx(filepath, detail, folder, time):
         extractTool.ret_value.append([None]) 
     print("unten")
     
-    
-    print(extractTool.ret_value)
+    if folder=='single':
+        print(extractTool.ret_value)
+        return extractTool.ret_value
     #return time
 
 

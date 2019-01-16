@@ -7,7 +7,7 @@ import os
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, extractTool
 from scipy.spatial import ConvexHull
 
-def openFolder(filepath, detail, folder):
+def openFolder(filepath, detail, folder, time):
     folderpath= filepath
     click.echo("folderfolderfolder")
     docs=os.listdir(folderpath)
@@ -15,41 +15,42 @@ def openFolder(filepath, detail, folder):
         docPath= folderpath +"/"+ x
         try:
             click.echo("folderShape")
-            getShapefileInfo.getShapefilebbx(docPath, detail, folder)
+            getShapefileInfo.getShapefilebbx(docPath, detail, folder, time)
         except Exception as e:
             try:
                 click.echo("folderGeoJSON")
-                getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder)
+                getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder, time)
             except Exception as e:
                 try:
                     click.echo(e)
                     click.echo("folderNetCDF")
-                    getNetCDFInfo.getNetCDFbbx(docPath, detail, folder)
+                    getNetCDFInfo.getNetCDFbbx(docPath, detail, folder, time)
                 except Exception as e:
                     try:
                         click.echo("folderCSV")
-                        getCSVInfo.getCSVbbx(docPath, detail, folder)
+                        getCSVInfo.getCSVbbx(docPath, detail, folder, time)
                     except Exception as e:
                         try:
                             click.echo("folderGeoTIFF")
-                            getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder)
+                            getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder, time)
                         except Exception as e:
                             try:
                                 click.echo("folderGeoPackage")
-                                getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder)
+                                getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder, time)
                                 print("aufter geopackage")
                             except Exception as e:
                                 try:
                                     click.echo("folderISO")
-                                    getIsoInfo.getIsobbx(docPath, detail, folder)
+                                    getIsoInfo.getIsobbx(docPath, detail, folder, time)
                                 except Exception as e:
                                     try:
                                         click.echo("folderfolder")
-                                        openFolder(docPath, detail, folder)
+                                        openFolder(docPath, detail, folder, time)
                                     except Exception as e:
                                         click.echo("fodlerInvalid")
                                         click.echo ("invalid file format in folder!")
                                         return None
+    ret_value_folder=[]                                    
     if folder=='whole':
         if detail=='bbox':
             print("if")
@@ -91,7 +92,10 @@ def openFolder(filepath, detail, folder):
             print("boundingbox of the whole folder:")
             print(folderbbox)
             print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            return folderbbox
+            ret_value_folder.append(folderbbox)
+            #return folderbbox
+        else:
+            ret_value_folder.append([None])
         if detail=='convexHull':
             print("tzttztztztz")
             points=extractTool.bboxArray
@@ -110,8 +114,11 @@ def openFolder(filepath, detail, folder):
             click.echo("convex hull of the folder:")    
             click.echo(convHull)
             print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            return convHull
-        if detail=='time':
+            #return convHull
+            ret_value_folder.append(convHull)
+        else:
+            ret_value_folder.append([None])
+        if (time):
             times=extractTool.timeextendArray
             mindate=[]
             maxdate=[]
@@ -126,7 +133,13 @@ def openFolder(filepath, detail, folder):
             click.echo(min_mindate)
             click.echo(max_maxdate)
             print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            return folder_timeextend
+            #return folder_timeextend
+            ret_value_folder.append(convHull)
+        else:
+            ret_value_folder.append([None])
+
+    print(ret_value_folder)
+    return ret_value_folder
 
         
 

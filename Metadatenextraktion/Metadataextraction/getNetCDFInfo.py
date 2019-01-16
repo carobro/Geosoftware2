@@ -110,9 +110,10 @@ def getNetCDFbbx(filepath, detail, folder, time):
 
     
     ds.close()
-    print(extractTool.ret_value)
-    return extractTool.ret_value
-    #print("fertig")
+    if folder=='single':
+        print(extractTool.ret_value)
+        return extractTool.ret_value
+        #print("fertig")
 
 if __name__ == '__main__':
     getNetCDFbbx()

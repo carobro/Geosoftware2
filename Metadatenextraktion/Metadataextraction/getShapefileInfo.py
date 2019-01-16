@@ -86,8 +86,11 @@ def getShapefilebbx(filepath, detail, folder, time):
 
     else:
         extractTool.ret_value.append([None])
-    print(extractTool.ret_value)
-    return extractTool.ret_value    
+
+    if folder=='single':
+        print(extractTool.ret_value)
+        return extractTool.ret_value
+
 
     
 if __name__ == '__main__':

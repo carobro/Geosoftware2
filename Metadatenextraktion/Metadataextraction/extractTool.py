@@ -64,7 +64,7 @@ def getMetadata(path, detail, folder, time):
                                 try:
                                     click.echo(e)
                                     click.echo("detail folder")
-                                    openFolder.openFolder(filepath, detail, folder)
+                                    openFolder.openFolder(filepath, detail, folder, time)
                                 except Exception as e:
                                     click.echo(e)
                                     click.echo ("invalid file format!!!!!")

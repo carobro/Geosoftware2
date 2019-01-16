@@ -130,8 +130,9 @@ def getGeopackagebbx(filepath, detail, folder, time):
 
     else:
         de.ret_value.append([None])
-    print(de.ret_value)
-    return de.ret_value
+    if folder=='single':
+        print(de.ret_value)
+        return de.ret_value
         #return None
 
 if __name__ == '__main__':
