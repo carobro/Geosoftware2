@@ -1,7 +1,7 @@
 import math
 import detailebenen
 import click
-import typ 
+# import typ 
 
 # Beispielkoordinaten
 # bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
@@ -42,18 +42,16 @@ Function to calculate the similarity score
 :returns: similarity score from the two Bounding Boxes
 """
 def aehnlickeit (bbox1,bbox2):
-    """
-    if bbox1[0]==bbox2[0] and bbox1[1]==bbox2[1] and bbox1[2]==bbox2[2] and bbox1[3]==bbox2[3]:
-    """    
+    
     if isinstance(bbox1[0], float) and isinstance(bbox1[1], float) and isinstance(bbox1[2], float) and isinstance(bbox1[3], float):
         if isinstance(bbox2[0], float) and isinstance(bbox2[1], float) and isinstance(bbox2[2], float) and isinstance(bbox2[3], float):
 
-            if distanz(bbox1,bbox2) < 20000:
-                simdis = distanz(bbox1,bbox2)/20000
+            if distance(bbox1,bbox2) < 20000:
+                simdis = distance(bbox1,bbox2)/20000
             else:
                 simdis = 1
-            if abs(flaeche(bbox1) - flaeche(bbox2)) < 1000000:
-                simA = (abs(flaeche(bbox1) - flaeche(bbox2)))/1000000
+            if abs(area(bbox1) - area(bbox2)) < 1000000:
+                simA = (abs(area(bbox1) - area(bbox2)))/1000000
             else:
                 simA = 1
             sim = (2 * simdis + simA)/3
@@ -68,7 +66,7 @@ Function to calculate the mean latitude
 :param list: 
 :returns: the mean Latitude
 """
-def mittlererBreitengrad (list):
+def meanLatitude (list):
     lat = (list[3]+list[1])/2
     return lat
 
@@ -77,7 +75,7 @@ Function to calculate the mean longitude
 :param list: 
 :returns: the mean Longitude
 """
-def mittlererLaengengrad (list):
+def meanLongitude (list):
     lon = (list[2]+list[0])/2
     return lon
 
@@ -86,8 +84,8 @@ Function to calculate the latitude
 :param list: 
 :returns: the Latitude
 """
-def breite (list):
-    x = (list[2]-list[0])*111.3 * (math.cos(mittlererBreitengrad(list)*math.pi/180))
+def width (list):
+    x = (list[2]-list[0])*111.3 * (math.cos(meanLatitude(list)*math.pi/180))
     return x
 
 """
@@ -95,7 +93,7 @@ Function to calculate the mean longitude
 :param list: 
 :returns: the longitude
 """
-def laenge (list):
+def length (list):
     y =(list[3]-list[1])*111.3
     return y
 
@@ -104,8 +102,8 @@ Function to calculate area
 :param list: 
 :returns: the area
 """
-def flaeche (list):
-    A = breite(list) * laenge(list)
+def area (list):
+    A = width(list) * length(list)
     return A
 
 """
@@ -114,8 +112,8 @@ auxiliary calculation
 :param bbox2: Bounding Box from a file
 :returns: the cosinus
 """
-def seitenkosinussatz(bbox1,bbox2):
-    cos = math.sin((mittlererBreitengrad(bbox1) * math.pi/180))*math.sin((mittlererBreitengrad(bbox2)*math.pi/180)) + math.cos((mittlererBreitengrad(bbox1)*math.pi/180)) * math.cos((mittlererBreitengrad(bbox2)*math.pi/180)) * math.cos((mittlererLaengengrad(bbox1)*math.pi/180)-(mittlererLaengengrad(bbox2)*math.pi/180))
+def lawOfCosines(bbox1,bbox2):
+    cos = math.sin((meanLatitude(bbox1) * math.pi/180))*math.sin((meanLatitude(bbox2)*math.pi/180)) + math.cos((meanLatitude(bbox1)*math.pi/180)) * math.cos((meanLatitude(bbox2)*math.pi/180)) * math.cos((meanLongitude(bbox1)*math.pi/180)-(meanLongitude(bbox2)*math.pi/180))
     return cos
 
 """
@@ -124,8 +122,8 @@ function to calculate the distace between two Bounding Boxes
 :param bbox2: Bounding Box from a file
 :returns: the distance
 """
-def distanz(bbox1,bbox2):
-    dist = math.acos(seitenkosinussatz(bbox1,bbox2)) * 6378.388
+def distance(bbox1,bbox2):
+    dist = math.acos(lawOfCosines(bbox1,bbox2)) * 6378.388
     return dist
 
 if __name__ == '__main__':
