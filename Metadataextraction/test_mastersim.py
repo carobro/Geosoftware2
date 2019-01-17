@@ -15,8 +15,8 @@ equal to our hand-calculted score
 """
 
 def test_master1():
-    filepath1 = '/home/minicaro/Dokumente/Geosoftware2/Metadataextraction/testdata/Abgrabungen_Kreis_Kleve.geojson'
-    filepath2 = '/home/minicaro/Dokumente/Geosoftware2/Metadataextraction/testdata/Abgrabungen_Kreis_Kleve.geojson'
+    filepath1 = '/testdata/Abgrabungen_Kreis_Kleve.geojson'
+    filepath2 = '/testdata/Abgrabungen_Kreis_Kleve.geojson'
     assert mastersim.master(filepath1, filepath2) == 1
 
 '''
