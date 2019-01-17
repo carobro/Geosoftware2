@@ -1,27 +1,18 @@
 import math
-import detailebenen
+import extractTool
 import click
-# import typ 
+import os
 
-# Beispielkoordinaten
-# bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
-# bbox2 = [7.5234, 52.0326, 7.7556, 52.152]
-
-# def mastersim(filepath):
-    # bbox1 = detailebenen(filepath) blabla Hier muessen die Bboxen berechet werden
-    # bbox2 = detailebee(filepath) blabla also detailebenen Aufrufen
-    # sim = aehnlickeit(bbox1, bbox2)
-    # Hier muss typ.py
-    # input1 = typ.getTyp(filepath)
-    # input2 = typ.getTyp(filepath)
-    # whatDataType(input1, input2, sim)
 
 """returns the new calculated similarity score
 :param input1: filepath from a file
 :param input2: filepath from a file
-:param imput3: similarity score from two bounding boxes
+:param sim: similarity score from two bounding boxes
 """
-def whatDataType(input1, input2, sim):
+def whatDataType(filepath1, filepath2, sim):
+    input1 = extension(filepath1)
+    input2 = extension(filepath2)
+    
     if input1 == "raster" and input2 == "raster":
         click.echo("These files are rasterdata")
         return sim
@@ -34,6 +25,29 @@ def whatDataType(input1, input2, sim):
         if sim > 1:
             sim = 1
         return sim
+    else: 
+        return sim
+
+"""
+Function to find out if a dataile is a vector or rasta datatype
+:param filepath: Path to the file
+:returns: if its a vector or rasta datatype
+"""
+def extension(filepath):
+    end = os.path.splitext(filepath)
+    typ = end[1]
+    print(typ)
+
+    if typ == ".csv" or typ == ".tif" or typ == ".gpkg":
+        print("raster")
+        return "raster"
+    if typ == ".geojson" or typ == ".sh" or typ == ".gpkg" or typ == ".gml" or typ == ".kml" or typ == ".nc":
+        print("vector")
+        return "vector"
+    
+    else:
+        print("not valid")
+        return None
 
 """
 Function to calculate the similarity score
@@ -41,8 +55,11 @@ Function to calculate the similarity score
 :param bbox2: Bounding Box from a file
 :returns: similarity score from the two Bounding Boxes
 """
-def aehnlickeit (bbox1,bbox2):
-    
+def calcuateScore(bbox1,bbox2): 
+    """def aehnlickeit (filepath1,filepath2):
+    bbox1 = extractTool(filepath1)
+    bbox2 = extractTool(filepath2) """
+
     if isinstance(bbox1[0], float) and isinstance(bbox1[1], float) and isinstance(bbox1[2], float) and isinstance(bbox1[3], float):
         if isinstance(bbox2[0], float) and isinstance(bbox2[1], float) and isinstance(bbox2[2], float) and isinstance(bbox2[3], float):
 
@@ -125,6 +142,3 @@ function to calculate the distace between two Bounding Boxes
 def distance(bbox1,bbox2):
     dist = math.acos(lawOfCosines(bbox1,bbox2)) * 6378.388
     return dist
-
-if __name__ == '__main__':
-    aehnlickeit(bbox1, bbox2)
