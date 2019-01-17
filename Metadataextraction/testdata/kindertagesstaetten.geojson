@@ -1,0 +1,1009 @@
+{
+
+   "type": "FeatureCollection",
+
+   "features": [
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.68662,51.24965 ]
+
+    },
+
+    "properties": {
+
+    "ID":1,
+
+    "Name der Einrichtung":"Marienheim",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Necklenbroicher Straße 34",
+
+    "Telefon":"02132/2777",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.7015,51.24679 ]
+
+    },
+
+    "properties": {
+
+    "ID":2,
+
+    "Name der Einrichtung":"Karl-Borromäus",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Nordstraße 46",
+
+    "Telefon":"02132/73266",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6954848,51.2474829 ]
+
+    },
+
+    "properties": {
+
+    "ID":3,
+
+    "Name der Einrichtung":"Schatzkiste",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Dietrich-Bonhoeffer-Straße 9",
+
+    "Telefon":"02132/991914",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6982607,51.2380774 ]
+
+    },
+
+    "properties": {
+
+    "ID":4,
+
+    "Name der Einrichtung":"Familienzentrum Sonnengarten",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Laacher Weg 65",
+
+    "Telefon":"02132/80035",
+
+    "Anzahl der Gruppen":5,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6943341,51.2402158 ]
+
+    },
+
+    "properties": {
+
+    "ID":5,
+
+    "Name der Einrichtung":"Lummerland",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Karl-Arnold Straße 36 b",
+
+    "Telefon":"02132/71032",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6969014,51.2390112 ]
+
+    },
+
+    "properties": {
+
+    "ID":6,
+
+    "Name der Einrichtung":"Lummerland AST",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Am Sonnengarten 2",
+
+    "Telefon":"02132/9149157",
+
+    "Anzahl der Gruppen":5,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6978371,51.2517832 ]
+
+    },
+
+    "properties": {
+
+    "ID":7,
+
+    "Name der Einrichtung":"Integrative Tagesstätte Fronhof (Familienzentrum)",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Gereonstaße 6 - 8",
+
+    "Telefon":"02132/6422",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.68237,51.25069 ]
+
+    },
+
+    "properties": {
+
+    "ID":8,
+
+    "Name der Einrichtung":"Montessori-Kinderhaus",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Necklenbroicher Straße 47",
+
+    "Telefon":"02132/10604",
+
+    "Anzahl der Gruppen":2,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6827997,51.2579418 ]
+
+    },
+
+    "properties": {
+
+    "ID":9,
+
+    "Name der Einrichtung":"Kindertageseinrichtung KiKu Nepomuk",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Büderich",
+
+    "PLZ":40667,
+
+    "Straße":"Am Flehkamp 12",
+
+    "Telefon":"02132/9959001",
+
+    "Anzahl der Gruppen":5,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.61855,51.27037 ]
+
+    },
+
+    "properties": {
+
+    "ID":10,
+
+    "Name der Einrichtung":"St. Nikolaus (Familienzentrum)",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Osterath",
+
+    "PLZ":40670,
+
+    "Straße":"Fröbelstraße 1",
+
+    "Telefon":"02159/3333",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.62908,51.26573 ]
+
+    },
+
+    "properties": {
+
+    "ID":11,
+
+    "Name der Einrichtung":"Himmelszelt",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Osterath",
+
+    "PLZ":40670,
+
+    "Straße":"Insterburger Str. 20",
+
+    "Telefon":"02159/2695",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6323096,51.2700843 ]
+
+    },
+
+    "properties": {
+
+    "ID":12,
+
+    "Name der Einrichtung":"Entdeckerknirpse",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Osterath",
+
+    "PLZ":40670,
+
+    "Straße":"Wienenweg 42",
+
+    "Telefon":"02159/50978",
+
+    "Anzahl der Gruppen":3,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.62136,51.27901 ]
+
+    },
+
+    "properties": {
+
+    "ID":13,
+
+    "Name der Einrichtung":"Rasselbande",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Osterath",
+
+    "PLZ":40670,
+
+    "Straße":"Uerdinger Gerichtsweg 2",
+
+    "Telefon":"02159/528631",
+
+    "Anzahl der Gruppen":5,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.60864,51.27057 ]
+
+    },
+
+    "properties": {
+
+    "ID":14,
+
+    "Name der Einrichtung":"Integrative Tagesstätte Krähennest",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Osterath",
+
+    "PLZ":40670,
+
+    "Straße":"Rudolf-Lensing-Ring 84",
+
+    "Telefon":"02159/528277",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.67755,51.30644 ]
+
+    },
+
+    "properties": {
+
+    "ID":15,
+
+    "Name der Einrichtung":"St. Stephanus",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Lank-Latum",
+
+    "PLZ":40668,
+
+    "Straße":"Hauptstraße 89",
+
+    "Telefon":"02150/1071",
+
+    "Anzahl der Gruppen":3,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6769899,51.3060831 ]
+
+    },
+
+    "properties": {
+
+    "ID":16,
+
+    "Name der Einrichtung":"Ev. Tageseinrichtung für Kinder",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Lank-Latum",
+
+    "PLZ":40668,
+
+    "Straße":"Schulstaße 2-4",
+
+    "Telefon":"02150/2556",
+
+    "Anzahl der Gruppen":3,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.68946,51.30656 ]
+
+    },
+
+    "properties": {
+
+    "ID":17,
+
+    "Name der Einrichtung":"Tabaluga",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Lank-Latum",
+
+    "PLZ":40668,
+
+    "Straße":"Stettiner Straße 23",
+
+    "Telefon":"02150/1632",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.67645,51.30972 ]
+
+    },
+
+    "properties": {
+
+    "ID":18,
+
+    "Name der Einrichtung":"Unter'm Regenbogen (Familienzentrum)",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Lank-Latum",
+
+    "PLZ":40668,
+
+    "Straße":"Uerdinger Straße 94",
+
+    "Telefon":"02150/6608",
+
+    "Anzahl der Gruppen":5,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6799205,51.3024606 ]
+
+    },
+
+    "properties": {
+
+    "ID":19,
+
+    "Name der Einrichtung":"Farbenland",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Lank-Latum",
+
+    "PLZ":40668,
+
+    "Straße":"Pfarrstraße 10",
+
+    "Telefon":"02150/6090818",
+
+    "Anzahl der Gruppen":5,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.64949,51.28195 ]
+
+    },
+
+    "properties": {
+
+    "ID":20,
+
+    "Name der Einrichtung":"St. Franziskus",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Strümp",
+
+    "PLZ":40670,
+
+    "Straße":"Paul-Jülke-Straße 1",
+
+    "Telefon":"02159/6291",
+
+    "Anzahl der Gruppen":2,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.66079,51.28500 ]
+
+    },
+
+    "properties": {
+
+    "ID":21,
+
+    "Name der Einrichtung":"Familienzentrum",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Strümp",
+
+    "PLZ":40670,
+
+    "Straße":"An der Strempe 15",
+
+    "Telefon":"02159/8600",
+
+    "Anzahl der Gruppen":3,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6580183,51.2819005 ]
+
+    },
+
+    "properties": {
+
+    "ID":22,
+
+    "Name der Einrichtung":"Kunterbunt",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Strümp",
+
+    "PLZ":40670,
+
+    "Straße":"Isselweg 5",
+
+    "Telefon":"02159/81718",
+
+    "Anzahl der Gruppen":3,
+
+    "Plätze für 2Jährige":"nein",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.6484,51.28228 ]
+
+    },
+
+    "properties": {
+
+    "ID":23,
+
+    "Name der Einrichtung":"Schatzinsel",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Strümp",
+
+    "PLZ":40670,
+
+    "Straße":"Kaustinenweg 1",
+
+    "Telefon":"02159/9284130",
+
+    "Anzahl der Gruppen":5,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.63134,51.30524 ]
+
+    },
+
+    "properties": {
+
+    "ID":24,
+
+    "Name der Einrichtung":"Familienzentrum",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Ossum-Bösinghoven",
+
+    "PLZ":40668,
+
+    "Straße":"Josef-Werres-Str. 62",
+
+    "Telefon":"02159/7720",
+
+    "Anzahl der Gruppen":4,
+
+    "Plätze für 2Jährige":"ja",
+
+    "Plätze für Kinder unter 2 Jahren":"ja"
+
+    }
+
+  },
+
+  {
+
+    "type": "Feature",
+
+    "geometry": {
+
+       "type": "Point",
+
+       "coordinates":  [ 6.71483,51.31549 ]
+
+    },
+
+    "properties": {
+
+    "ID":25,
+
+    "Name der Einrichtung":"Mullewapp",
+
+    "Amtlicher Gemeindeschlüssel":5162022,
+
+    "Gemeinde":"Meerbusch",
+
+    "Stadtteil":"Nierst",
+
+    "PLZ":40669,
+
+    "Straße":"Stratumer Straße 56",
+
+    "Telefon":"02150/5908",
+
+    "Anzahl der Gruppen":2,
+
+    "Plätze für 2Jährige":"nein",
+
+    "Plätze für Kinder unter 2 Jahren":"nein"
+
+    }
+
+  }
+
+]
+
+}
