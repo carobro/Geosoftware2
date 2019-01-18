@@ -44,7 +44,7 @@ def getTimeextend(path, detail, folder):
                                 click.echo ("invalid file format or no time-values included!")
 
 def getShapefiletime(filepath, detail):
-    # Shapefilesoes not have any time information so we return none
+    # Shapefilesoes does not have any time information so we return none
     click.echo("Shapefile")
     click.echo(detail)
     if detail =='time':
@@ -52,8 +52,9 @@ def getShapefiletime(filepath, detail):
         click.echo("There is no time-value or invalid file")
         return None
 
-"""Because we havent seen any testdata with time values included, we asume or we rather commit that there are no time values"""
 def getGeoTifftime(filepath, detail):
+    """Because we havent seen any testdata with time values included, 
+    we asume or we rather commit that there are no time values"""
     gdal.UseExceptions()
     click.echo("GeoTiff")
     if detail =='time':

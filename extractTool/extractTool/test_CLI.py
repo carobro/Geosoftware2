@@ -11,12 +11,12 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFIn
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 #--detail=bboxSingle
-def test_bboxSingleShapefile():
+def test_bboxwholeShapefile():
 
-def test_bboxSingleGeoJson():
+def test_bboxwholeGeoJson():
 
-def test_bboxSingleNetCDF():
+def test_bboxwholeNetCDF():
 
-def test_bboxSingleCSV():
+def test_bboxwholeCSV():
 
 def test_Geopackage
