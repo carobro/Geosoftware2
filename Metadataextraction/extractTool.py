@@ -33,45 +33,49 @@ def getMetadata(path, detail, folder, time):
 
     try:
         click.echo("detailShape")
-        getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
+        a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
     except Exception as e:
         try:
             print("This is no valid Shapefile.")
             click.echo("detailjson")
-            getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder, time)
+            a=getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder, time)
         except Exception as e:
             try:
                 print("error")
                 print(e)
                 click.echo("detail_netcdf")
-                getNetCDFInfo.getNetCDFbbx(filepath, detail, folder, time)
+                a=getNetCDFInfo.getNetCDFbbx(filepath, detail, folder, time)
             except Exception as e:
                 try:
                     print("detail_csv")
-                    getCSVInfo.getCSVbbx(filepath, detail, folder, time)
+                    a=getCSVInfo.getCSVbbx(filepath, detail, folder, time)
                 except Exception as e:
                     try:
                         print("detail geopackage")
-                        getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
+                        a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
                     except Exception as e:
                         try:
                             print (e)
                             print("neu")
                             click.echo("detail geotiff")
-                            getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder, time)
+                            a=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder, time)
                         except Exception as e:
                             try:
                                 click.echo("detailiso")
-                                getIsoInfo.getIsobbx(filepath, detail, folder, time)
+                                a=getIsoInfo.getIsobbx(filepath, detail, folder, time)
                             except Exception as e:
                                 try:
                                     click.echo(e)
                                     click.echo("detail folder")
-                                    openFolder.openFolder(filepath, detail, folder, time)
+                                    a=openFolder.openFolder(filepath, detail, folder, time)
                                 except Exception as e:
-                                    click.echo(e)
-                                    click.echo ("invalid file format!!!!!")
-                                    return 0
+                                    #click.echo(e)
+                                    #click.echo ("invalid file format!!!!!")
+                                    #return 0
+                                    a=None
+    print("Final extraction:")
+    print(a)
+    return a
 
 """
 @desc: Method for transform the coordinate reference system to WGS84 using the PyProj (https://github.com/jswhit/pyproj)

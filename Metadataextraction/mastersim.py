@@ -16,11 +16,16 @@ def master(filepath1, filepath2):
     bbox1 = extractTool.getMetadata(filepath1, 'bbox', 'single', True)
     bbox2 = extractTool.getMetadata(filepath2, 'bbox', 'single', True)
     '''danach muessen wir uns nur die Werte rausupicken die wir haben wollen'''
+    print('-----------------')
+    print bbox1
+    print('------------------')
     #bbox1 = firstBbox[0][1]
     #bbox2 = secondBbox[0][1]
-    print("BoundingBox from"+ filepath1 + ":" + bbox1)
-    print("BoundingBox from"+ filepath2 + ":" + bbox2)
-
+    #@Caro: Hier verkettest du einen String mit einer liste. Das geht anscheinend nicht.
+    #Falls du die Ausgabe unbedingt haben moechtest, dann kannst du das ja nochmal googlen.
+    #Aber eigentlich ist die ja nicht so wichtig...
+    #print("BoundingBox from"+ filepath1 + ":" + bbox1)
+    #print("BoundingBox from"+ filepath2 + ":" + bbox2)
     sim = similar.calcuateScore(bbox1, bbox2)
     score = similar.whatDataType(filepath1, filepath2, sim)
 
