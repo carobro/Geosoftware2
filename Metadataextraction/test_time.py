@@ -5,10 +5,12 @@ import numpy as np
 import xarray as xr
 import os
 
+import extractTool
 import getTimeextend
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+#--detai
 print(__location__+'/testdata/')
 
 def test_timeShape():

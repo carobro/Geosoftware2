@@ -18,6 +18,7 @@ def whatDataType(filepath1, filepath2, sim):
         return sim
     if input1 == "vector" and input2 == "vector":
         click.echo("These files are vectordata")
+        print(sim)
         return sim
     if input1 == "raster" and input2 == "vector" or input1 == "vector" and input2 == "raster":
         click.echo("These files are not the same datatype")
@@ -76,6 +77,7 @@ def calcuateScore(bbox1,bbox2):
             return sim
         
     else:
+        print("invalid coordinates")
         return None
 
 """
