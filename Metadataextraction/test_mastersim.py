@@ -8,15 +8,15 @@ import os
 import extractTool, mastersim, similar
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
 
-'''__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))'''
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 """
 These tests check if the calucated similar score from two files is
 equal to our hand-calculted score
 """
 
 def test_master1():
-    filepath1 = '/testdata/Abgrabungen_Kreis_Kleve.geojson'
-    filepath2 = '/testdata/Abgrabungen_Kreis_Kleve.geojson'
+    filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson'
+    filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson'
     assert mastersim.master(filepath1, filepath2) == 1
 
 '''

@@ -13,8 +13,8 @@ the final similarity score from two files
 def master(filepath1, filepath2):
     print(filepath1)
     print(filepath2)
-    bbox1 = extractTool.getMetadata(filepath1, 'bbox', 'single', 'time')
-    bbox2 = extractTool.getMetadata(filepath2, 'bbox', 'single', 'time')
+    bbox1 = extractTool.getMetadata(filepath1, 'bbox', 'single', True)
+    bbox2 = extractTool.getMetadata(filepath2, 'bbox', 'single', True)
     '''danach muessen wir uns nur die Werte rausupicken die wir haben wollen'''
     #bbox1 = firstBbox[0][1]
     #bbox2 = secondBbox[0][1]
