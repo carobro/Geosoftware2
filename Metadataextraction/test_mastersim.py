@@ -25,10 +25,10 @@ def test_master2():
     filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
     assert mastersim.master(filepath1, filepath2) == 1
 
-# def test_master3():
-#     filepath1 = __location__+'testdata/wf_100m_klas.tif'
-#     filepath2 = __location__+'testdata/wf_100m_klas.tif'
-#     assert mastersim.master(filepath1, filepath2) == 1
+def test_master3():
+    filepath1 = __location__+'/testdata/wf_100m_klas.tif'
+    filepath2 = __location__+'/testdata/wf_100m_klas.tif'
+    assert mastersim.master(filepath1, filepath2) == 1
 
 # def test_master4():
 #     filepath1 = _location_+'/testdata/Behindertenparkplaetze_Duesseldorf.csv'
