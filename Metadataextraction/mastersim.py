@@ -27,7 +27,7 @@ def master(filepath1, filepath2):
     #Aber eigentlich ist die ja nicht so wichtig...
     #print("BoundingBox from"+ filepath1 + ":" + bbox1)
     #print("BoundingBox from"+ filepath2 + ":" + bbox2)
-    sim = similar.calcuateScore(bbox1, bbox2)
+    sim = similar.calcuateScore(first, second)
     score = similar.whatDataType(filepath1, filepath2, sim)
 
     print(score)
