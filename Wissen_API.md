@@ -55,6 +55,35 @@ print("API-Test")
 
 &larr; Hier könnte unser extractTool aufgerufen werden, welche und die zeitliche und räumliche Ausdehnung gibt.
 
+### Einbinden des CLI Tools in Zenodo
+
+ich habe jetzt in die indexer.py unser CLI Tool importiert.
+Dadurch lässt sich die getMetadata Funktion aus der extractTool.py aufrufen und ausführen.
+In der Konsole werden entsprechende outputs angezeigt.
+
+Das Problem jetzt ist, dass immer wieder neu die stelle gefunden werden muss, an der die Datensaetze gespeichert werden.
+Der Pfad zu dieser Stelle kann dann als "path"-Variable in den Methodenaufruf eingefuegt werden.
+
+### Finden der Datei
+
+Den Ort, an dem die Daten in dem virtualenv gespeichert werden hatten wir ja schon gefunden.
+Dieser Pfad wird in
+`~/zenodo/zenodo/modules/fixtures/ext.py`
+in der Funktion `def init_config(self, config)` definiert.
+An dieser Stelle kann man sich auch mal die config datei printen lassen.
+
+Leider habe ich es bisher nicht hinbekommen, diesen Wert an die indexer.py zu uebergeben, bzw. irgendwie anders an diesen Wert zu kommen.
+Deshalb erstelle ich mir den Pfad zur Datei im Moment noch "halb-dynamisch":
+Der erste Teil ist das, was in der init_config Funktion definiert wird. Das gebe ich im Moment noch konstant an.
+Der hintere Teil des Pfads setzt sich aus verschiendnen Teilen der file_id zusammen.
+`id_val=(pub_record['_files'][0]['file_id'])`
+`first_two=id_val[:2]`
+`second_two=id_val[2:4]`
+`last_part=id_val[4:]`
+`path='/home/cornelia/Envs/zenodo/var/instance/data'+'/'+first_two+'/'+second_two+'/'+last_part+'/data'`
+`getMetadata(path,'bbox', 'single', True)`
+
+
 # <span style="color:blue">Blueprints</span> und wo sie zu finden sind (nicht)
 
 Ein kleiner Fortschrittsbericht zu meinem Treiben in der Zenodo-API.
