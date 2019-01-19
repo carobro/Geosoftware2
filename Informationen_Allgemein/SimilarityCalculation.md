@@ -11,7 +11,7 @@ bbox1, bbox2 bezeichnen im folgenden die Bounding Boxes, bestehend aus: min lon,
 min lat, max lat are decimal numbers between -90.0 and 90.0.
 min lon, max lon are decimal numbers between -180.0 and 180.0.
 
-## Exakte Entfernungsberechnung für die Kugeloberfläche
+### Exakte Entfernungsberechnung für die Kugeloberfläche
 Anwendung von Seitenkosinussatz:
   `cos(g) = sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1)`  
   mit g: Gesucheter Großkreisbogen  
@@ -21,13 +21,13 @@ Anwendung von Seitenkosinussatz:
 ***
 [Quelle](https://www.kompf.de/gps/distcalc.html)
 
-# Flächenberechnung
+### Flächenberechnung
 `(max lat - min lat)*111.3 = y`  
 `(max lon - min lon)*111.3 * cos(max lat+min lat)/2) = x`  
 `A=x*y`
 mit A: Fläche in km²
 
-# Ähnlichkeitsberechnung Version 1
+## Ähnlichkeitsberechnung Version 1
 sim(bbox1,bbox2)=distance/(A(bbox1)+A(bbox2))
 
 **Beispiele:**
@@ -123,7 +123,8 @@ A(Greven) = 211.0094404
 sim = 15.86379531/(504.6131119+211.0094404) =0.0221880112  
 sim = 15.86379531²/(504.6131119+211.0094404) =0.352306593`  
 
-# Ähnlichkeitsberechnung Version 2  
+## Ähnlichkeitsberechnung Version 2  
+_wird von uns präferiert und verwendet_
 Aufteilung Ähnlichkeit Distanz und Ähnlichkeit Fläche:    
 Ähnlichkeit Distanz:   
 `simdis=dist/20000` wobei simdis maximal 1 beträgt  
