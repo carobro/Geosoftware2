@@ -76,12 +76,15 @@ Leider habe ich es bisher nicht hinbekommen, diesen Wert an die indexer.py zu ue
 Deshalb erstelle ich mir den Pfad zur Datei im Moment noch "halb-dynamisch":
 Der erste Teil ist das, was in der init_config Funktion definiert wird. Das gebe ich im Moment noch konstant an.
 Der hintere Teil des Pfads setzt sich aus verschiendnen Teilen der file_id zusammen.
-`id_val=(pub_record['_files'][0]['file_id'])`
-`first_two=id_val[:2]`
-`second_two=id_val[2:4]`
-`last_part=id_val[4:]`
-`path='/home/cornelia/Envs/zenodo/var/instance/data'+'/'+first_two+'/'+second_two+'/'+last_part+'/data'`
-`getMetadata(path,'bbox', 'single', True)`
+```
+id_val=(pub_record['_files'][0]['file_id'])
+first_two=id_val[:2]
+second_two=id_val[2:4]
+last_part=id_val[4:]
+path='/home/cornelia/Envs/zenodo/var/instance/data'+'/'+first_two+'/'+second_two+'/'+last_part+'/data'
+getMetadata(path,'bbox', 'single', True)
+```
+
 
 
 # <span style="color:blue">Blueprints</span> und wo sie zu finden sind (nicht)
