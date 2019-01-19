@@ -29,7 +29,7 @@ def test_answerE():
     assert getGeoTiffInfo.getGeoTiffbbx(__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif', 'bbox', 'single', False) ==[[None], [None], [None], [292063.81225905, 5618144.09259115, 302531.3161606, 5631223.82854667], [None], [None], [5.9153007564753155, 50.31025197410836, 9.468398712484145, 52.5307755328733], [None], [None]] 
 
 def test_answerF():    
-    assert getIsoInfo.getIsobbx(__location__+'/testdata/3D_LoD1_33390_5664.gml', 'bbx', 'single', True) == [[None]]]
+    assert getIsoInfo.getIsobbx(__location__+'/testdata/3D_LoD1_33390_5664.gml', 'bbox', 'single', True) == [[None]]
 
 def test_answerG():    
     assert getNetCDFInfo.getNetCDFbbx(__location__+'/testdata/tos_O1_2001-2002.nc', 'bbox', 'single', False) == "Fehler"
