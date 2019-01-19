@@ -35,7 +35,7 @@ sim(bbox1,bbox2)=distance/(A(bbox1)+A(bbox2))
 bbox(DE)=5.866315,47.270111,15.041932,55.099159
 bbox(POL)=14.122971,49.002048,24.145782,55.033695
 
-`lat1 = (55.099159 + 47.270111)/2  
+lat1 = (55.099159 + 47.270111)/2  
 lat1 = 51.184635  
 lat2 = (49.002048 + 55.033695)/2  
 lat2 = 52.0178715  
@@ -43,12 +43,12 @@ lat2 = 52.0178715
 lon1 = (5.866315 + 15.041932)/2  
 lon1 = 10.4541235  
 lon2 = (14.122971 + 24.145782)/2  
-lon2 = 19.1343765`  
+lon2 = 19.1343765  
 
 *Entfernung:*  
-`cos(g) = 0.9954758561  
+cos(g) = 0.9954758561  
 
-dist = 111.324 * acos(cos(g)) = 606.9570157`  
+dist = 111.324 * acos(cos(g)) = 606.9570157  
 
 *Fläche:*
 Deutschland:  
@@ -124,7 +124,7 @@ sim = 15.86379531/(504.6131119+211.0094404) =0.0221880112
 sim = 15.86379531²/(504.6131119+211.0094404) =0.352306593`  
 
 ## Ähnlichkeitsberechnung Version 2  
-_wird von uns präferiert und verwendet_
+_wird von uns präferiert und verwendet_  
 Aufteilung Ähnlichkeit Distanz und Ähnlichkeit Fläche:    
 Ähnlichkeit Distanz:   
 `simdis=dist/20000` wobei simdis maximal 1 beträgt  
