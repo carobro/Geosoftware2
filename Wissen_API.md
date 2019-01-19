@@ -85,6 +85,16 @@ path='/home/cornelia/Envs/zenodo/var/instance/data'+'/'+first_two+'/'+second_two
 getMetadata(path,'bbox', 'single', True)
 ```
 
+#### Update:
+Leider habe ich immer noch keine Moeglichkeit gefunden den Wert fuer FiXTURES_FILE_LOCATION aus dem config dictionary an die Methode weiterzureichen.
+Der Wert wird glaube ich erst in der `~/zenodo/zenodo/modules/fixtures/ext.py` erstellt. Vor dem Befehl `config.setdefault` gibt es den "FiXTURES_FILE_LOCATION"- Key in dem dictionary nicht. Eine Eigenschaft von der setdefault Funktion in Python ist, dass sie auch neue keys erstellen kann. Ich glaube, dass das hier der Fall ist.
+Fuer die Definition der Path-Variable nutzen wir jetzt einfach die gleiche Definition wie der config.setdefault Befehlt für die Definition von FIXTURES_ARCHIVE_LOCATION nutzt:
+```
+join(sys.prefix, 'var/instance/archive')
+```
+Davon ausgehend, dass wir und alle Nutzer unseres Tools den Default-Wert dieses Keys nicht anruehren und so lassen sollte das auch kein Problem darstellen.
+Falls jemand von euch Lust hat kann er oder sie aber auch gerne noch weiter nach einer Möglichkeit suchen, den Wert des keys direkt zu nutzen.
+
 
 
 # <span style="color:blue">Blueprints</span> und wo sie zu finden sind (nicht)
