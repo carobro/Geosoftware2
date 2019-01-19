@@ -232,3 +232,30 @@ Konsolen-Ausgabe eines Dateiuploads mit Speicherung als record in zenodo
 127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /static/node_modules/invenio-csl-js/dist/templates/typeahead.html HTTP/1.1" 304 -
 127.0.0.1 - - [13/Jan/2019 17:01:12] "GET /api/iiif/v2/caa7d04d-3e6d-4e54-8425-d99e1802e665:da66ca39-ed63-484b-b884-98935bf28976:eric.png/full/750,/0/default.png HTTP/1.1" 200 -
 ```
+
+# was ich bezueglich der API-Anknuepfung in Erfahrung bringen konnte:
+
+der aktuell genutzte entrypoint __before_record_index__ greift an der Stelle, 
+wo die deposit Datei wahrend des Uploads in Elasticsearch indiziert wird, 
+das heisst sicherlich der richtige um die Metadaten in aus der file un in das record shema zu pressen.
+
+Um in der API die Felder zu editieren (/api/records/[ID]) muss allerdings der entrypoint __before_record_insert__ gewaehlt werden, der aus dem elasticsearch-Eintrag die Daten nimmt und sie an den API endpoint sendet. 
+
+So konnte ich durch einfaches Auswaehlen des records der in der unter dem subtil schoenen Namen kwargs['record'] gespeichert wird, den vorhanden API-JSON-Metadatencode veraendern. Die Betonung liegt auf veraendern, ein Hinzufuegen ist hoechstwahrscheinlich aufgrund der vielen Validierungsshemen nicht moeglich. 
+
+Siehe dazu alle Dateien mit den Namen base-v1.0.0.json, file-v1.0.0.json und record-v1.0.0.json.
+
+Ich habe noch nicht herausbekommen koennen welches genau fuer die Restriktionen verantwortlich ist, 
+jedenfalls wenn ich versuche ein Feld z.B. bounding-box hinzuzufuegen, wird das publishen des records gestoppt und
+eine etwaige Fehlermeldung auf der Seite kommt, dass Feld 'bbox' nicht existiert. Ich habe in jedem Shema ein solches Feld mit gleichem identifier hinzugefuegt und auch die Option "additionalProperties" auf true gestellt.
+Ich nehme an, dass die Shemen von einer anderen Quelle ausserhalb des lokalen Systems bezogen werden, sprich vom zenodo-Server abgerufen werden. Dieser Punkt, an dem dies festgelegt wird, muss gefunden werden und die lokalen shemen, wie oben angegeben dort eingefuegt werden.
+
+Beides wird aus den invenio-Modulen exportiert (siehe ext.py in entw modules/deposit oder modules/record die imports).
+
+```
+    record['description'] = 'schroedingers bbox - ist sie da ist sie nicht da?'
+    record['bbox'] = ["muy","bien","senor"]
+```
+
+Diese beiden Befehle - einer editiert die bereits vorhande Description auf der zenodo Seite und ebenfalls in der API.
+Der andere soll das bbox Feld editieren - dabei validiert er zwar auf Typkonsistenz beim Publishprozess - sprich wenn ich einen string uebergebe wird gemeckert, aber wenn ich ein Array uebergebe laedt er die Datei hoch, jedoch ohne bbox feld in den Metadaten. 

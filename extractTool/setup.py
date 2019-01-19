@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ExtractTool",
-    version="0.3.0",
+    name="extractTool",
+    version="0.3.1",
     author="Die Gruppe 1",
     author_email="c_bron02@uni-muenster.de",
     description="Tool for extracting spatial and temporal extent of Geodata",
@@ -37,6 +37,6 @@ setuptools.setup(
         "dateparser==0.7.0"
     ],
     entry_points = {
-        'console_scripts': ['extract-extent=extractTool.extractTool:main'],
+        'console_scripts': ['extract=extractTool.extractTool:main'],
     }
 )
