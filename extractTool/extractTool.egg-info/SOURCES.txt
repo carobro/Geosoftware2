@@ -13,11 +13,6 @@ extractTool/getTimeextend.py
 extractTool/ogr2ogr.py
 extractTool/openFolder.py
 extractTool/similar.py
-extractTool/test_1212.py
-extractTool/test_CLI.py
-extractTool/test_featureebene.py
-extractTool/test_similar.py
-extractTool/test_time.py
 extractTool.egg-info/PKG-INFO
 extractTool.egg-info/SOURCES.txt
 extractTool.egg-info/dependency_links.txt
