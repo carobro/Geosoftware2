@@ -11,13 +11,18 @@ from pyproj import Proj, transform
 #import ogr2ogr
 #ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
 
+"""
+Function for extracting the bounding box of a csv file
+@see https://www.programiz.com/python-programming/reading-csv-files
+
+:param filepath: path to the file
+:param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
+:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+"""
 
 def getCSVbbx(filepath, detail, folder, time):
-
-    """returns the bounding Box CSV
-    @see https://www.programiz.com/python-programming/reading-csv-files
-    @param path Path to the file """
-    
     #format validation
     pd.read_csv(filepath)
     click.echo("csv")
@@ -249,6 +254,12 @@ def getCSVbbx(filepath, detail, folder, time):
     if folder=='single':
         print(extractTool.ret_value)
         return extractTool.ret_value
-# Hilfsfunktion fuer csv fehlerbehandlung
+
+"""
+Auxiliary function for testing if an identifier for the temporal or spatial extent is part of the header in the csv file
+:param a: collection of identifiers
+:param b: collection of identifiers
+:returns: equal identifiers
+"""
 def intersect(a, b):
      return list(set(a) & set(b))

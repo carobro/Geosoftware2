@@ -1,3 +1,4 @@
+
 import click, json, sqlite3, csv, pygeoj, extractTool
 from osgeo import gdal, ogr, osr
 import pandas as pd
@@ -6,9 +7,17 @@ import xarray as xr
 import os
 import dateparser
 
+"""
+Function for extracting the bounding box of a NetCDF file
+
+:param filepath: path to the file
+:param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
+:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+"""
 def getNetCDFbbx(filepath, detail, folder, time):
-    """returns the bounding Box NetCDF
-    @param path Path to the file """
+
     print("drin")
     #validation if file is netcdf
     ds = xr.open_dataset(filepath)
@@ -65,13 +74,8 @@ def getNetCDFbbx(filepath, detail, folder, time):
     else:
         extractTool.ret_value.append([None])
 
-        
-    # @author Jannis Froehlking
-    # After opening the file we are looking for 
-    # time values and calculate the temporal extend 
-    # with min and max functions
-    """returns the Time from NetCDF file
-    @param path Path to the file """
+    # if time is selected (TRUE), the temporal extent is calculated
+
     if (time):
         #ds = xr.open_dataset(filepath)
         try:
