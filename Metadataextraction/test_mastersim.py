@@ -17,7 +17,7 @@ These tests check if the calucated similar score from two files is
 equal to our hand-calculted score
 """
 
-# Bei Tests die Tests 15/16 beeinflussen die anderen Tests und aders herum 
+# Bei Tests die Tests 15/16/17 beeinflussen die anderen Tests und aders herum 
 #check
 def test_master15():
     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
@@ -28,7 +28,13 @@ def test_master15():
 def test_master16():
     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
-    assert mastersim.master(filepath1, filepath2) == 0.02892620198410715
+    assert mastersim.master(filepath1, filepath2) == 0.773460028183427
+
+#check
+def test_master17():
+     filepath1 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
+     filepath2 = __location__+'/testdata/wf_100m_klas.tif'
+     assert mastersim.master(filepath1, filepath2) == 0.6181574506199584
 
 
 #check
@@ -111,4 +117,3 @@ def test_master14():
     filepath1 = __location__+'/testdata/3D_LoD1_33390_5664.gml'
     filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.shp'
     assert mastersim.master(filepath1, filepath2) == 1
-
