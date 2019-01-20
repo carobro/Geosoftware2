@@ -115,4 +115,4 @@ def transformToWGS84(lat, lng, sourceCRS):
         print(e)
 
 if __name__ == '__main__':
-    getMetadata()
+    click_function()
