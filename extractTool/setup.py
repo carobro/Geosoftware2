@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="extractTool",
-    version="0.3.1",
+    version="0.4.1",
     author="Die Gruppe 1",
     author_email="c_bron02@uni-muenster.de",
     description="Tool for extracting spatial and temporal extent of Geodata",
