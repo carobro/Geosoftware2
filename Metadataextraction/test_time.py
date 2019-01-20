@@ -5,17 +5,19 @@ import numpy as np
 import xarray as xr
 import os
 
-import getTimeextent
+import extractTool
+import getTimeextend
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
+#--detai
 print(__location__+'/testdata/')
 
 def test_timeShape():
     assert getTimeextent.getShapefiletime(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'time') == None
 
 def test_timeCSV():    
-    assert getTimeextent.getCSVtime(__location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv', 'time') == None
+    assert getTimeextend.getCSVtime(__location__+'/testdata/Baumfaellungen_Duesseldorf.csv', 'time', 'single') == None
 
 def test_timeGeoPackage():    
     assert getTimeextent.getGeopackagetime(__location__+'/testdata/Geopackage_Queensland_geopackage/census2016_cca_qld_short.gpkg', 'time') == None

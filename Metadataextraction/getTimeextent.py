@@ -73,6 +73,8 @@ Because we havent seen any testdata with time values included, we asume or we ra
 :param detail: specifies if the user wants the time as a level of detail
 """
 def getGeoTifftime(filepath, detail):
+    """Because we havent seen any testdata with time values included, 
+    we asume or we rather commit that there are no time values"""
     gdal.UseExceptions()
     click.echo("GeoTiff")
     if detail =='time':

@@ -13,16 +13,33 @@ the final similarity score from two files
 def master(filepath1, filepath2):
     print(filepath1)
     print(filepath2)
-    bbox1 = extractTool.getMetadata(filepath1, 'bbox', 'single', 'time')
-    bbox2 = extractTool.getMetadata(filepath2, 'bbox', 'single', 'time')
-    '''danach muessen wir uns nur die Werte rausupicken die wir haben wollen'''
-    #bbox1 = firstBbox[0][1]
-    #bbox2 = secondBbox[0][1]
-    print("BoundingBox from"+ filepath1 + ":" + bbox1)
-    print("BoundingBox from"+ filepath2 + ":" + bbox2)
+    first = extractTool.getMetadata(filepath1, 'bbox', 'single', True)
+    second = extractTool.getMetadata(filepath2, 'bbox', 'single', True)
+    try:
+        print('___________________________________')
+        bbox1 = first[0]
+        bbox2 = second[3]
+        print("Boudning Box filepath1")
+        print(bbox1)
+        print("Boudning Box filepath2") 
+        print(bbox2)
+        print('____________________________________')
+        sim = similar.calcuateScore(bbox1, bbox2)
+        print("Calculed Bounding Box similarity:")
+        print(sim)
+        print('____________________________________')
+        score = similar.whatDataType(filepath1, filepath2, sim)
+        print('____________________________________')
+        print("Final similarity score")
+        print(score)
+        print('____________________________________')
+        return score
 
-    sim = similar.calcuateScore(bbox1, bbox2)
-    score = similar.whatDataType(filepath1, filepath2, sim)
+    except Exception as e:
+        if first == None or second == None:
+            print("One of the Bounding Boxes are Empty")
+            score = 1
+            print(score)
+            return score
 
-    print(score)
-    return score
+  

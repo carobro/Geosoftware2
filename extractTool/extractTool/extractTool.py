@@ -21,6 +21,9 @@ ret_value=[]
 @click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
 @click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
 
+def click_function(path, detail, folder, time):
+    getMetadata(path, detail, folder, time)
+
 def getMetadata(path, detail, folder, time):
     """ 
     
@@ -88,4 +91,4 @@ def transformToWGS84(lat, lng, sourceCRS):
         print(e)
 
 if __name__ == '__main__':
-    getMetadata()
+    click_function()

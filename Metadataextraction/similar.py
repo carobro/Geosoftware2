@@ -43,18 +43,23 @@ def whatDataType(filepath1, filepath2, sim):
 Function to calculate the similarity score based on the spatial similarity
 for a more detailed explanation look at: https://github.com/carobro/Geosoftware2/blob/master/Informationen_Allgemein/SimilarityCalculation.md#%C3%A4hnlichkeitsberechnung-version-2
 
+    if typ == ".csv" or typ == ".tif" or typ == ".gpkg":
+        return "raster"
+    if typ == ".geojson" or typ == ".sh" or typ == ".gpkg" or typ == ".gml" or typ == ".kml" or typ == ".nc":
+        return "vector"
+    else:
+        print("not valid")
+        return None
+
+"""
+Function to calculate the similarity score
 :param bbox1: Bounding Box from a file
 :param bbox2: Bounding Box from a file
 :returns: similarity score from the two Bounding Boxes
 """
-def calcuateScore(bbox1,bbox2): 
-    """def aehnlickeit (filepath1,filepath2):
-    bbox1 = extractTool(filepath1)
-    bbox2 = extractTool(filepath2) """
-
-    if isinstance(bbox1[0], float) and isinstance(bbox1[1], float) and isinstance(bbox1[2], float) and isinstance(bbox1[3], float):
-        if isinstance(bbox2[0], float) and isinstance(bbox2[1], float) and isinstance(bbox2[2], float) and isinstance(bbox2[3], float):
-
+def calcuateScore(bbox1,bbox2):
+    if isinstance(bbox1[0], float) and isinstance(bbox1[1], float) and isinstance(bbox1[2], float) and isinstance(bbox1[3], float) and isinstance(bbox2[0], float) and isinstance(bbox2[1], float) and isinstance(bbox2[2], float) and isinstance(bbox2[3], float):
+        if  bbox1[0] != bbox2[0] and bbox1[1] != bbox2[1] and bbox1[2] != bbox2[2] and bbox1[3] != bbox2[3]: 
             if distance(bbox1,bbox2) < 20000:
                 simdis = distance(bbox1,bbox2)/20000
             else:
@@ -64,11 +69,13 @@ def calcuateScore(bbox1,bbox2):
             else:
                 simA = 1
             sim = (2 * simdis + simA)/3
-            print(sim)
             return sim
-        
+        else:
+            sim=1
+            return sim
     else:
-        return None
+        sim = 1
+        return sim
 
 """
 Function to calculate the mean latitude
