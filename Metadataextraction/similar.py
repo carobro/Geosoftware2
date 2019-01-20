@@ -102,6 +102,7 @@ Function to calculate the mean longitude
 :param bbox: bounding box of a file with the format: ['minlon', 'minlat', 'maxlon', 'maxlat']
 :returns: the mean Longitude
 """
+
 def meanLongitude (bbox):
     lon = (bbox[2]+bbox[0])/2
     return lon
