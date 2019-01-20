@@ -6,7 +6,7 @@ import xarray as xr
 import os
 
 import extractTool
-import getTimeextend
+import getTimeextent
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 

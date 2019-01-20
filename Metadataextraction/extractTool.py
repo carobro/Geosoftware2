@@ -8,33 +8,45 @@ from pyproj import Proj, transform
 import click
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
 
-"""global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder"""
+"""
+global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder
+"""
 bboxArray = []
 timeextendArray=[]
 ret_value=[]
 
+"""
+Auxiliary function to bypass problems with the CLI tool when executed from anywhere else
 
-@click.command()
-@click.option('--path',required=True, help='please insert the path to the data here.')
-@click.option('--time', is_flag=True, help='returns the time extend of one object')
-@click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
-@click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
+:param path: path to the directory of the files or to the file itself
+:param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
+:param folder: specifies if the user gets the metadata for the whole folder "whole" or for each file "single"
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+"""
+def click_function(path, detail, folder, time):
+    getMetadata(path, detail, folder, time)
+
+
 """
 Function for extracting the metadata (bounding box)
 An advantage of our code is that the file extension is not important for the metadataextraction but the content of the file
 
 :param path: path to the directory of the files or to the file itself
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
-:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
+:param folder: specifies if the user gets the metadata for the whole folder "whole" or for each file "single"
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-
-def click_function(path, detail, folder, time):
-    getMetadata(path, detail, folder, time)
-
+@click.command()
+@click.option('--path',required=True, help='please insert the path to the data here.')
+@click.option('--time', is_flag=True, help='returns the time extend of one object')
+@click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
+@click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
 def getMetadata(path, detail, folder, time):
     filepath = path
+    if(len(filepath)==0):
+        click.echo("Please insert a correct filepath")
+        return None
     try:
         click.echo("detailShape")
         a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
@@ -103,4 +115,4 @@ def transformToWGS84(lat, lng, sourceCRS):
         print(e)
 
 if __name__ == '__main__':
-    click_function()
+    getMetadata()

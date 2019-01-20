@@ -28,25 +28,25 @@ def getTimeextent(path, detail, folder):
     filepath = path
     try:
         getShapefiletime(filepath, detail)
-    except Exception as e:
+    except Exception:
         try:
             getCSVtime(filepath, detail, folder)
-        except Exception as e:
+        except Exception:
             try:
                 getNetCDFtime(filepath, detail)
-            except Exception as e:
+            except Exception:
                 try:
                     getGeopackagetime(filepath, detail)
-                except Exception as e:
+                except Exception:
                     try: 
                         getGeoTifftime(filepath, detail)    
-                    except Exception as e:
+                    except Exception:
                         try:
                             getGeoJsontime(filepath, detail)
-                        except Exception as e:
+                        except Exception:
                             try: 
                                 getIsoTime(filepath, detail)    
-                            except Exception as e:
+                            except Exception:
                                 click.echo ("invalid file format or no time-values included!")
 
 """

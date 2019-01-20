@@ -5,10 +5,12 @@ import similar
 import click
 import os
 
-"""Calls up all important fuctions and returns 
-the final similarity score from two files
+"""
+Function for calling up all important fuctions 
+
 :param filepath1: filepath from a file
 :param filepath2: filepath from a file
+:returns: similarity score of two geospatial files
 """
 def master(filepath1, filepath2):
     print(filepath1)
@@ -35,7 +37,7 @@ def master(filepath1, filepath2):
         print('____________________________________')
         return score
 
-    except Exception as e:
+    except Exception:
         if first == None or second == None:
             print("One of the Bounding Boxes are Empty")
             score = 1

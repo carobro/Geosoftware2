@@ -40,8 +40,15 @@ def whatDataType(filepath1, filepath2, sim):
         return sim
 
 """
-Function to calculate the similarity score based on the spatial similarity
-for a more detailed explanation look at: https://github.com/carobro/Geosoftware2/blob/master/Informationen_Allgemein/SimilarityCalculation.md#%C3%A4hnlichkeitsberechnung-version-2
+Function to find out if the datafile is a vector or rasta datatype
+
+:param filepath: Path to the file
+:returns: String containing vector or raster
+"""
+def extension(filepath):
+    end = os.path.splitext(filepath)
+    typ = end[1]
+    print(typ)
 
     if typ == ".csv" or typ == ".tif" or typ == ".gpkg":
         return "raster"
@@ -52,7 +59,9 @@ for a more detailed explanation look at: https://github.com/carobro/Geosoftware2
         return None
 
 """
-Function to calculate the similarity score
+Function to calculate the similarity score based on the spatial similarity
+for a more detailed explanation look at: https://github.com/carobro/Geosoftware2/blob/master/Informationen_Allgemein/SimilarityCalculation.md#%C3%A4hnlichkeitsberechnung-version-2
+
 :param bbox1: Bounding Box from a file
 :param bbox2: Bounding Box from a file
 :returns: similarity score from the two Bounding Boxes
@@ -121,7 +130,7 @@ def length (bbox):
 Function to calculate the area of the bounding box
 
 :param bbox: bounding box of a file with the format: ['minlon', 'minlat', 'maxlon', 'maxlat']
-:returns: the area (in km²)
+:returns: the area square kilometre
 """
 def area (bbox):
     A = width(bbox) * length(bbox)
