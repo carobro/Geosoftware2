@@ -8,6 +8,7 @@ import numpy as np
 import xarray as xr
 import ogr2ogr
 import json
+import dateparser
 
 #@click.command()
 #@click.option('--path', prompt='Datapath', help='Path to the data.')
@@ -61,8 +62,7 @@ def getShapefiletime(filepath, detail):
     click.echo("Shapefile")
     click.echo(detail)
     if detail =='time':
-        sf = shapefile.Reader(filepath)
-        click.echo("There is no time-value or invalid file")
+        click.echo("There is no time-value for shapefiles")
         return None
 
 """
@@ -207,7 +207,7 @@ def getGeoJsontime(filepath, detail):
         return timemax #, timemin
 
 """
-Function for extracting the temporal extent of a shapefile
+Function for extracting the temporal extent of a NetCDF file
 
 :param filepath: path to the file
 :param detail: specifies if the user wants the time as a level of detail
@@ -219,50 +219,36 @@ def getNetCDFtime(filepath, detail):
         # opening the file as an xarray, @see: http://xarray.pydata.org/en/stable/index.html
         ds = xr.open_dataset(filepath)
         try:
-            my_time = ds.coords["time"]
-            starttime = min(my_time)
-            endtime = max(my_time)
-            # temporal extend
-            start = starttime.values
-            end = endtime.values
-            print("the temporal extend of the NetCDF object is:")
-            print(start)
-            print(end)
-            return start, end
+            mytime = ds.coords["time"]
+            starttime = min(mytime)
+            endtime = max(mytime)
+            # temporal extent
+            start = str(starttime.values)
+            end = str(endtime.values)
+            timemax_formatted=dateparser.parse(start)
+            timemin_formatted=dateparser.parse(end)
+            print(timemax_formatted, timemax_formatted)
+            return [start, end]
         except Exception as e:
             click.echo ("There is no time-value or invalid file")
             return None
 
 """
-Function for extracting the temporal extent of a shapefile
+Function for extracting the temporal extent of a Geopackage file
+Geopackages do not have any time information so we return None
 
 :param filepath: path to the file
 :param detail: specifies if the user wants the time as a level of detail
-:returns: temporal extent
+:returns: None
 """
 def getGeopackagetime(filepath, detail):
     click.echo("GeoPackage")
     if detail =='time':
-        # Opening the file with sqlite
-        conn = sqlite3.connect(filepath)
-        c = conn.cursor()
-        # Search for words: time, timestamp or date
-        c.execute("""SELECT time or timestamp or date
-                        FROM gpkg_contents""")
-        try:
-            print c.fetchone()
-            # Collecting the results to calculate the temporal extent
-            row = c.fetchall()
-            print("The time value is:")
-            print(row)
-            return row
-        except Exception as e:
-            click.echo ("There is no time-value or invalid file")
-            return None
+        click.echo ("There is no time-value for Geopackage files")
+        return None
         
 """
-Function for extracting the temporal extent of a shapefile
-
+Function for extracting the temporal extent of an iso file
 :param filepath: path to the file
 :param detail: specifies if the user wants the time as a level of detail
 :returns: temporal extent

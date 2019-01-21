@@ -83,7 +83,7 @@ def getNetCDFbbx(filepath, detail, folder, time):
             # print(ds.values)
             starttime = min(mytime)
             endtime = max(mytime)
-            # Zeitliche Ausdehnung
+            # temporal extent
             anfang = str(starttime.values)
             ende = str(endtime.values)
             timemax_formatted=dateparser.parse(ende)
@@ -96,7 +96,7 @@ def getNetCDFbbx(filepath, detail, folder, time):
                 print(timemin_formatted)
                 print(timemax_formatted)
                 print("----------------------------------------------------------------")
-                extractTool.ret_value.append([timemin_formatted, timemax_formatted])
+                extractTool.ret_value.append([anfang, ende])
 
             if folder=='whole':
                 timeextend=[timemin_formatted, timemax_formatted]

@@ -31,69 +31,55 @@ def getCSVbbx(filepath, detail, folder, time):
     listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
     listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
     listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum"]
+
     try:
         deli=';'
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
-        #tests if there is a column named Coordinatesystem or similar
-        click.echo("hi")
-        #click.echo(df.columns.values)
-        #click.echo(intersect(listCRS,df.columns.values))
-        if not intersect(listCRS,df.columns.values):
-            CRSinfo= False
-            print("hu")
-            print("No fitting header for a reference system")
-
-        if not(((intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)))or (intersect(listtime, df.columns.values))):
-            #output="No fitting header for latitudes or longitudes"
-            raise Exception('No fitting ')
-            #print(output)
-            #return output
+        click.echo("hi;")
 
     except Exception as exce:
         deli=','
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
-        #tests if there is a column named Coordinatesystem or similar
-        click.echo("hi")
-        #click.echo(df.columns.values)
-        #click.echo(intersect(listCRS,df.columns.values))
-        if not intersect(listCRS,df.columns.values):
-            CRSinfo= False
+        click.echo("hi,")
+ 
+    #tests if there is a column named coordinate reference system or similar       
+    if not intersect(listCRS,df.columns.values):
+        CRSinfo= False
+        print("hu")
+        print("No fitting header for a reference system")
+    else:
+        CRSinfo= True
+        my_crs_identifier=intersect(listCRS,df.columns.values)
+        my_crs_code=df[my_crs_identifier[0]]
+        # save the first one
+        my_crs_code_1=my_crs_code[0]
             
-            print("No fitting header for a reference system2")
-            z=intersect(listtime, df.columns.values)
-            print (z)
-            t=intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)
-            print (intersect(listlat,df.columns.values))
-            print("_______________")
-            print(t)
-            if not t:
-                print("false")
 
-        if not(((intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)))or (intersect(listtime, df.columns.values))):
-            #output="No fitting header for latitudes or longitudes"
-            #raise Exception('No fim')
-        
-            raise Exception("evtl kein csv oder ungueltiges Trennzeichen.")
-            #print("keine Koordinaten vorhanden")
-            #print(output)
-            #return output
-        print (exce)
+    # check if there are columns for latitude, longitude and timestamp
+    if not(intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)):
+        raise Exception('No fitting header for latitudes,longitudes')
+    else:
+        my_lat=intersect(listlat,df.columns.values)
+        my_lon=intersect(listlon,df.columns.values)
 
+    if intersect(listtime,df.columns.values):
+        my_time_identifier=intersect(listtime,df.columns.values)
+    else:
+        click.echo("No time information available")
+
+    # saves the coordinate values for latitude and longitude
+    lats=df[my_lat[0]]
+    lons=df[my_lon[0]]
+    
     if detail =='bbox':
-        click.echo("bbox")
+        click.echo("bbox23")
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
-        #if folder=='single':
-        mylat=intersect(listlat,df.columns.values)
-        mylon=intersect(listlon,df.columns.values)
-        lats=df[mylat[0]]
-        lons=df[mylon[0]]
         bbox=[min(lats),min(lons),max(lats),max(lons)]
         # CRS transformation if there is information about crs
         if(CRSinfo):
-            mycrsID=intersect(listCRS,df.columns.values)
-            myCRS=df[mycrsID[0]]
-            lat1t,lng1t = extractTool.transformToWGS84(min(lats),min(lons), myCRS)
-            lat2t,lng2t = extractTool.transformToWGS84(max(lats),max(lons), myCRS)
+            # my_crs_code includes the list of the identifiers of the CRS
+            lat1t,lng1t = extractTool.transformToWGS84(min(lats),min(lons), my_crs_code_1)
+            lat2t,lng2t = extractTool.transformToWGS84(max(lats),max(lons), my_crs_code_1)
             bbox=[lat1t,lng1t,lat2t,lng2t]
             if folder=='single':
                 print("----------------------------------------------------------------")
@@ -136,10 +122,6 @@ def getCSVbbx(filepath, detail, folder, time):
     #returns the convex hull of the coordinates from the CSV object.
     if detail == 'convexHull':
         click.echo("convexHull")
-        mylat=intersect(listlat,df.columns.values)
-        mylon=intersect(listlon,df.columns.values)
-        lats=df[mylat[0]]
-        lons=df[mylon[0]]
         coords=np.column_stack((lats, lons))
         #definition and calculation of the convex hull
         hull=ConvexHull(coords)
@@ -149,15 +131,8 @@ def getCSVbbx(filepath, detail, folder, time):
             point=[coords[z][0], coords[z][1]]
             convHull.append(point)
         if(CRSinfo):
-            mycrsID=intersect(listCRS,df.columns.values)
-            myCRS=df[mycrsID[0]]
-            inputProj='epsg:'
-            inputProj+=str(myCRS[0])
-            print(inputProj)
-            inProj = Proj(init=inputProj)
-            outProj = Proj(init='epsg:4326')
             for z in coords:
-                z[0],z[1] = transform(inProj,outProj,z[0],z[1])
+                z[0],z[1] = extractTool.transformToWGS84(z[0],z[1], my_crs_code_1)
             if folder=='single':
                 print("----------------------------------------------------------------")
                 click.echo("Filepath:")
@@ -194,41 +169,19 @@ def getCSVbbx(filepath, detail, folder, time):
                 click.echo("because of a missing crs this CSV is not part of the folder calculation.")
                 print("----------------------------------------------------------------")
 
-
     else:
         extractTool.ret_value.append([None])
-
-
-
     
     if (time):
         click.echo("hallo")
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, sep=';|,',engine='python')
-        click.echo(listtime)
-        click.echo(df.columns.values)
-        intersection=intersect(listtime, df.columns.values)
-        click.echo(intersection)
-        if not intersection:
+        click.echo(my_time_identifier)
+        if not my_time_identifier:
             print("No fitting header for time-values")
             extractTool.ret_value.append([None])
-            # TODO: fehlerbehandlung  
-            #try:
-                #for t in listtime:
-                    #if(x not in df.columns.values):
-                        #click.echo("This file does not include time-values")
-                    #else:
-                        #time=df[t]
-                        #timeextend =[min(time), max(time)]
-                        #click.echo(timeextend)
-                        #return timeextend
-            #except Exception as e:
-                #click.echo ("There is no time-value or invalid file.")
-                #return None   
         else:
-            
-            
-            time=df[intersection[0]]
+            time=df[my_time_identifier[0]]
             print(min(time))
             print(max(time))
             timemin=str(min(time))
