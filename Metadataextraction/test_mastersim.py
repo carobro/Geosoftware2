@@ -19,10 +19,10 @@ equal to our hand-calculted score
 
 # Bei Tests die Tests 15/16/17 beeinflussen die anderen Tests und aders herum 
 #check
-# def test_master15():
-#     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
-#     filepath2 = __location__+'/testdata/wf_100m_klas.tif'
-#     assert mastersim.master(filepath1, filepath2) == 0.02892620198410715
+def test_master15():
+    filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
+    filepath2 = __location__+'/testdata/wf_100m_klas.tif'
+    assert mastersim.master(filepath1, filepath2) == 0.02892620198410715
 
 #check
 def test_master16():
@@ -85,32 +85,32 @@ def test_master8():
     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
     assert mastersim.master(filepath1, filepath2) == 1
 
-# #check
-# def test_master9():
-#     filepath1 = __location__+'/testdata/ECMWF_ERA-40_subset.nc'
-#     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
-#     assert mastersim.master(filepath1, filepath2) == 1
+#check
+def test_master9():
+    filepath1 = __location__+'/testdata/ECMWF_ERA-40_subset.nc'
+    filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
+    assert mastersim.master(filepath1, filepath2) == 1
 
-# def test_master10():
-#     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
-#     filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.shp'
-#     assert mastersim.master(filepath1, filepath2) == 1
+def test_master10():
+    filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
+    filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.shp'
+    assert mastersim.master(filepath1, filepath2) == 1
 
-# def test_master11():
-#     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
-#     filepath2 =__location__+'/testdata/Baumfaellungen_Duesseldorf.csv'
-#     assert mastersim.master(filepath1, filepath2) == 1
+def test_master11():
+    filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
+    filepath2 =__location__+'/testdata/Baumfaellungen_Duesseldorf.csv'
+    assert mastersim.master(filepath1, filepath2) == 1
 
-# def test_master12():
-#     filepath1 = __location__+'/testdata/Baumfaellungen_Duesseldorf.csv'
-#     filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.shp'
-#     assert mastersim.master(filepath1, filepath2) == 1
+def test_master12():
+    filepath1 = __location__+'/testdata/Baumfaellungen_Duesseldorf.csv'
+    filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.shp'
+    assert mastersim.master(filepath1, filepath2) == 1
 
-# # check
-# def test_master13():
-#     filepath1 =__location__+'/testdata/wf_100m_klas.tif'
-#     filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.shp'
-#     assert mastersim.master(filepath1, filepath2) == 1
+# check
+def test_master13():
+    filepath1 =__location__+'/testdata/wf_100m_klas.tif'
+    filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.shp'
+    assert mastersim.master(filepath1, filepath2) == 1
 
 #check
 def test_master14():
