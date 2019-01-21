@@ -301,3 +301,35 @@ Beides wird aus den invenio-Modulen exportiert (siehe ext.py in entw modules/dep
 
 Diese beiden Befehle - einer editiert die bereits vorhande Description auf der zenodo Seite und ebenfalls in der API.
 Der andere soll das bbox Feld editieren - dabei validiert er zwar auf Typkonsistenz beim Publishprozess - sprich wenn ich einen string uebergebe wird gemeckert, aber wenn ich ein Array uebergebe laedt er die Datei hoch, jedoch ohne bbox feld in den Metadaten. 
+
+## erste Versuche zum Speichern von Daten in vorhandenen json schemes
+
+Es gibt eine Erklärung mit dem Titel "Expanding Zenodo metadata checklist". Diese ist in `~/zenodo/docs/development/process.rst` ab Zeile 197 zu finden.
+
+Bei dem Durchgehen der Checkliste sind folgende Probleme aufgetreten:
+#### Schritt 1 a)
+`records/jsonschemas/records/file_src-v1.0.0.json` existiert in meinem zenodo Ordner nicht. <br>
+In `records/jsonschemas/records/base-v1.0.0.json` habe ich ganz oben `"test_WERT": ""` eingefügt. <br>
+
+#### Schritt 1 b)
+Die in dem Abschnitt genannten Befehle habe ich im zenodo environment ausgefuehrt, bzw. versucht auszufuehren. <br>
+
+Den Befehl `zenodo jsonschemas compilefile -d` scheint es laut meinem Computer und der --help funktion nicht zu geben. Also habe ich ihn vorerst einfach uebersprungen. <br>
+`zenodo jsonschemas compilerecord -d` und `zenodo jsonschemas compiledeposit -d` sind ohne weitere Probleme durchgelaufen. <br>
+
+#### Schritt 1 c)
+Erstmal: ES steht fuer Elastic Search. Und "Mapping is the process of defining how a document, and the fields it contains, are stored and indexed". <br>
+
+Habe ich jetzt erstmal einfach irgendwie gemacht. Wenn Fehler auftauchen, dann gucke ich da nochmal.
+
+#### Schritt 2
+Da ich nicht wusste was JSON serialisers/deserialisers sind habe ich das mal nachgeguckt:
+"JSON is a format that encodes objects in a string. Serialization means to convert an object into that string, and deserialization is its inverse operation."<br>
+
+In der common.py habe ich jetzt einfach mal in `class CommonMetadataSchemaV1(Schema, StrictKeysMixin, RefResolverMixin)` die Zeile `test_WERT=fields.List(SanitizedUnicode())` eingefuegt.
+
+
+
+
+
+
