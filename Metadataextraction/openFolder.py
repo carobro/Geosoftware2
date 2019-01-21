@@ -7,11 +7,23 @@ import os
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, extractTool
 from scipy.spatial import ConvexHull
 
+"""
+Function for extracting the spatial extent from a directory of files
+
+:param filepath: path to the directory of the files
+:param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
+:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+"""
+
 def openFolder(filepath, detail, folder, time):
     folderpath= filepath
     click.echo("folderfolderfolder")
-    docs=os.listdir(folderpath)
-    for x in docs:
+    docs=os.listdir(folderpath) 
+    # docs now contains the files of the folder 
+    # tries to extract the bbox of each file 
+    for x in docs:  
         docPath= folderpath +"/"+ x
         try:
             click.echo("folderShape")
@@ -37,7 +49,7 @@ def openFolder(filepath, detail, folder, time):
                             try:
                                 click.echo("folderGeoPackage")
                                 getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder, time)
-                                print("aufter geopackage")
+                                print("after geopackage")
                             except Exception as e:
                                 try:
                                     click.echo("folderISO")
@@ -47,7 +59,7 @@ def openFolder(filepath, detail, folder, time):
                                         click.echo("folderfolder")
                                         openFolder(docPath, detail, folder, time)
                                     except Exception as e:
-                                        click.echo("fodlerInvalid")
+                                        click.echo("folderInvalid")
                                         click.echo ("invalid file format in folder!")
                                         return None
     ret_value_folder=[]                                    

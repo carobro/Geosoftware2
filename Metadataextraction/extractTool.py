@@ -8,12 +8,31 @@ from pyproj import Proj, transform
 import click
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
 
-"""global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder"""
+"""
+global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder
+"""
 bboxArray = []
 timeextendArray=[]
 ret_value=[]
 
-""" Advantage of our code is that the file extension is not important for the metadataextraction but the content of the file"""
+
+"""
+Auxiliary function to bypass problems with the CLI tool when executed from anywhere else
+
+:param path: path to the directory of the files or to the file itself
+:param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
+:param folder: specifies if the user gets the metadata for the whole folder "whole" or for each file "single"
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+
+Function for extracting the metadata (bounding box)
+An advantage of our code is that the file extension is not important for the metadataextraction but the content of the file
+
+:param path: path to the directory of the files or to the file itself
+:param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
+:param folder: specifies if the user gets the metadata for the whole folder "whole" or for each file "single"
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+"""
 
 @click.command()
 @click.option('--path',required=True, help='please insert the path to the data here.')
@@ -21,16 +40,17 @@ ret_value=[]
 @click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
 @click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
 
+
 def click_function(path, detail, folder, time):
     getMetadata(path, detail, folder, time)
 
 def getMetadata(path, detail, folder, time):
-    """ 
-    
-    """
+   
     filepath = path
-    # Program that extracts the boudingbox of files.
-
+   
+    if(len(filepath)==0):
+        click.echo("Please insert a correct filepath")
+        return None
     try:
         click.echo("detailShape")
         a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
@@ -78,8 +98,12 @@ def getMetadata(path, detail, folder, time):
     return a
 
 """
-@desc: Method for transform the coordinate reference system to WGS84 using the PyProj (https://github.com/jswhit/pyproj)
-@param: latitude, longitude and the source ref system
+Function for transforming the coordinate reference system to WGS84 using PyProj (https://github.com/jswhit/pyproj)
+
+:param lat: value for latitude
+:param lng: value for longitude
+:sourceCRS: epsg identifier for the source coordinate reference system
+:returns: the transformed values for latitude and longitude 
 """
 def transformToWGS84(lat, lng, sourceCRS):
     # formatting the input CRS
