@@ -1,25 +1,13 @@
-import click,json, sqlite3, pygeoj, csv
-from osgeo import gdal, ogr, osr
-import pandas as pd
-import numpy as np
-import extractTool
-from scipy.spatial import ConvexHull
-import dateparser
-from pyproj import Proj, transform
-#import sys
-
-#import ogr2ogr
-#ogr2ogr.BASEPATH = "/home/caro/Vorlagen/Geosoftware2/Metadatenextraktion"
-
-listlat = ["Koordinate_Hochwert","lat","Latitude","latitude"]
-listlon = ["Koordinate_Rechtswert","lon","Longitude","longitude","lng"]
-listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
-listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum"]
-
+import click        # used to print something 
+import extractTool  # used for the the transformation and prints 
+import pandas as pd # to read the csv we use Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
+import numpy as np  # used to calculate the convex hull
+from scipy.spatial import ConvexHull  # used to calculate the convex hull
+import dateparser   # used to parse the dates
 
 """
 Function for extracting the bounding box of a csv file
-@see https://www.programiz.com/python-programming/reading-csv-files
+:see: https://www.programiz.com/python-programming/reading-csv-files
 
 :param filepath: path to the file
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
@@ -27,121 +15,95 @@ Function for extracting the bounding box of a csv file
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-
 def getCSVbbx(filepath, detail, folder, time):
-    #format validation
-    pd.read_csv(filepath)
+    # some identifiers for comparing them with the first line of the csv file
+    listlat = ["Koordinate_Hochwert","lat","Latitude","latitude","Lat"]
+    listlon = ["Koordinate_Rechtswert","lon","Lon","Longitude","longitude","lng","Lng"]
+    listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
+    listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum", "Date", "Timestamp"]
+
     click.echo("csv")
-    
-    
-    
+    # read the csv
+    df = csv_split(filepath)
+
+    #tests if there is a column named coordinate reference system or similar       
+    if not intersect(listCRS,df.columns.values):
+        CRSinfo= False
+        click.echo("No fitting header for a reference system")
+    else:
+        CRSinfo= True
+    print("Is CRS information available")
+    print(CRSinfo)
+     # check if there are columns for latitude, longitude and timestamp
+    if not(intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)):
+        raise Exception('No fitting header for latitudes,longitudes')
+    else:
+        my_lat=intersect(listlat,df.columns.values)
+        my_lon=intersect(listlon,df.columns.values)
+        # saves the coordinate values for latitude and longitude
+        lats=df[my_lat[0]]
+        lons=df[my_lon[0]]
+
+    if intersect(listtime,df.columns.values):
+        my_time_identifier=intersect(listtime,df.columns.values)
+    else:
+        my_time_identifier= False
+        click.echo("No time information available")
+
+
     if detail =='bbox':
-        bbox_val=csv_bbox(filepath, folder)
+        bbox_val=csv_bbox(filepath, folder, lats, lons, CRSinfo, df)
 
     else:
         bbox_val=[None]
 
     #returns the convex hull of the coordinates from the CSV object.
     if detail == 'convexHull':
-        convHull_val=csv_convHull(filepath, folder)
+        convHull_val=csv_convHull(filepath, folder, lats, lons, CRSinfo, df)
 
     else:
         convHull_val=[None]
-    if (time):
-        time_val=csv_time(filepath, folder)
 
+    if (time):
+        time_val=csv_time(filepath, folder,my_time_identifier,df)
     else:
         time_val=[None]
+
     if folder=='single':
         ret_value=[bbox_val, convHull_val, time_val]
         print(ret_value)
         return ret_value
 
+"""
+Function for splitting a csv file
+
+:param filepath: path to the file
+:returns: datafile as a read_csv
+"""
 def csv_split(filepath):
-    CRSinfo=True
     print("in split")
+    # First try ';' as the delimiter, if that does not work, take ','
     try:
         deli=';'
-        df = pd.read_csv(filepath, delimiter=deli,engine='python')
-        #tests if there is a column named Coordinatesystem or similar
-        if not intersect(listCRS,df.columns.values):
-            CRSinfo= False
-            print("No fitting header for a reference system1")
-
-        if not(((intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)))or (intersect(listtime, df.columns.values))):
-            #output="No fitting header for latitudes or longitudes"
-            raise Exception('No fitting ')
-            #return output
+        df = pd.read_csv(filepath, delimiter=deli,engine='python') 
         
-        return [deli, CRSinfo]
-        
-
-    except Exception as exce:
-        CRSinfo=True
+    except Exception:
         deli=','
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
-        #tests if there is a column named Coordinatesystem or similar
-        #click.echo("hi")
-        #click.echo(df.columns.values)
-        #click.echo(intersect(listCRS,df.columns.values))
-        if not intersect(listCRS,df.columns.values):
-            CRSinfo= False
-            
-            print("No fitting header for a reference system2")
-            z=intersect(listtime, df.columns.values)
-            print (z)
-            t=intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)
-            print (intersect(listlat,df.columns.values))
-            print(t)
-            if not t:
-                print("false")
+    return df
 
-        if not(((intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)))or (intersect(listtime, df.columns.values))):
-            #output="No fitting header for latitudes or longitudes"
-            #raise Exception('No fim')
-        
-            raise Exception("evtl kein csv oder ungueltiges Trennzeichen.")
-            #print("keine Koordinaten vorhanden")
-            #print(output)
-            #return output#
-        
-        #print(deli)
-        print("++++++++++++++++++")
-        return [deli, CRSinfo]
-        #print (exce)
+"""
+Function for extracting the temporal extent of the CSV file
 
-
-def csv_time(filepath, folder):
-    click.echo("hallo")
-    # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
-    deli=csv_split(filepath)[0]
-    CRSinfo=csv_split(filepath)[1]
-    df = pd.read_csv(filepath, delimiter=deli,engine='python')
-    #df=csv_split(filepath)
-    click.echo(listtime)
-    click.echo(df.columns.values)
-    intersection=intersect(listtime, df.columns.values)
-    click.echo(intersection)
-    if not intersection:
-        print("No fitting header for time-values")
-        return [None]
-        # TODO: fehlerbehandlung  
-        #try:
-            #for t in listtime:
-                #if(x not in df.columns.values):
-                    #click.echo("This file does not include time-values")
-                #else:
-                    #time=df[t]
-                    #timeextend =[min(time), max(time)]
-                    #click.echo(timeextend)
-                    #return timeextend
-        #except Exception as e:
-            #click.echo ("There is no time-value or invalid file.")
-            #return None   
-    else:
-        
-        
-        time=df[intersection[0]]
+:param filepath: path to the file
+:param folder: specifies if we have a single file or a folder
+:param my_time_id: identifier of the time values
+:param df: CSV reader
+:returns: datafile as a read_csv
+"""
+def csv_time(filepath, folder, my_time_id, df):
+    if my_time_id:
+        time=df[my_time_id[0]]
         print(min(time))
         print(max(time))
         timemin=str(min(time))
@@ -151,30 +113,31 @@ def csv_time(filepath, folder):
         timeextend=[timemin_formatted, timemax_formatted]
         print(timeextend)
         if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Timeextend of this CSV file:")
-            click.echo(timeextend)
-            print("----------------------------------------------------------------")
+            extractTool.print_pretty_time(timeextend)
             return timeextend
         if folder=='whole':
             extractTool.timeextendArray.append(timeextend)
             print("timeextendArray:")
             print(extractTool.timeextendArray)
+    else:
+        print("No fitting header for time-values")
+        return [None]
 
+"""
+Function for extracting the convex Hull
 
-def csv_convHull(filepath, folder):
-    #df=csv_split(filepath)
-    deli=csv_split(filepath)[0]
-    CRSinfo=csv_split(filepath)[1]
-
-    df = pd.read_csv(filepath, delimiter=deli,engine='python')
-
+:param filepath: path to the file
+:param folder: specifies if we have a single file or a folder
+:param my_lats: latitude values 
+:param my_lons: longitude values
+:param my_CRSinfo: identifier of the CRS info
+:param df: CSV reader
+:returns: convex hull of the csv
+"""
+def csv_convHull(filepath, folder, my_lats, my_lons, my_CRSinfo, df):
+    listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
     click.echo("convexHull")
-    mylat=intersect(listlat,df.columns.values)
-    mylon=intersect(listlon,df.columns.values)
-    lats=df[mylat[0]]
-    lons=df[mylon[0]]
-    coords=np.column_stack((lats, lons))
+    coords=np.column_stack((my_lats, my_lons))
     #definition and calculation of the convex hull
     hull=ConvexHull(coords)
     hull_points=hull.vertices
@@ -182,125 +145,69 @@ def csv_convHull(filepath, folder):
     for z in hull_points:
         point=[coords[z][0], coords[z][1]]
         convHull.append(point)
-    if(CRSinfo):
+    if(my_CRSinfo):
         mycrsID=intersect(listCRS,df.columns.values)
         myCRS=df[mycrsID[0]]
-        inputProj='epsg:'
-        inputProj+=str(myCRS[0])
-        print(inputProj)
-        inProj = Proj(init=inputProj)
-        outProj = Proj(init='epsg:4326')
+        myCRS_1=myCRS[0]
+        print(myCRS_1)
         for z in coords:
-            z[0],z[1] = transform(inProj,outProj,z[0],z[1])
+            z[0],z[1] = extractTool.transformToWGS84(z[0],z[1], myCRS_1)
         if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("convex Hull of the csv file: ")
-            click.echo(convHull)
-            print("----------------------------------------------------------------")
+            extractTool.print_pretty_hull(filepath, convHull)
             return convHull
         if folder=='whole':
             extractTool.bboxArray=extractTool.bboxArray+convHull
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("convex hull of the CSV:")
-            click.echo(convHull)
-            print("----------------------------------------------------------------")
+            extractTool.print_pretty_hull(filepath, convHull)
             #return convHull
     else:
         if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Convex hull of the CSV object:")
-            print(convHull)
-            print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            print("----------------------------------------------------------------")
+            extractTool.print_pretty_hull(filepath, convHull)
+            click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
             return None
         if folder=='whole':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Convex hull of the CSV file:")
-            click.echo(convHull)
+            extractTool.print_pretty_hull(filepath, convHull)
             click.echo("because of a missing crs this CSV is not part of the folder calculation.")
-            print("----------------------------------------------------------------")
 
+"""
+Function for extracting the bbox
 
-
-def csv_bbox(filepath, folder):
-    print("bbo")
-    #df=csv_split(filepath)[0]
-    deli=csv_split(filepath)[0]
-    CRSinfo=csv_split(filepath)[1]
-    print("hu")
-    df = pd.read_csv(filepath, delimiter=deli,engine='python')
-    print("###########################")
-    print(df)
-
-    #print(df)
-    click.echo("bbox")
-    # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
-    #if folder=='single':
-    mylat=intersect(listlat,df.columns.values)
-    mylon=intersect(listlon,df.columns.values)
-    print mylat
-    print(df[mylat[0]])
-    print(df[mylon[0]])
-    lats=df[mylat[0]]
-    lons=df[mylon[0]]
-    print("1")
-    bbox=[min(lats),min(lons),max(lats),max(lons)]
-    print("2")
+:param filepath: path to the file
+:param folder: specifies if we have a single file or a folder
+:param my_lats: latitude values 
+:param my_lons: longitude values
+:param my_CRSinfo: identifier of the CRS info
+:param df: CSV reader
+:returns: bounding box of the csv
+"""
+def csv_bbox(filepath, folder, my_lats, my_lons, my_CRS_info, df):
+    listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
+    bbox=[min(my_lats),min(my_lons),max(my_lats),max(my_lons)]
+    print("BBOX")
+    print(bbox)
     # CRS transformation if there is information about crs
-    if(CRSinfo):
-        print("3")
+    if(my_CRS_info):
         mycrsID=intersect(listCRS,df.columns.values)
-        print("4")
-        print(df)
-        print(CRSinfo)
         myCRS=df[mycrsID[0]]
-        print("5")
-        lat1t,lng1t = extractTool.transformToWGS84(min(lats),min(lons), myCRS)
-        lat2t,lng2t = extractTool.transformToWGS84(max(lats),max(lons), myCRS)
+        myCRS1=myCRS[0]
+        print(myCRS1)
+        lat1t,lng1t = extractTool.transformToWGS84(min(my_lats),min(my_lons), myCRS1)
+        lat2t,lng2t = extractTool.transformToWGS84(max(my_lats),max(my_lons), myCRS1)
         bbox=[lat1t,lng1t,lat2t,lng2t]
         if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV object:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
+            extractTool.print_pretty_bbox(filepath,bbox)
             return bbox
         if folder=='whole':
             extractTool.bboxArray.append(bbox)
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
+            extractTool.print_pretty_bbox(filepath,bbox)
+
     else:
         if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV object:")
-            print(bbox)
+            extractTool.print_pretty_bbox(filepath,bbox)
             print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            print("----------------------------------------------------------------")
             return [None]
         if folder=='whole':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV file:")
-            click.echo(bbox)
+            extractTool.print_pretty_bbox(filepath,bbox)
             click.echo("because of a missing crs this CSV is not part of the folder calculation.")
-            print("----------------------------------------------------------------")
-
 
 """
 Auxiliary function for testing if an identifier for the temporal or spatial extent is part of the header in the csv file

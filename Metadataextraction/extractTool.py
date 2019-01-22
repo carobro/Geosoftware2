@@ -47,9 +47,9 @@ def getMetadata(path, detail, folder, time):
    
     filepath = path
    
-    # if(len(filepath)==0):
-    #     click.echo("Please insert a correct filepath")
-    #     return None
+    if(len(filepath)==0):
+        click.echo("Please insert a correct filepath")
+        return None
     try:
         click.echo("detailShape")
         a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
@@ -118,6 +118,28 @@ def transformToWGS84(lat, lng, sourceCRS):
         return(latT,lngT)
     except Exception as e:
         print(e)
+
+def print_pretty_bbox(path, bbox):
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(path)
+    click.echo("Boundingbox of the CSV object:")
+    click.echo(bbox)
+    print("----------------------------------------------------------------")
+
+def print_pretty_hull(path, convHull):
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(path)
+    click.echo("convex Hull of the csv file: ")
+    click.echo(convHull)
+    print("----------------------------------------------------------------")
+
+def print_pretty_time(path, time):
+    print("----------------------------------------------------------------")
+    click.echo("Timeextend of this CSV file:")
+    click.echo(timeextend)
+    print("----------------------------------------------------------------")
 
 if __name__ == '__main__':
     click_function()
