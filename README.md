@@ -1,6 +1,8 @@
 # Geosoftware II - WiSe 2018/19
 ### Enhancing discovery of geospatial datasets in data repositories
-
+For all installationsteps we presuppose [pip](https://pip.pypa.io/en/stable/installing/) and [python](https://www.python.org/) 
+   
+   
 :arrow_forward: Die Gruppe :one:   
 # Zenodo - Installation:      
 Here you can find our Zenodo-Repository:   
@@ -17,17 +19,20 @@ pip install -e .
 Now you can open `http://localhost:5000/`. There you can create your own profile and upload files.
 
 # CLI-Tool   
+This installation was previously tested only with Linux, but should also work under Windows.  
+
 ## Installation Description (PyPi)  
 https://pypi.org/project/extractTool/  
 ```bat 
 pip install extractTool
-```
-The extractTool will be stored in your virtual environment (*/Envs/zenodo/lib/python2.7/site-packages/extractTool*)   
-
+```  
+   
 (you can write this command in your console and follow the installation description on the webside OR    you can download the file and install the CLI tool local: )   
 ## Installation Description (local)
-This installation was previously tested only with Linux, but should also work under Windows.   
+ 
 pip for pip install is required.   
+
+**After downloading our Tool from PyPi** 
 To run our CLI tool, the following file must be executed in the project folder:   
      
 ```bat 
@@ -44,21 +49,26 @@ apt-get install gdal-bin
 ```bat 
 pip install pytest   
 ```      
-Then you can navigate in any common console in the folder of the tool (*"Metadataextraction"*) and
+Then you can navigate in any common console in the folder of the tool (*"extractTool"*) and
 there, the following command must be executed   
 
 ```bat 
-`python extractTool.py --path="<filepath>"`
+python extractTool.py --path='[filepath]' --detail=[bbox|concexHull] --folder=[single|whole] --time
 ```
+ for `filepath` you must insert a filepath to your testdata
+ 
+`--bbox` &larr; for the bounding box of the file/folder   
+`--convexHull` &larr; to get all the covexHull of the file/folder   
+`--single` &larr; to extract the bbox/covexHull of a single file   
+`--whole` &larr; to extract the bbox/convexHull of a whole dictionary   
+`--time` &larr; (optionally) You can add this parameter to get additionally the timeextend   
 
-behind it can still be added specifications:
-   
-`--bbox` &larr; for the bounding box of the file (is also set as default)   
-`--feature` &larr; to get all the coordinates of the file   
-`--single` &larr; to get only the coordinates of a file (also default)   
-`--whole` &larr; in combination with --bbox or --feature to read the respective one from an entire directory   
-`--time` &larr; to get the time of a file   
-
+### some examples
+```bat
+python extractTool.py --path='/home/maxmusterman/test1.geojson' --detail=bbox --folder=single --time   
+python extractTool.py --path='/home/maxmusterman/test2.nc' --detail=convexHull --folder=single 
+python extractTool.py --path='/home/maxmusterman/testdict' --detail=bbox --folder=whole --time
+```
 # similarity calculation
 
 Our similarity calculation code can be found in the `similar.py`file.   
