@@ -4,51 +4,128 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
+import dateparser
 
 import extractTool
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+###############################
+# --detail=bbox --folder=single
+###############################
 
-#--detail=bboxSingle
 def test_answerA():
-    assert extractTool.click_function(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'bbox', 'single', True) == [295896.274870878, 5694747.64703736, 325999.79578122497, 5747140.98659967]
+    filepath=__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == ([None], [None], [None])
 
-def test_answerB():    
-    assert extractTool.click_function(__location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv', 'bbox', 'single', True) == None
+def test_answerB():  
+    filepath= __location__+'/testdata/Baumfaellungen_Duesseldorf.csv'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[None], [None], [None]]
 
-def test_answerC():    
-    assert extractTool.click_function(__location__+'/testdata/Geopackage_Queensland_geopackage/census2016_cca_qld_short.gpkg', 'bbox', 'single', True) == [295896.274870878, 5694747.64703736, 325999.79578122497, 5747140.98659967]
+def test_answerC():
+    filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
 
-def test_answerD():    
-    assert extractTool.click_function(__location__+'/testdata/schutzhuetten_aachen.json', 'bbox', 'single', True) == [292063.81225905, 5618144.09259115, 302531.3161606, 5631223.82854667]
+def test_answerD():
+    filepath=__location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[6.04705316429154, 51.3721631194526, 6.4894453535296, 51.8440745554806], [None], [None]]
 
-def test_answerE():    
-    assert extractTool.click_function(__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif', 'bbox', 'single', False) == [5.9153007564753155, 50.31025197410836, 9.468398712484145, 52.5307755328733]
+def test_answerE():
+    filepath=__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[5.9153007564753155, 50.31025197410836, 9.468398712484145, 52.5307755328733], [None], [None]]
 
 def test_answerF():    
-    assert extractTool.click_function(__location__+'/testdata/3D_LoD1_33390_5664.gml', 'bbx', 'single', True) == [5.9153007564753155, 50.31025197410836, 9.468398712484145, 52.5307755328733]
+    filepath=__location__+'/testdata/clc_1000_PT.gml'
+    assert extractTool.getMetadata(filepath, 'bbx', 'single', False) == [[-17.54207241592243, 32.396692819320194, -6.95938792923511, 39.30113527461412], [None], [None]]
 
 def test_answerG():    
-    assert extractTool.click_function(__location__+'/testdata/tos_O1_2001-2002.nc', 'bbox', 'single', False) == None
+    filepath= __location__+'/testdata/ECMWF_ERA-40_subset.nc'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[-90.0, 0.0, 90.0, 357.5], [None], [None]]
 
+#####################################
+# --detail=convexHull --folder=single
+# ################################### 
+def test_answerO():
+    filepath=__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == ([None], [None], [None]) 
+
+def test_answerP():  
+    filepath=  __location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+
+def test_answerQ():
+    filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+
+def test_answerR():
+    filepath=__location__+'/testdata/muenster_ring_zeit.geojson'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [[7.6016807556152335, 51.96537036973145], [7.602796554565429, 51.953258408047034], [7.608118057250977, 51.94881477206191], [7.643308639526367, 51.953258408047034], [7.647256851196289, 51.95807185013927], [7.6471710205078125,51.96330786509095], [7.645540237426757, 51.96780294552556], [7.645368576049805, 51.96817310852836], [7.636871337890624, 51.97240332571046], [7.62125015258789, 51.974624029877454], [7.606401443481445, 51.97361943924433]], [None]]
+
+def test_answerS():
+    filepath=__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+
+def test_answerAE():    
+    filepath=__location__+'/testdata/clc_1000_PT.gml'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+
+def test_answerUE():    
+    filepath= __location__+'/testdata/ECMWF_ERA-40_subset.nc'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+
+######################################
+# --detail=bbox --folder=single --time
+######################################
+def test_answerT():
+    filepath=__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == ([None], [None], [[None]])
+
+def test_answerU():  
+    filepath=  __location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == None
+
+def test_answerV():
+    filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
+
+def test_answerW():
+    filepath=__location__+'/testdata/muenster_ring_zeit.geojson'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[7.6016807556152335, 51.94881477206191, 7.647256851196289, 51.974624029877454], [None], [dateparser.parse("14.11.2018"),dateparser.parse("14.11.2018")] ]# datetime.datetime(2018, 11, 14, 0, 0), datetime.datetime(2018, 11, 14, 0, 0)]]
+
+def test_answerX():
+    filepath=__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[5.9153007564753155, 50.31025197410836, 9.468398712484145, 52.5307755328733], [None], [None]]
+
+def test_answerY():    
+    filepath=__location__+'/testdata/clc_1000_PT.gml'
+    assert extractTool.getMetadata(filepath, 'bbx', 'single', True) == [[-17.54207241592243, 32.396692819320194, -6.95938792923511, 39.30113527461412], [None], [None]]
+
+def test_answerZ():    
+    filepath= __location__+'/testdata/ECMWF_ERA-40_subset.nc'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[-90.0, 0.0, 90.0, 357.5], [None], [None]]
+
+"""
+###############################
+# --detail=bbox --folder=folder
+###############################
 def test_answerH():
-    assert extractTool.click_function(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'bbox', 'whole', True) == None
+    assert extractTool.click_function(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile', 'bbox', 'whole', False) == None
 
 def test_answerI():    
-    assert extractTool.click_function(__location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv', 'bbox', 'whole', True) == None
+    assert extractTool.click_function(__location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv', 'bbox', 'whole', False) == None
 
 def test_answerJ():    
-    assert extractTool.click_function(__location__+'/testdata/Geopackage_Queensland_geopackage/census2016_cca_qld_short.gpkg', 'bbox', 'whole', True) == None
+    assert extractTool.click_function(__location__+'/testdata/Geopackage_Queensland_geopackage/census2016_cca_qld_short.gpkg', 'bbox', 'whole', False) == None
 
 def test_answerK():    
-    assert extractTool.click_function(__location__+'/testdata/schutzhuetten_aachen.json', 'bbox', 'whole', True) == None
+    assert extractTool.click_function(__location__+'/testdata/schutzhuetten_aachen.json', 'bbox', 'whole', False) == None
 
 def test_answerL():    
     assert extractTool.click_function(__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif', 'bbox', 'whole', False) == None
 
 def test_answerM():    
-    assert extractTool.click_function(__location__+'/testdata/3D_LoD1_33390_5664.gml', 'bbx', 'whole', True) == None
+    assert extractTool.click_function(__location__+'/testdata/3D_LoD1_33390_5664.gml', 'bbx', 'whole', False) == None
 
 def test_answerN():    
     assert extractTool.click_function(__location__+'/testdata/tos_O1_2001-2002.nc', 'bbox', 'whole', False) == None
+"""
