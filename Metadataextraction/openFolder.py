@@ -27,33 +27,33 @@ def openFolder(filepath, detail, folder, time):
         docPath= folderpath +"/"+ x
         try:
             click.echo("folderShape")
-            getShapefileInfo.getShapefilebbx(docPath, detail, folder, time)
+            b=getShapefileInfo.getShapefilebbx(docPath, detail, folder, time)
         except Exception as e:
             try:
                 click.echo("folderGeoJSON")
-                getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder, time)
+                b=getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder, time)
             except Exception as e:
                 try:
                     click.echo(e)
                     click.echo("folderNetCDF")
-                    getNetCDFInfo.getNetCDFbbx(docPath, detail, folder, time)
+                    b=getNetCDFInfo.getNetCDFbbx(docPath, detail, folder, time)
                 except Exception as e:
                     try:
                         click.echo("folderCSV")
-                        getCSVInfo.getCSVbbx(docPath, detail, folder, time)
+                        b=getCSVInfo.getCSVbbx(docPath, detail, folder, time)
                     except Exception as e:
                         try:
                             click.echo("folderGeoTIFF")
-                            getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder, time)
+                            b=getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder, time)
                         except Exception as e:
                             try:
                                 click.echo("folderGeoPackage")
-                                getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder, time)
+                                b=getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder, time)
                                 print("after geopackage")
                             except Exception as e:
                                 try:
                                     click.echo("folderISO")
-                                    getIsoInfo.getIsobbx(docPath, detail, folder, time)
+                                    b=getIsoInfo.getIsobbx(docPath, detail, folder, time)
                                 except Exception as e:
                                     try:
                                         click.echo("folderfolder")
@@ -62,6 +62,8 @@ def openFolder(filepath, detail, folder, time):
                                         click.echo("folderInvalid")
                                         click.echo ("invalid file format in folder!")
                                         return None
+    #folder_bboxArray=folder_bboxArray.append(b[0])
+    
     ret_value_folder=[]                                    
     if folder=='whole':
         if detail=='bbox':

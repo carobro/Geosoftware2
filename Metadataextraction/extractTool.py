@@ -13,7 +13,7 @@ global variable to save the bbox values of single files it is used for the bound
 """
 bboxArray = []
 timeextendArray=[]
-ret_value=[]
+#ret_value=[]
 
 
 """
@@ -35,7 +35,7 @@ An advantage of our code is that the file extension is not important for the met
 """
 
 @click.command()
-@click.option('--path',required=True, help='please insert the path to the data here.')
+@click.option('--path',required=True,prompt='insert filepath!', help='please insert the path to the data here.')
 @click.option('--time', is_flag=True, help='returns the time extend of one object')
 @click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
 @click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
@@ -48,9 +48,9 @@ def getMetadata(path, detail, folder, time):
    
     filepath = path
    
-    if(len(filepath)==0):
-        click.echo("Please insert a correct filepath")
-        return None
+    # if(len(filepath)==0):
+    #     click.echo("Please insert a correct filepath")
+    #     return None
     try:
         click.echo("detailShape")
         a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
@@ -71,6 +71,7 @@ def getMetadata(path, detail, folder, time):
                     a=getCSVInfo.getCSVbbx(filepath, detail, folder, time)
                 except Exception as e:
                     try:
+                        print e
                         print("detail geopackage")
                         a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
                     except Exception as e:
@@ -81,6 +82,7 @@ def getMetadata(path, detail, folder, time):
                             a=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder, time)
                         except Exception as e:
                             try:
+                                print(e)
                                 click.echo("detailiso")
                                 a=getIsoInfo.getIsobbx(filepath, detail, folder, time)
                             except Exception as e:
