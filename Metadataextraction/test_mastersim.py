@@ -89,7 +89,7 @@ def test_master8():
 def test_master9():
     filepath1 = __location__+'/testdata/ECMWF_ERA-40_subset.nc'
     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
-    assert mastersim.master(filepath1, filepath2) == 1
+    assert mastersim.master(filepath1, filepath2) == 0.6564650750802342
 
 def test_master10():
     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
