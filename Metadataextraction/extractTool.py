@@ -23,7 +23,17 @@ Auxiliary function to bypass problems with the CLI tool when executed from anywh
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
 :param folder: specifies if the user gets the metadata for the whole folder "whole" or for each file "single"
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+"""
+@click.command()
+@click.option('--path',required=True,prompt='insert filepath!', help='please insert the path to the data here.')
+@click.option('--time', is_flag=True, help='returns the time extend of one object')
+@click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
+@click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
+def click_function(path, detail, folder, time):
+    getMetadata(path, detail, folder, time)
 
+"""
 Function for extracting the metadata (bounding box)
 An advantage of our code is that the file extension is not important for the metadataextraction but the content of the file
 
@@ -33,17 +43,6 @@ An advantage of our code is that the file extension is not important for the met
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-
-@click.command()
-@click.option('--path',required=True,prompt='insert filepath!', help='please insert the path to the data here.')
-@click.option('--time', is_flag=True, help='returns the time extend of one object')
-@click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
-@click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
-
-
-def click_function(path, detail, folder, time):
-    getMetadata(path, detail, folder, time)
-
 def getMetadata(path, detail, folder, time):
    
     filepath = path
