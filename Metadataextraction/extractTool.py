@@ -119,26 +119,26 @@ def transformToWGS84(lat, lng, sourceCRS):
     except Exception as e:
         print(e)
 
-def print_pretty_bbox(path, bbox):
+def print_pretty_bbox(path, bbox, my_format):
     print("----------------------------------------------------------------")
     click.echo("Filepath:")
     click.echo(path)
-    click.echo("Boundingbox of the CSV object:")
+    click.echo("Boundingbox of the "+my_format+" object:")
     click.echo(bbox)
     print("----------------------------------------------------------------")
 
-def print_pretty_hull(path, convHull):
+def print_pretty_hull(path, convHull, my_format):
     print("----------------------------------------------------------------")
     click.echo("Filepath:")
     click.echo(path)
-    click.echo("convex Hull of the csv file: ")
+    click.echo("Convex Hull of the "+my_format+" file: ")
     click.echo(convHull)
     print("----------------------------------------------------------------")
 
-def print_pretty_time(path, time):
+def print_pretty_time(path, time, my_format):
     print("----------------------------------------------------------------")
-    click.echo("Timeextend of this CSV file:")
-    click.echo(timeextend)
+    click.echo("Timeextend of the "+my_format+" file:")
+    click.echo(time)
     print("----------------------------------------------------------------")
 
 if __name__ == '__main__':

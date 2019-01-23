@@ -137,6 +137,3 @@ def tiff_bbox(filepath, folder):
             click.echo(bbox)
             click.echo("because of a missing crs this GeoTiff is not part of the folder calculation.")
             print("----------------------------------------------------------------")
-
-if __name__ == '__main__':
-    getGeoTiffbbx()

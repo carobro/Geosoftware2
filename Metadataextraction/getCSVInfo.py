@@ -4,6 +4,7 @@ import pandas as pd # to read the csv we use Pandas: http://pandas.pydata.org/pa
 import numpy as np  # used to calculate the convex hull
 from scipy.spatial import ConvexHull  # used to calculate the convex hull
 import dateparser   # used to parse the dates
+import sys
 
 """
 Function for extracting the bounding box of a csv file
@@ -32,10 +33,9 @@ def getCSVbbx(filepath, detail, folder, time):
         click.echo("No fitting header for a reference system")
     else:
         CRSinfo= True
-    print("Is CRS information available")
-    print(CRSinfo)
-     # check if there are columns for latitude, longitude and timestamp
+    # check if there are columns for latitude, longitude and timestamp
     if not(intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)):
+ 
         raise Exception('No fitting header for latitudes,longitudes')
     else:
         my_lat=intersect(listlat,df.columns.values)
@@ -113,10 +113,10 @@ def csv_time(filepath, folder, my_time_id, df):
         timeextend=[timemin_formatted, timemax_formatted]
         print(timeextend)
         if folder=='single':
-            extractTool.print_pretty_time(timeextend)
+            extractTool.print_pretty_time(filepath, timeextend,"CSV")
             return timeextend
         if folder=='whole':
-            extractTool.timeextendArray.append(timeextend)
+            extractTool.timeextendArray.append(filepath, timeextend)
             print("timeextendArray:")
             print(extractTool.timeextendArray)
     else:
@@ -153,19 +153,19 @@ def csv_convHull(filepath, folder, my_lats, my_lons, my_CRSinfo, df):
         for z in coords:
             z[0],z[1] = extractTool.transformToWGS84(z[0],z[1], myCRS_1)
         if folder=='single':
-            extractTool.print_pretty_hull(filepath, convHull)
+            extractTool.print_pretty_hull(filepath, convHull,"CSV")
             return convHull
         if folder=='whole':
             extractTool.bboxArray=extractTool.bboxArray+convHull
-            extractTool.print_pretty_hull(filepath, convHull)
+            extractTool.print_pretty_hull(filepath, convHull,"CSV")
             #return convHull
     else:
         if folder=='single':
-            extractTool.print_pretty_hull(filepath, convHull)
+            extractTool.print_pretty_hull(filepath, convHull,"CSV")
             click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
             return None
         if folder=='whole':
-            extractTool.print_pretty_hull(filepath, convHull)
+            extractTool.print_pretty_hull(filepath, convHull,"CSV")
             click.echo("because of a missing crs this CSV is not part of the folder calculation.")
 
 """
@@ -194,19 +194,19 @@ def csv_bbox(filepath, folder, my_lats, my_lons, my_CRS_info, df):
         lat2t,lng2t = extractTool.transformToWGS84(max(my_lats),max(my_lons), myCRS1)
         bbox=[lat1t,lng1t,lat2t,lng2t]
         if folder=='single':
-            extractTool.print_pretty_bbox(filepath,bbox)
+            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
             return bbox
         if folder=='whole':
             extractTool.bboxArray.append(bbox)
-            extractTool.print_pretty_bbox(filepath,bbox)
+            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
 
     else:
         if folder=='single':
-            extractTool.print_pretty_bbox(filepath,bbox)
+            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
             print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
             return [None]
         if folder=='whole':
-            extractTool.print_pretty_bbox(filepath,bbox)
+            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
             click.echo("because of a missing crs this CSV is not part of the folder calculation.")
 
 """

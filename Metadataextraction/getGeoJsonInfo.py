@@ -3,7 +3,7 @@ import dateparser
 from osgeo import ogr
 from scipy.spatial import ConvexHull
 import geojson as gj
-
+import sys
 
 point = list()
 
@@ -32,7 +32,6 @@ As mentioned in the geojson specification the standard crs is wgs84.
 def getGeoJsonbbx(filepath, detail, folder, time):
     #TODO
     #pygeoj only works with two-dimensional coordinates
-    geojson = pygeoj.load(filepath)
 
     if detail =='bbox':
         bbox_val=geojson_bbox(filepath, folder)
@@ -117,18 +116,13 @@ def geojson_time(filepath, folder):
     timemin_formatted=dateparser.parse(timemin)
 
     if folder=='single':   
-        print("The time value of this file is:")     
-        if timemax==timemin:
-            #timeextend=[timemax_formatted, timemin_formatted]
-            #extractTool.ret_value.append(timeextend)
-            print(timemin_formatted)
-        else:
-            click.echo(timemin_formatted)
-            click.echo(timemax_formatted)
+        timeextend = [timemin_formatted, timemax_formatted]
+        extractTool.print_pretty_time(filepath, timeextend, "GeoJSON")
         return[timemax_formatted, timemin_formatted]
 
     if folder=='whole':
         timeextend=[timemin_formatted, timemax_formatted]
+        extractTool.print_pretty_time(filepath, timemax_formatted, "GeoJSON")
         extractTool.timeextendArray.append(timeextend)
         print("timeextendArray:")
         print(extractTool.timeextendArray)
@@ -139,18 +133,11 @@ def geojson_bbox(filepath, folder):
     geojson = pygeoj.load(filepath)
     geojbbx = (geojson).bbox
     if folder=='single':
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Boundingbox of the GeoJSON object:")
-        click.echo(geojbbx)
-        print("----------------------------------------------------------------")
+        extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
         return(geojbbx)
     if folder=='whole':
-        print("geojson bbox whole")
+        extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
         extractTool.bboxArray.append(geojbbx)
-        click.echo(filepath)
-        click.echo(geojbbx)
         print(extractTool.bboxArray)
     #return(geojbbx)
 
@@ -158,8 +145,6 @@ def geojson_convHull(filepath, folder):
     print("geojson convexHull")
     geojson = pygeoj.load(filepath)
     #point = list()
-
-    
     for feature in geojson:
         try:
             r= feature.geometry.coordinates
@@ -177,20 +162,11 @@ def geojson_convHull(filepath, folder):
         hullcoord=[point[z][0], point[z][1]]
         convHull.append(hullcoord)
     if folder=='single':
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Convex hull of the GeoJSON object:")
-        click.echo(convHull)
-        print("----------------------------------------------------------------")
+        extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
         return(convHull)
     if folder=='whole':
-        print("----------------------------------------------------------------")
-        extractTool.bboxArray=extractTool.bboxArray+convHull
+        extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
         click.echo("convex hull whole")
         click.echo(convHull)
+        extractTool.bboxArray=extractTool.bboxArray+convHull
         print(extractTool.bboxArray)
-
-
-if __name__ == '__main__':
-    getGeoJsonbbx(filepath, detail, folder)
