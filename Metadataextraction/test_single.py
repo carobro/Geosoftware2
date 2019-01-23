@@ -39,7 +39,7 @@ def test_answerF():
     assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[-17.54207241592243, 32.396692819320194, -6.95938792923511, 39.30113527461412], [None], [None]]
 
 def test_answerG():    
-    filepath= __location__+'/testdata/ECMWF_ERA-40_subset.nc'
+    filepath= __location__+'/testdata/ECMWF_ERA-40_subset1.nc'
     assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[-90.0, 0.0, 90.0, 357.5], [None], [None]]
 
 #####################################
