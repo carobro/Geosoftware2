@@ -30,6 +30,9 @@ def test_wholeC():
     filepath=__location__+"/testdata/geopackagetest"  
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
 
+def test_wholeD():
+    filepath=__location__+"/testdata/csvordnertest"
+    assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[47.988889, 4.3175, 53.217222, 9.731219], [None], [None]]
 
 """
 #####################################
@@ -38,7 +41,7 @@ def test_wholeC():
 def test_wholeD():
     filepath="https://uni-muenster.sciebo.de/s/QFj5pzm7AzxAh1f?path=%2FfunktionierendeTestdaten_gruppe1%2Fzeitdaten%2Ftimegeo"
     filepath1="/home/minicaro/Downloads/timegeo/timegeo"
-    assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == None
+    assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == None[[47.988889, 4.3175, 53.217222, 9.731219], [None], [None]]
 
 def test_wholeE():    
     filepath= "https://uni-muenster.sciebo.de/s/QFj5pzm7AzxAh1f?path=%2FfunktionierendeTestdaten_gruppe1%2Fzeitdaten%2Ftime%20mischung"

@@ -35,8 +35,9 @@ def getCSVbbx(filepath, detail, folder, time):
         CRSinfo= True
     # check if there are columns for latitude, longitude and timestamp
     if not(intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)):
- 
-        raise Exception('No fitting header for latitudes,longitudes')
+        click.echo("No fitting header for latitudes,longitudes")
+        #raise Exception('No fitting header for latitudes,longitudes')
+        #lats, lons = None
     else:
         my_lat=intersect(listlat,df.columns.values)
         my_lon=intersect(listlon,df.columns.values)
@@ -50,7 +51,7 @@ def getCSVbbx(filepath, detail, folder, time):
         my_time_identifier= False
         click.echo("No time information available")
 
-
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     if detail =='bbox':
         bbox_val=csv_bbox(filepath, folder, lats, lons, CRSinfo, df)
 

@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import dateparser
+import dateparser   # used to parse the dates
 
 """
 Function for extracting the bounding box of a NetCDF file
@@ -18,24 +18,21 @@ Function for extracting the bounding box of a NetCDF file
 """
 def getNetCDFbbx(filepath, detail, folder, time):
     ret_value=[]
-    print("drin")
+    print("in NetCDF")
     #validation if file is netcdf
-    ds = xr.open_dataset(filepath)
     if detail =='bbox':
         bbox_val=netcdf_bbox(filepath, folder)
     else:
         bbox_val=[None]
+
     if detail == 'convexHull':
         convHull_val=netcdf_convHull(filepath, folder)
-    
     else:
         convHull_val=[None]
 
     # if time is selected (TRUE), the temporal extent is calculated
-
     if (time):
         time_val=netcdf_time(filepath, folder)
-        
     else:
         time_val=[None]
     
@@ -45,6 +42,13 @@ def getNetCDFbbx(filepath, detail, folder, time):
     return ret_value
     #print("fertig")
 
+"""
+Function for extracting the time of a NetCDF file
+
+:param filepath: path to the file
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+:returns: temporal extent
+"""
 def netcdf_time(filepath, folder):
     ds = xr.open_dataset(filepath)
     try:
@@ -135,7 +139,3 @@ def netcdf_bbox(filepath, folder):
     #    print(bbox)
     #    ds.close()
         #return bbox
-
-
-if __name__ == '__main__':
-    getNetCDFbbx()
