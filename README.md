@@ -60,21 +60,19 @@ Then you can navigate in any common console in the folder of the tool (*"extract
 there, the following command must be executed   
 
 ```bat 
-python extractTool.py --path='[filepath]' --detail=[bbox|concexHull] --folder=[single|whole] --time
+python extractTool.py --path='[filepath]' --detail=[bbox|concexHull] --time
 ```
  for `filepath` you must insert a filepath to your testdata
  
 `--bbox` &larr; for the bounding box of the file/folder   
 `--convexHull` &larr; to get all the covexHull of the file/folder   
-`--single` &larr; to extract the bbox/covexHull of a single file   
-`--whole` &larr; to extract the bbox/convexHull of a whole dictionary   
 `--time` &larr; (optionally) You can add this parameter to get additionally the timeextend   
 
 ### some examples
 ```bat
-python extractTool.py --path='/home/maxmusterman/test1.geojson' --detail=bbox --folder=single --time   
+python extractTool.py --path='/home/maxmusterman/test1.geojson' --detail=bbox --time   
 python extractTool.py --path='/home/maxmusterman/test2.nc' --detail=convexHull --folder=single 
-python extractTool.py --path='/home/maxmusterman/testdict' --detail=bbox --folder=whole --time
+python extractTool.py --path='/home/maxmusterman/testdict' --detail=bbox --time
 ```
 # similarity calculation
 
