@@ -41,11 +41,10 @@ def getGeopackagebbx(filepath, detail, folder, time):
     else:
         time_val=[None]
 
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)
-        return ret_value
-        #return None
+
+    ret_value=[bbox_val, convHull_val, time_val]
+    print(ret_value)
+    return ret_value
 
 def geopackage_time(filepath, folder):
     out="There is no time-value for GeoPackage files."
@@ -70,19 +69,19 @@ def geopackage_convHull(filepath, folder):
     for y in hull_points:
         point=[pointlist[y][0], pointlist[y][1]]
         convHull.append(point)
-    if folder=='single':   
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Convex hull of the GeoPackage object:")
-        print(convHull)
-        print("----------------------------------------------------------------")
-        return convHull
-    if folder=='whole':
-        print("----------------------------------------------------------------")
-        de.bboxArray=de.bboxArray+convHull
-        click.echo("convex hull whole")
-        click.echo(convHull)
+  
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(filepath)
+    click.echo("Convex hull of the GeoPackage object:")
+    print(convHull)
+    print("----------------------------------------------------------------")
+    return convHull
+    # if folder=='whole':
+    #     print("----------------------------------------------------------------")
+    #     de.bboxArray=de.bboxArray+convHull
+    #     click.echo("convex hull whole")
+    #     click.echo(convHull)
         
 
 def geopackage_bbox(filepath, folder):
@@ -120,41 +119,41 @@ def geopackage_bbox(filepath, folder):
         bbox=[lat1,lng1,lat2,lng2]
 
 
-    if folder=='single':
-        if wgs_84==True:
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoPackage object:")
-            print(bbox)
-            print("----------------------------------------------------------------")
-            return bbox
-        else:
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoPackage object:")
-            print(bbox)
-            print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            print("----------------------------------------------------------------")
-            return [None]
-    if folder=='whole':
-        if wgs_84==True:
-            de.bboxArray.append(bbox)
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoPackage:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
-        else:
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoPackage:")
-            click.echo(bbox)
-            click.echo("because of a missing crs this GeoPackage is not part of the folder calculation.")
-            print("----------------------------------------------------------------")
+    #if folder=='single':
+    if wgs_84==True:
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the GeoPackage object:")
+        print(bbox)
+        print("----------------------------------------------------------------")
+        return bbox
+    else:
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the GeoPackage object:")
+        print(bbox)
+        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        print("----------------------------------------------------------------")
+        return [None]
+    # if folder=='whole':
+    #     if wgs_84==True:
+    #         de.bboxArray.append(bbox)
+    #         print("----------------------------------------------------------------")
+    #         click.echo("Filepath:")
+    #         click.echo(filepath)
+    #         click.echo("Boundingbox of the GeoPackage:")
+    #         click.echo(bbox)
+    #         print("----------------------------------------------------------------")
+    #     else:
+    #         print("----------------------------------------------------------------")
+    #         click.echo("Filepath:")
+    #         click.echo(filepath)
+    #         click.echo("Boundingbox of the GeoPackage:")
+    #         click.echo(bbox)
+    #         click.echo("because of a missing crs this GeoPackage is not part of the folder calculation.")
+    #         print("----------------------------------------------------------------")
 
 
 if __name__ == '__main__':
