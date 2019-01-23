@@ -14,23 +14,23 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 ###############################
 # --detail=bbox --folder=whole
 ###############################
-def test_wholeA():
+def test_whole_A():
     filepath=__location__+'/testdata/mischung_bbox1'
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[-43.7405, 50.31025197410836, 9.468398712484145, 167.998], [None], [None]]
 
-def test_wholeD():  
+def test_whole_B():  
     filepath=__location__+"/testdata/mischung_bbox2"  
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[5.520648869321924, 49.87014441103477, 10.114607987362609, 52.88446415203189], [None], [None]]
 
-def test_wholeB():    
+def test_whole_C():    
     filepath=__location__+'/testdata/geotifftest'
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[5.520648869321924, 49.87014441103477, 10.114607987362609, 52.88446415203189], [None], [None]]
 
-def test_wholeC():  
+def test_whole_D():  
     filepath=__location__+"/testdata/geopackagetest"  
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
 
-def test_wholeD():
+def test_whole_E():
     filepath=__location__+"/testdata/csvordnertest"
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[47.988889, 4.3175, 53.217222, 9.731219], [None], [None]]
 

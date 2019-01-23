@@ -17,8 +17,6 @@ Function for extracting the bounding box of a NetCDF file
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
 def getNetCDFbbx(filepath, detail, folder, time):
-    ret_value=[]
-    print("in NetCDF")
     #validation if file is netcdf
     if detail =='bbox':
         bbox_val=netcdf_bbox(filepath, folder)
@@ -124,12 +122,7 @@ def netcdf_bbox(filepath, folder):
     #click.echo(bbox)
 
     #if folder=='single':
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
-    click.echo(filepath)
-    click.echo("Boundingbox of the NetCDF Object:")
-    click.echo(bbox)
-    print("----------------------------------------------------------------")
+    extractTool.print_pretty_bbox(filepath,bbox, "NetCDF")
     ds.close()
     return bbox
     # if folder=='whole':

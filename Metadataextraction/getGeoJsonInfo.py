@@ -121,7 +121,6 @@ def geojson_time(filepath, folder):
 
 
 def geojson_bbox(filepath, folder):
-    click.echo("geojson bbox")
     geojson = pygeoj.load(filepath)
     geojbbx = (geojson).bbox
     #if folder=='single':
