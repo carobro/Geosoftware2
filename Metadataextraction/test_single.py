@@ -38,6 +38,11 @@ def test_answerF():
     filepath=__location__+'/testdata/clc_1000_PT.gml'
     assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[-17.54207241592243, 32.396692819320194, -6.95938792923511, 39.30113527461412], [None], [None]]
 
+def test_answerxx():    
+    filepath=__location__+"/testdata/mypolygon_px6.gml"
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[79.39064024773653, 11.627857397680971, 79.44763182487713, 11.697121798928404], [None], [None]]
+
+
 def test_answerG():    
     filepath= __location__+'/testdata/ECMWF_ERA-40_subset1.nc'
     assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[-90.0, 0.0, 90.0, 357.5], [None], [None]]
