@@ -28,7 +28,7 @@ def test_answerV():
 
 def test_answerW():
     filepath=__location__+'/testdata/muenster_ring_zeit.geojson'
-    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[7.6016807556152335, 51.94881477206191, 7.647256851196289, 51.974624029877454], [None], [datetime.datetime(2018, 11, 14, 0, 0), datetime.datetime(2018, 11, 14, 0, 0)]]
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[7.6016807556152335, 51.94881477206191, 7.647256851196289, 51.974624029877454], [None], [dateparser.parse("14.11.2018"),dateparser.parse("14.11.2018")] ]# datetime.datetime(2018, 11, 14, 0, 0), datetime.datetime(2018, 11, 14, 0, 0)]]
 
 def test_answerX():
     filepath=__location__+'/testdata/MittlWindgeschw-100m_GeoTIFF/wf_100m_klas.tif'
@@ -36,7 +36,7 @@ def test_answerX():
 
 def test_answerY():    
     filepath=__location__+'/testdata/clc_1000_PT.gml'
-    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[-17.54207241592243, 32.396692819320194, -6.95938792923511, 39.30113527461412], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbx', 'single', True) == [[-17.54207241592243, 32.396692819320194, -6.95938792923511, 39.30113527461412], [None], [None]]
 
 def test_answerZ():    
     filepath= __location__+'/testdata/ECMWF_ERA-40_subset.nc'

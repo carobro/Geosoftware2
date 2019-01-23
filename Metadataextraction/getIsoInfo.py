@@ -63,27 +63,31 @@ def getIsobbx(filepath, detail, folder, time):
         bbox_val=[None]
     #os.remove("out.json")
 
-
     if detail == 'convexHull':
         convHull_val=iso_convHull(filepath, folder)
         
     else:
         convHull_val=[None]
 
-    os.remove("out.json")
-
     # We transform the gml file to a geojson file, then search for
     # words like "date", "timestamp", "time" and collect them
     if (time):
-        time_val=iso_time(filepath, folder)
+        print("/////////////////////////////////////////77")
+        try: 
+            time_val=iso_time(filepath, folder)
+        except Exception as e:
+            print(e)
+        print("+++++++++++++++++++++++++++")
         
     else:
         time_val=[None]
     
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)
-        return ret_value
+    #if folder=='single':
+    ret_value=[bbox_val, convHull_val, time_val]
+    print("*************************************************")
+    print(ret_value)
+    os.remove("out.json")
+    return ret_value
     #return time
 
 def iso_bbox(filepath, folder):
@@ -114,44 +118,44 @@ def iso_bbox(filepath, folder):
         print("While splitting the string an error occurred")
         defined_crs=False
     if defined_crs:
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the ISO object:")
-            click.echo(mybbx)
-            print("----------------------------------------------------------------")
-            return mybbx
-            #extractTool.ret_value.append(mybbx)
+        #if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the ISO object:")
+        click.echo(mybbx)
+        print("----------------------------------------------------------------")
+        return mybbx
+        #extractTool.ret_value.append(mybbx)
 
-        if folder=='whole':
-            print("----------------------------------------------------------------")
-            click.echo("filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the ISO object:")
-            click.echo(mybbx)
-            print("----------------------------------------------------------------")
-            extractTool.bboxArray.append(mybbx)
+        # if folder=='whole':
+        #     print("----------------------------------------------------------------")
+        #     click.echo("filepath:")
+        #     click.echo(filepath)
+        #     click.echo("Boundingbox of the ISO object:")
+        #     click.echo(mybbx)
+        #     print("----------------------------------------------------------------")
+        #     extractTool.bboxArray.append(mybbx)
     else:
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the ISO object:")
-            click.echo(mybbx)
-            print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            print("----------------------------------------------------------------")
-            return [None]
-            #extractTool.ret_value.append([None])
+        #if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the ISO object:")
+        click.echo(mybbx)
+        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        print("----------------------------------------------------------------")
+        return [None]
+        #extractTool.ret_value.append([None])
         
-        if folder=='whole':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the ISO object:")
-            click.echo(mybbx)
-            click.echo("because of a missing crs this ISO object is not part of the folder calculation.")
-            print("----------------------------------------------------------------")
+        # if folder=='whole':
+        #     print("----------------------------------------------------------------")
+        #     click.echo("Filepath:")
+        #     click.echo(filepath)
+        #     click.echo("Boundingbox of the ISO object:")
+        #     click.echo(mybbx)
+        #     click.echo("because of a missing crs this ISO object is not part of the folder calculation.")
+        #     print("----------------------------------------------------------------")
 
 
 def iso_convHull(filepath, folder):
@@ -182,24 +186,24 @@ def iso_convHull(filepath, folder):
         hullcoord=[point[z][0], point[z][1]]
         convHull.append(hullcoord)
         print("in hull_points_loop")
-    if folder=='single':
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Convex hull of the ISO object:")
-        click.echo(convHull)
-        print("----------------------------------------------------------------")
-        return convHull
-        #extractTool.ret_value.append([convHull])
-    if folder=='whole':
-        print("----------------------------------------------------------------")
-        extractTool.bboxArray=extractTool.bboxArray+convHull
-        #extractTool.bboxArray.append(convHull)
-        click.echo("convex hull whole")
-        click.echo(convHull)
-        print("bboxArray")
-        print(extractTool.bboxArray)
-        print("----------------------------------------------------------------")
+    #if folder=='single':
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(filepath)
+    click.echo("Convex hull of the ISO object:")
+    click.echo(convHull)
+    print("----------------------------------------------------------------")
+    return convHull
+    #extractTool.ret_value.append([convHull])
+    # if folder=='whole':
+    #     print("----------------------------------------------------------------")
+    #     extractTool.bboxArray=extractTool.bboxArray+convHull
+    #     #extractTool.bboxArray.append(convHull)
+    #     click.echo("convex hull whole")
+    #     click.echo(convHull)
+    #     print("bboxArray")
+    #     print(extractTool.bboxArray)
+    #     print("----------------------------------------------------------------")
     #os.remove("out.json")
     #iso.close()
     #return point
@@ -212,14 +216,12 @@ def iso_time(filepath, folder):
         ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
     except Exception as a:
         print (a)
+
     iso = open("time.json")
-    print("DRINNEN")
 
     geojson = json.load(iso)
-    print("nach load")
     # @see https://www.w3schools.com/python/python_file_remove.asp
     os.remove("time.json")
-    print("nach remove")
     if geojson["type"] == "FeatureCollection":
         #print(geojson["features"])
         first = geojson["features"]  
@@ -261,15 +263,17 @@ def iso_time(filepath, folder):
                                             #extractTool.ret_value.append([None])
                                             #print(extractTool.ret_value)
                                             #return(extractTool.ret_value)
-                                            raise Exception ("There is no time-value ISO")
+                                            #raise Exception ("There is no time-value ISO")
                                             #click.echo("there is no time-value ISO")
                                             #print(time)
-                                            return None   
+                                            return [None]   
 
         time_formatted=dateparser.parse(time)
         timeextend=[time_formatted, time_formatted]
 
         #extractTool.ret_value.append([timeextend])
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        print(timeextend)
         return timeextend
         #print("The time value of this ISO file is:")
         #print(time)
