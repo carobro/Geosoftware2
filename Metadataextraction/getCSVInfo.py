@@ -33,8 +33,6 @@ def getCSVbbx(filepath, detail, folder, time):
     pd.read_csv(filepath)
     click.echo("csv")
     
-    
-    
     if detail =='bbox':
         bbox_val=csv_bbox(filepath, folder)
 
@@ -52,10 +50,11 @@ def getCSVbbx(filepath, detail, folder, time):
 
     else:
         time_val=[None]
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)
-        return ret_value
+    
+    #if folder=='single':
+    ret_value=[bbox_val, convHull_val, time_val]
+    print(ret_value)
+    return ret_value
 
 def csv_split(filepath):
     CRSinfo=True
@@ -150,16 +149,16 @@ def csv_time(filepath, folder):
         timemin_formatted=dateparser.parse(timemin)
         timeextend=[timemin_formatted, timemax_formatted]
         print(timeextend)
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Timeextend of this CSV file:")
-            click.echo(timeextend)
-            print("----------------------------------------------------------------")
-            return timeextend
-        if folder=='whole':
-            extractTool.timeextendArray.append(timeextend)
-            print("timeextendArray:")
-            print(extractTool.timeextendArray)
+        #if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("Timeextend of this CSV file:")
+        click.echo(timeextend)
+        print("----------------------------------------------------------------")
+        return timeextend
+        #if folder=='whole':
+        #    extractTool.timeextendArray.append(timeextend)
+        #    print("timeextendArray:")
+        #    print(extractTool.timeextendArray)
 
 
 def csv_convHull(filepath, folder):
@@ -192,41 +191,41 @@ def csv_convHull(filepath, folder):
         outProj = Proj(init='epsg:4326')
         for z in coords:
             z[0],z[1] = transform(inProj,outProj,z[0],z[1])
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("convex Hull of the csv file: ")
-            click.echo(convHull)
-            print("----------------------------------------------------------------")
-            return convHull
-        if folder=='whole':
-            extractTool.bboxArray=extractTool.bboxArray+convHull
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("convex hull of the CSV:")
-            click.echo(convHull)
-            print("----------------------------------------------------------------")
-            #return convHull
+        # if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("convex Hull of the csv file: ")
+        click.echo(convHull)
+        print("----------------------------------------------------------------")
+        return convHull
+        # if folder=='whole':
+        #     extractTool.bboxArray=extractTool.bboxArray+convHull
+        #     print("----------------------------------------------------------------")
+        #     click.echo("Filepath:")
+        #     click.echo(filepath)
+        #     click.echo("convex hull of the CSV:")
+        #     click.echo(convHull)
+        #     print("----------------------------------------------------------------")
+        #     #return convHull
     else:
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Convex hull of the CSV object:")
-            print(convHull)
-            print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            print("----------------------------------------------------------------")
-            return None
-        if folder=='whole':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Convex hull of the CSV file:")
-            click.echo(convHull)
-            click.echo("because of a missing crs this CSV is not part of the folder calculation.")
-            print("----------------------------------------------------------------")
+        # if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("Convex hull of the CSV object:")
+        print(convHull)
+        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        print("----------------------------------------------------------------")
+        return None
+        # if folder=='whole':
+        #     print("----------------------------------------------------------------")
+        #     click.echo("Filepath:")
+        #     click.echo(filepath)
+        #     click.echo("Convex hull of the CSV file:")
+        #     click.echo(convHull)
+        #     click.echo("because of a missing crs this CSV is not part of the folder calculation.")
+        #     print("----------------------------------------------------------------")
 
 
 
@@ -266,40 +265,40 @@ def csv_bbox(filepath, folder):
         lat1t,lng1t = extractTool.transformToWGS84(min(lats),min(lons), myCRS)
         lat2t,lng2t = extractTool.transformToWGS84(max(lats),max(lons), myCRS)
         bbox=[lat1t,lng1t,lat2t,lng2t]
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV object:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
-            return bbox
-        if folder=='whole':
-            extractTool.bboxArray.append(bbox)
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
+        #if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the CSV object:")
+        click.echo(bbox)
+        print("----------------------------------------------------------------")
+        return bbox
+        # if folder=='whole':
+        #     extractTool.bboxArray.append(bbox)
+        #     print("----------------------------------------------------------------")
+        #     click.echo("Filepath:")
+        #     click.echo(filepath)
+        #     click.echo("Boundingbox of the CSV:")
+        #     click.echo(bbox)
+        #     print("----------------------------------------------------------------")
     else:
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV object:")
-            print(bbox)
-            print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            print("----------------------------------------------------------------")
-            return [None]
-        if folder=='whole':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the CSV file:")
-            click.echo(bbox)
-            click.echo("because of a missing crs this CSV is not part of the folder calculation.")
-            print("----------------------------------------------------------------")
+        # if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the CSV object:")
+        print(bbox)
+        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        print("----------------------------------------------------------------")
+        return [None]
+        # if folder=='whole':
+        #     print("----------------------------------------------------------------")
+        #     click.echo("Filepath:")
+        #     click.echo(filepath)
+        #     click.echo("Boundingbox of the CSV file:")
+        #     click.echo(bbox)
+        #     click.echo("because of a missing crs this CSV is not part of the folder calculation.")
+        #     print("----------------------------------------------------------------")
 
 
 """

@@ -109,22 +109,22 @@ def geojson_time(filepath, folder):
     timemax_formatted=dateparser.parse(timemax)
     timemin_formatted=dateparser.parse(timemin)
 
-    if folder=='single':   
-        print("The time value of this file is:")     
-        if timemax==timemin:
-            #timeextend=[timemax_formatted, timemin_formatted]
-            #extractTool.ret_value.append(timeextend)
-            print(timemin_formatted)
-        else:
-            click.echo(timemin_formatted)
-            click.echo(timemax_formatted)
-        return[timemax_formatted, timemin_formatted]
+    # if folder=='single':   
+    print("The time value of this file is:")     
+    if timemax==timemin:
+        #timeextend=[timemax_formatted, timemin_formatted]
+        #extractTool.ret_value.append(timeextend)
+        print(timemin_formatted)
+    else:
+        click.echo(timemin_formatted)
+        click.echo(timemax_formatted)
+    return[timemax_formatted, timemin_formatted]
 
-    if folder=='whole':
-        timeextend=[timemin_formatted, timemax_formatted]
-        extractTool.timeextendArray.append(timeextend)
-        print("timeextendArray:")
-        print(extractTool.timeextendArray)
+    # if folder=='whole':
+    #     timeextend=[timemin_formatted, timemax_formatted]
+    #     extractTool.timeextendArray.append(timeextend)
+    #     print("timeextendArray:")
+    #     print(extractTool.timeextendArray)
 
 
 def geojson_bbox(filepath, folder):
