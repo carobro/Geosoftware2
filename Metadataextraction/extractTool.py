@@ -11,7 +11,7 @@ import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo,
 """
 global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder
 """
-bboxArray = []
+#bboxArray = []
 timeextendArray=[]
 #ret_value=[]
 

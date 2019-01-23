@@ -53,11 +53,10 @@ def getGeoJsonbbx(filepath, detail, folder, time):
        
     else:
         time_val=[None]
-        #extractTool.ret_value.append([None]) 
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)        
-        return ret_value
+
+    ret_value=[bbox_val, convHull_val, time_val]
+    print(ret_value)       
+    return ret_value
 
 def geojson_time(filepath, folder):
     ds = open(filepath)
@@ -103,12 +102,6 @@ def geojson_time(filepath, folder):
                                     except Exception as e:
                                         click.echo("there is no time-value")
                                         return [None]
-                                        #extractTool.ret_value.append([None])
-                                        #if folder=='single': 
-                                        #     print(extractTool.ret_value)
-                                        #     return extractTool.ret_value
-                                        # if folder=='whole':
-                                        #     return None
 
     timemax = str(max(timelist))
     timemin = str(min(timelist))
