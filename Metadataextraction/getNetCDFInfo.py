@@ -59,18 +59,18 @@ def netcdf_time(filepath, folder):
         # Zeitliche Ausdehnung
         anfang = str(starttime.values)
         ende = str(endtime.values)
-        timemax_formatted=dateparser.parse(ende)
-        timemin_formatted=dateparser.parse(anfang)
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            print("the temporal extend of the NetCDF object is:")
-            print(timemin_formatted)
-            print(timemax_formatted)
-            print("----------------------------------------------------------------")
-            return([timemin_formatted, timemax_formatted])
-            #extractTool.ret_value.append([timemin_formatted, timemax_formatted])
+        timemax_formatted=str(dateparser.parse(ende))
+        timemin_formatted=str(dateparser.parse(anfang))
+        #if folder=='single':
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        print("the temporal extend of the NetCDF object is:")
+        print(timemin_formatted)
+        print(timemax_formatted)
+        print("----------------------------------------------------------------")
+        return([timemin_formatted, timemax_formatted])
+        #extractTool.ret_value.append([timemin_formatted, timemax_formatted])
 
         # if folder=='whole':
         #timeextend=[timemin_formatted, timemax_formatted]

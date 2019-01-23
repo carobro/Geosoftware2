@@ -109,8 +109,8 @@ def csv_time(filepath, folder, my_time_id, df):
         print(max(time))
         timemin=str(min(time))
         timemax=str(max(time))
-        timemax_formatted=dateparser.parse(timemax)
-        timemin_formatted=dateparser.parse(timemin)
+        timemax_formatted=str(dateparser.parse(timemax))
+        timemin_formatted=str(dateparser.parse(timemin))
         timeextend=[timemin_formatted, timemax_formatted]
         print(timeextend)
         #if folder=='single':
