@@ -108,30 +108,30 @@ def geojson_time(filepath, folder):
     timemax_formatted=dateparser.parse(timemax)
     timemin_formatted=dateparser.parse(timemin)
 
-    if folder=='single':   
-        timeextend = [timemin_formatted, timemax_formatted]
-        extractTool.print_pretty_time(filepath, timeextend, "GeoJSON")
-        return[timemax_formatted, timemin_formatted]
+    #if folder=='single':   
+    timeextend = [timemin_formatted, timemax_formatted]
+    extractTool.print_pretty_time(filepath, timeextend, "GeoJSON")
+    return[timemax_formatted, timemin_formatted]
 
-    if folder=='whole':
-        timeextend=[timemin_formatted, timemax_formatted]
-        extractTool.print_pretty_time(filepath, timemax_formatted, "GeoJSON")
-        extractTool.timeextendArray.append(timeextend)
-        print("timeextendArray:")
-        print(extractTool.timeextendArray)
+    #if folder=='whole':
+     #   timeextend=[timemin_formatted, timemax_formatted]
+      #  extractTool.print_pretty_time(filepath, timemax_formatted, "GeoJSON")
+       # extractTool.timeextendArray.append(timeextend)
+        #print("timeextendArray:")
+        #print(extractTool.timeextendArray)
 
 
 def geojson_bbox(filepath, folder):
     click.echo("geojson bbox")
     geojson = pygeoj.load(filepath)
     geojbbx = (geojson).bbox
-    if folder=='single':
-        extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
-        return(geojbbx)
-    if folder=='whole':
-        extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
-        extractTool.bboxArray.append(geojbbx)
-        print(extractTool.bboxArray)
+    #if folder=='single':
+    extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
+    return(geojbbx)
+    #if folder=='whole':
+    #    extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
+    #    extractTool.bboxArray.append(geojbbx)
+    #    print(extractTool.bboxArray)
     #return(geojbbx)
 
 def geojson_convHull(filepath, folder):
@@ -154,12 +154,12 @@ def geojson_convHull(filepath, folder):
     for z in hull_points:
         hullcoord=[point[z][0], point[z][1]]
         convHull.append(hullcoord)
-    if folder=='single':
-        extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
-        return(convHull)
-    if folder=='whole':
-        extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
-        click.echo("convex hull whole")
-        click.echo(convHull)
-        extractTool.bboxArray=extractTool.bboxArray+convHull
-        print(extractTool.bboxArray)
+    #folder=='single':
+    extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
+    return(convHull)
+    #if folder=='whole':
+    #    extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
+    #    click.echo("convex hull whole")
+    #    click.echo(convHull)
+    #    extractTool.bboxArray=extractTool.bboxArray+convHull
+    #    print(extractTool.bboxArray)

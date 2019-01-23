@@ -38,14 +38,12 @@ def getNetCDFbbx(filepath, detail, folder, time):
         
     else:
         time_val=[None]
-
     
-    
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)
-        return ret_value
-        #print("fertig")
+    # if folder=='single':
+    ret_value=[bbox_val, convHull_val, time_val]
+    print(ret_value)
+    return ret_value
+    #print("fertig")
 
 def netcdf_time(filepath, folder):
     ds = xr.open_dataset(filepath)
@@ -70,13 +68,13 @@ def netcdf_time(filepath, folder):
             return([timemin_formatted, timemax_formatted])
             #extractTool.ret_value.append([timemin_formatted, timemax_formatted])
 
-        if folder=='whole':
-            timeextend=[timemin_formatted, timemax_formatted]
-            extractTool.timeextendArray.append(timeextend)
-            #print(timeextend[0])
-            print("timeextendArray:")
-            print(extractTool.timeextendArray)
-            #return anfang, ende
+        # if folder=='whole':
+        #timeextend=[timemin_formatted, timemax_formatted]
+        #extractTool.timeextendArray.append(timeextend)
+        #print(timeextend[0])
+        #print("timeextendArray:")
+        #print(extractTool.timeextendArray)
+        #return anfang, ende
         ds.close()
     except Exception as e:
         click.echo ("There is no time-value or invalid file")
@@ -121,21 +119,21 @@ def netcdf_bbox(filepath, folder):
     bbox = [minlatFloat,minlonFloat,maxlatFloat,maxlonFloat]
     #click.echo(bbox)
 
-    if folder=='single':
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Boundingbox of the NetCDF Object:")
-        click.echo(bbox)
-        print("----------------------------------------------------------------")
-        ds.close()
-        return bbox
-    if folder=='whole':
+    #if folder=='single':
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(filepath)
+    click.echo("Boundingbox of the NetCDF Object:")
+    click.echo(bbox)
+    print("----------------------------------------------------------------")
+    ds.close()
+    return bbox
+    # if folder=='whole':
         #fuer Boundingbox des Ordners
-        extractTool.bboxArray.append(bbox)
-        click.echo(filepath)
-        print(bbox)
-        ds.close()
+    #    extractTool.bboxArray.append(bbox)
+    #    click.echo(filepath)
+    #    print(bbox)
+    #    ds.close()
         #return bbox
 
 
