@@ -72,7 +72,6 @@ def getIsobbx(filepath, detail, folder, time):
     # We transform the gml file to a geojson file, then search for
     # words like "date", "timestamp", "time" and collect them
     if (time):
-        print("/////////////////////////////////////////77")
         try: 
             time_val=iso_time(filepath, folder)
         except Exception as e:
@@ -84,7 +83,6 @@ def getIsobbx(filepath, detail, folder, time):
     
     #if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
-    print("*************************************************")
     print(ret_value)
     os.remove("out.json")
     return ret_value
@@ -263,7 +261,7 @@ def iso_time(filepath, folder):
                                             #extractTool.ret_value.append([None])
                                             #print(extractTool.ret_value)
                                             #return(extractTool.ret_value)
-                                            #raise Exception ("There is no time-value ISO")
+                                            click.echo("There is no time-value ISO")
                                             #click.echo("there is no time-value ISO")
                                             #print(time)
                                             return [None]   

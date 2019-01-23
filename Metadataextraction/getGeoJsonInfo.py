@@ -105,8 +105,8 @@ def geojson_time(filepath, folder):
 
     timemax = str(max(timelist))
     timemin = str(min(timelist))
-    timemax_formatted=dateparser.parse(timemax)
-    timemin_formatted=dateparser.parse(timemin)
+    timemax_formatted=str(dateparser.parse(timemax))
+    timemin_formatted=str(dateparser.parse(timemin))
 
     #if folder=='single':   
     timeextend = [timemin_formatted, timemax_formatted]

@@ -19,8 +19,8 @@ def test_answerA():
     assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[None], [None], [None]]
 
 def test_answerB():  
-    filepath= __location__+'/testdata/Baumfaellungen_Duesseldorf.csv'
-    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[None], [None], [None]]
+    filepath= __location__+'/testdata/cities_NL.csv'
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', False) == [[51.434444000000006, 4.3175, 53.217222, 6.574722], [None], [None]]
 
 def test_answerC():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
@@ -54,8 +54,8 @@ def test_answerO():
     assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]] 
 
 def test_answerP():  
-    filepath=  __location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv'
-    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+    filepath=  __location__+'/testdata/cities_NL.csv'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [[53.197222, 5.7925], [53.217222, 6.574722], [51.999167, 5.9225], [51.434444, 5.484167], [51.930833, 4.4791669999999995], [52.084167, 4.3175], [52.634443999999995, 4.746389]], [None]]
 
 def test_answerQ():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
