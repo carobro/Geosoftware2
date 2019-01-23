@@ -55,10 +55,11 @@ def getGeoJsonbbx(filepath, detail, folder, time):
     else:
         time_val=[None]
         #extractTool.ret_value.append([None]) 
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)        
-        return ret_value
+    #if folder=='single':
+    ret_value=[bbox_val, convHull_val, time_val]
+    print(ret_value)
+    print("JSONJONSJSONJSONJSONJSONJSONJSONJOSN")        
+    return ret_value
 
 def geojson_time(filepath, folder):
     ds = open(filepath)
@@ -138,20 +139,21 @@ def geojson_bbox(filepath, folder):
     click.echo("geojson bbox")
     geojson = pygeoj.load(filepath)
     geojbbx = (geojson).bbox
-    if folder=='single':
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Boundingbox of the GeoJSON object:")
-        click.echo(geojbbx)
-        print("----------------------------------------------------------------")
-        return(geojbbx)
-    if folder=='whole':
-        print("geojson bbox whole")
-        extractTool.bboxArray.append(geojbbx)
-        click.echo(filepath)
-        click.echo(geojbbx)
-        print(extractTool.bboxArray)
+    #if folder=='single':
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(filepath)
+    click.echo("Boundingbox of the GeoJSON object:")
+    click.echo(geojbbx)
+    print("----------------------------------------------------------------")
+    print("3333333")
+    return(geojbbx)
+    # if folder=='whole':
+    #     print("geojson bbox whole")
+    #     extractTool.bboxArray.append(geojbbx)
+    #     click.echo(filepath)
+    #     click.echo(geojbbx)
+    #     print(extractTool.bboxArray)
     #return(geojbbx)
 
 def geojson_convHull(filepath, folder):
@@ -176,20 +178,20 @@ def geojson_convHull(filepath, folder):
     for z in hull_points:
         hullcoord=[point[z][0], point[z][1]]
         convHull.append(hullcoord)
-    if folder=='single':
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Convex hull of the GeoJSON object:")
-        click.echo(convHull)
-        print("----------------------------------------------------------------")
-        return(convHull)
-    if folder=='whole':
-        print("----------------------------------------------------------------")
-        extractTool.bboxArray=extractTool.bboxArray+convHull
-        click.echo("convex hull whole")
-        click.echo(convHull)
-        print(extractTool.bboxArray)
+    #if folder=='single':
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(filepath)
+    click.echo("Convex hull of the GeoJSON object:")
+    click.echo(convHull)
+    print("----------------------------------------------------------------")
+    return(convHull)
+    # if folder=='whole':
+    #     print("----------------------------------------------------------------")
+    #     extractTool.bboxArray=extractTool.bboxArray+convHull
+    #     click.echo("convex hull whole")
+    #     click.echo(convHull)
+    #     print(extractTool.bboxArray)
 
 
 if __name__ == '__main__':
