@@ -31,10 +31,10 @@ def getShapefilebbx(filepath, detail, folder, time):
         time_val=None
 
     # if folder=='single':
-    #    ret_value=([bbox_val],[convHull_val],[time_val])
-    #    print ret_value
-    #    print(ret_value[1])
-    #    return ret_value
+    ret_value=([bbox_val],[convHull_val],[time_val])
+    print ret_value
+    print(ret_value[1])
+    return ret_value
 
 def shapefile_convexHull(filepath, folder):
     sf = shapefile.Reader(filepath)
@@ -81,12 +81,7 @@ def shapefile_bbox(filepath, folder):
     sf = shapefile.Reader(filepath)
     output = sf.bbox
     # if folder=='single':
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
-    click.echo(filepath)
-    click.echo("Boundingbox of the Shapefile:")
-    click.echo(output)
-    print("----------------------------------------------------------------")
+    extractTool.print_pretty_bbox(filepath, output, "Shapefile")
     click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
     return None
     #if folder=='whole':
