@@ -16,11 +16,11 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 ######################################
 def test_answerT():
     filepath=__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp'
-    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == ([None], [None], [[None]])
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[79.39064024773653, 11.627857397680971, 79.44763182487713, 11.697121798928404], [None], [None]]
 
 def test_answerU():  
     filepath=  __location__+'/testdata/Behindertenparkplaetze_Duesseldorf.csv'
-    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == None
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[51.434444000000006, 4.3175, 53.217222, 6.574722], [None], [datetime.datetime(2018, 9, 30, 0, 0), datetime.datetime(2018, 9, 30, 0, 0)]]
 
 def test_answerV():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
