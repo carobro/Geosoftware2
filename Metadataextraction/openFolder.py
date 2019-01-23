@@ -24,6 +24,7 @@ def openFolder(filepath, detail, folder, time):
     #Ordnern liegen.
     folder_bboxArray=[]
     folder_convHullArray=[]
+    folder_timeArray=[]
     folderpath= filepath
     click.echo("folderfolderfolder")
     docs=os.listdir(folderpath) 
@@ -79,9 +80,12 @@ def openFolder(filepath, detail, folder, time):
         folder_bboxArray=folder_bboxArray+[b[0]]
         print("33333333333333333333333333333333333333333333333333333")
         print(folder_bboxArray)
-        folder_convHullArray=folder_convHullArray+b[1]
+        folder_convHullArray=folder_convHullArray+[b[1]]
         print("33333333333333333333333333333333333333333333333333333")
         print(folder_convHullArray)
+        folder_timeArray=folder_timeArray+[b[2]]
+        print("33333333333333333333333333333333333333333333333333333")
+        print(folder_timeArray)
 
     
     ret_value_folder=[] 
@@ -154,7 +158,7 @@ def openFolder(filepath, detail, folder, time):
     else:
         ret_value_folder.append([None])
     if (time):
-        times=extractTool.timeextendArray
+        times=folder_timeArray
         mindate=[]
         maxdate=[]
         for z in times:
