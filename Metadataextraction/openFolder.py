@@ -75,26 +75,25 @@ def openFolder(filepath, detail, folder, time):
         print(folder_bboxArray)
         print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
         print(b[0])
-        print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+        print("///////////////////////////////////////////////////////")
         #folder_bboxArray=folder_bboxArray.append(b[0])
         folder_bboxArray=folder_bboxArray+[b[0]]
-        print("33333333333333333333333333333333333333333333333333333")
+        print("11111111111111111111111111111111111111111111111111111111")
         print(folder_bboxArray)
         folder_convHullArray=folder_convHullArray+[b[1]]
-        print("33333333333333333333333333333333333333333333333333333")
+        print("2222222222222222222222222222222222222222222222222222222222")
         print(folder_convHullArray)
         folder_timeArray=folder_timeArray+[b[2]]
         print("33333333333333333333333333333333333333333333333333333")
         print(folder_timeArray)
+        print("=====================================================")
 
     
     ret_value_folder=[] 
     print("##################################################################################")                                   
     #if folder=='whole':
     if detail=='bbox':
-        print("if")
         bboxes=folder_bboxArray
-        print("222222222")
         print(bboxes)
         min1=100000000
         min2=100000000
@@ -158,9 +157,12 @@ def openFolder(filepath, detail, folder, time):
     else:
         ret_value_folder.append([None])
     if (time):
+        print("(((((((((((((((((((((((((((((((((((((((((((((((((((")
         times=folder_timeArray
         mindate=[]
         maxdate=[]
+        print(times)
+        print("))))))))))))))))))))))))))))))))))))))))))))))))))))")
         for z in times:
             mindate.append(z[0])
             maxdate.append(z[1])

@@ -34,4 +34,4 @@ def test_timeIso():
      assert getTimeextent.getIsoTime(__location__+'/testdata/clc_1000_PT.gml', 'time') == "2012-09-09"
 
 def test_timeNetCDF():    
-    assert getTimeextent.getNetCDFtime(__location__+'/testdata/ECMWF_ERA-40_subset.nc', 'time') == "2002-07-01T12:00:00.000000000" "2002-07-31T18:00:00.000000000"
+    assert getTimeextent.getNetCDFtime(__location__+'/testdata/ECMWF_ERA-40_subset1.nc', 'time') == ['2002-07-01T12:00:00.000000000', '2002-07-31T18:00:00.000000000']

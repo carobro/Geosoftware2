@@ -26,14 +26,19 @@ def getShapefilebbx(filepath, detail, folder, time):
     else:
         convHull_val=[None]
     if (time):
-        time_val=shapefile_time(filepath, folder)
+        try: 
+            time_val=shapefile_time(filepath, folder)
+        except Exception as e:
+            print(e)
+        print("+++++++++++++++++++++++++++")
+        print(time_val)
     else:
         time_val=[None]
 
     # if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
-    print ret_value
-    print(ret_value[1])
+    print(ret_value)
+    print("#############################")
     return ret_value
 
 def shapefile_convexHull(filepath, folder):
@@ -74,7 +79,6 @@ def shapefile_convexHull(filepath, folder):
 
 def shapefile_time(filepath, folder):
     click.echo="There is no timevalue for Shapefiles"
-    #click.echo(echo)
     timeval=[None]
     return timeval
 

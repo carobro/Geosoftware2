@@ -29,23 +29,20 @@ def test_whole_C():
 def test_whole_D():  
     filepath=__location__+"/testdata/geopackagetest"  
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
-
+"""
 def test_whole_E():
     filepath=__location__+"/testdata/csvordnertest"
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[47.988889, 4.3175, 53.217222, 9.731219], [None], [None]]
-
 """
+
 #####################################
 # --detail=bbox --folder=whole --time
 #####################################
+
 def test_wholeD():
-    filepath="https://uni-muenster.sciebo.de/s/QFj5pzm7AzxAh1f?path=%2FfunktionierendeTestdaten_gruppe1%2Fzeitdaten%2Ftimegeo"
-    filepath1="/home/minicaro/Downloads/timegeo/timegeo"
-    assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == None[[47.988889, 4.3175, 53.217222, 9.731219], [None], [None]]
+    filepath="/home/minicaro/Downloads/timegeo/timegeo"
+    assert extractTool.getMetadata(filepath, 'bbox', 'whole', True) == [[6.220493316650391, 50.52150360276628, 7.647256851196289, 51.974624029877454], [None], ['2018-11-14 00:00:00', '2018-11-14 00:00:00']]
 
 def test_wholeE():    
-    filepath= "https://uni-muenster.sciebo.de/s/QFj5pzm7AzxAh1f?path=%2FfunktionierendeTestdaten_gruppe1%2Fzeitdaten%2Ftime%20mischung"
-    filepath1="/home/minicaro/Downloads/time_mischung"
-    assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == None
-
-"""
+    filepath="/home/minicaro/Downloads/time_mischung"
+    assert extractTool.getMetadata(filepath, 'bbox', 'whole', True) == [[-90.0, 0.0, 90.0, 357.5], [None], ['2002-07-01 12:00:00', '2018-11-14 00:00:00']]
