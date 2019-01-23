@@ -6,7 +6,7 @@ import click
 import os
 
 """
-Function for calling up all important fuctions 
+Function for calling up all important functions 
 
 :param filepath1: filepath from a file
 :param filepath2: filepath from a file
