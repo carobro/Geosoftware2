@@ -29,11 +29,11 @@ def test_whole_C():
 def test_whole_D():  
     filepath=__location__+"/testdata/geopackagetest"  
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
-"""
+
 def test_whole_E():
     filepath=__location__+"/testdata/csvordnertest"
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[47.988889, 4.3175, 53.217222, 9.731219], [None], [None]]
-"""
+
 
 #####################################
 # --detail=bbox --folder=whole --time

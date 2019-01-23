@@ -37,25 +37,25 @@ def getGeoTiffbbx(filepath, detail, folder, time):
 
     # if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
-    print(ret_value)
+    # print(ret_value)
     return ret_value
 
 def tiff_time(filepath, folder):
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
-    click.echo(filepath)
+    # print("----------------------------------------------------------------")
+    # click.echo("Filepath:")
+    # click.echo(filepath)
     click.echo('There is no time value for GeoTIFF files')
-    print("----------------------------------------------------------------")
+    # print("----------------------------------------------------------------")
     timeval=[None]
     return timeval
     #extractTool.ret_value.append(timeval)
 
 def tiff_convexHull(filepath, folder):
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
-    click.echo(filepath)
+    # print("----------------------------------------------------------------")
+    # click.echo("Filepath:")
+    # click.echo(filepath)
     click.echo('There is no convex hull for GeoTIFF files.')
-    print("----------------------------------------------------------------")
+    # print("----------------------------------------------------------------")
     return [None]
     #extractTool.ret_value.append([None])
 
@@ -103,21 +103,21 @@ def tiff_bbox(filepath, folder):
     bbox = [latlongmin[0], latlongmin[1], latlongmax[0], latlongmax[1]]
     # if folder=='single':
     if wgs_84==True:
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Boundingbox of the GeoTiff:")
-        click.echo(bbox)
-        print("----------------------------------------------------------------")
+        # print("----------------------------------------------------------------")
+        # click.echo("Filepath:")
+        # click.echo(filepath)
+        # click.echo("Boundingbox of the GeoTiff:")
+        # click.echo(bbox)
+        # print("----------------------------------------------------------------")
         return bbox
     else:
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Boundingbox of the GeoTiff:")
-        print(bbox)
+        # print("----------------------------------------------------------------")
+        # click.echo("Filepath:")
+        # click.echo(filepath)
+        # click.echo("Boundingbox of the GeoTiff:")
+        # print(bbox)
         print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-        print("----------------------------------------------------------------")
+        #print("----------------------------------------------------------------")
         return [None]
     #return (bbox)
     # if folder=='whole':

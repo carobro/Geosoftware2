@@ -3,13 +3,6 @@ import click    # used for output messages
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
 
 """
-global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder
-"""
-#bboxArray = []
-#timeextendArray=[]
-#ret_value=[]
-
-"""
 Auxiliary function to bypass problems with the CLI tool when executed from anywhere else
 
 :param path: path to the directory of the files or to the file itself
@@ -23,6 +16,7 @@ Auxiliary function to bypass problems with the CLI tool when executed from anywh
 @click.option('--time', is_flag=True, help='returns the time extend of one object')
 @click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
 @click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
+
 def click_function(path, detail, folder, time):
     getMetadata(path, detail, folder, time)
 
@@ -44,35 +38,35 @@ def getMetadata(path, detail, folder, time):
         click.echo("Please insert a correct filepath")
         return None
     try:
-        click.echo("format_shapefile")
+        #click.echo("Shapefile")
         a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
     except Exception as e:
         try:
-            click.echo("format_geojson")
+            #click.echo("GeoJson")
             a=getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder, time)
         except Exception as e:
             try:
-                click.echo("format_netcdf")
+                #click.echo("NetCDF")
                 a=getNetCDFInfo.getNetCDFbbx(filepath, detail, folder, time)
             except Exception as e:
                 try:
-                    print("format_csv")
+                    #print("CSV")
                     a=getCSVInfo.getCSVbbx(filepath, detail, folder, time)
                 except Exception as e:
                     try:
-                        print("format_geopackage")
+                        #print("GeoPackage")
                         a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
                     except Exception as e:
                         try:
-                            click.echo("format_geotiff")
+                            #click.echo("GeoTIFF")
                             a=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder, time)
                         except Exception as e:
                             try:
-                                click.echo("format_iso")
+                                #click.echo("ISO")
                                 a=getIsoInfo.getIsobbx(filepath, detail, folder, time)
                             except Exception as e:
                                 try:
-                                    click.echo("folder")
+                                    #click.echo("Folder")
                                     a=openFolder.openFolder(filepath, detail, folder, time)
                                 except Exception as e:
                                     a=None

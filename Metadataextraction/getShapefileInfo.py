@@ -30,8 +30,8 @@ def getShapefilebbx(filepath, detail, folder, time):
             time_val=shapefile_time(filepath, folder)
         except Exception as e:
             print(e)
-        print("+++++++++++++++++++++++++++")
-        print(time_val)
+        # print("+++++++++++++++++++++++++++")
+        # print(time_val)
     else:
         time_val=[None]
 
@@ -56,13 +56,13 @@ def shapefile_convexHull(filepath, folder):
         point=[allPts[y][0], allPts[y][1]]
         convHull.append(point)
     #if folder =='single':
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
-    click.echo(filepath)
-    click.echo("The convex hull of the Shapefile is:")    
-    click.echo(convHull)
+    # print("----------------------------------------------------------------")
+    # click.echo("Filepath:")
+    # click.echo(filepath)
+    # click.echo("The convex hull of the Shapefile is:")    
+    # click.echo(convHull)
     print("Missing CRS -----> Convex hull will not be saved in zenodo.")
-    print("----------------------------------------------------------------")
+    # print("----------------------------------------------------------------")
     return [None]
     #if folder=='whole':
     #    print("----------------------------------------------------------------")

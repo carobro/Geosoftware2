@@ -55,7 +55,7 @@ def getGeoJsonbbx(filepath, detail, folder, time):
         time_val=[None]
 
     ret_value=[bbox_val, convHull_val, time_val]
-    print(ret_value)       
+    # print(ret_value)       
     return ret_value
 
 def geojson_time(filepath, folder):
@@ -133,7 +133,7 @@ def geojson_bbox(filepath, folder):
     #return(geojbbx)
 
 def geojson_convHull(filepath, folder):
-    print("geojson convexHull")
+    # print("geojson convexHull")
     geojson = pygeoj.load(filepath)
     #point = list()
     for feature in geojson:

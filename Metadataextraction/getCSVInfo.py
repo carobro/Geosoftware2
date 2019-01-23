@@ -23,7 +23,7 @@ def getCSVbbx(filepath, detail, folder, time):
     listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
     listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum", "Date", "Timestamp"]
 
-    click.echo("csv")
+    #click.echo("csv")
     # read the csv
     df = csv_split(filepath)
 
@@ -51,7 +51,7 @@ def getCSVbbx(filepath, detail, folder, time):
         my_time_identifier= False
         click.echo("No time information available")
 
-    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    # print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     if detail =='bbox':
         bbox_val=csv_bbox(filepath, folder, lats, lons, CRSinfo, df)
 
@@ -72,7 +72,7 @@ def getCSVbbx(filepath, detail, folder, time):
     
     #if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
-    print(ret_value)
+    # print(ret_value)
     return ret_value
 
 """
@@ -82,7 +82,7 @@ Function for splitting a csv file
 :returns: datafile as a read_csv
 """
 def csv_split(filepath):
-    print("in split")
+    # print("in split")
     # First try ';' as the delimiter, if that does not work, take ','
     try:
         deli=';'
@@ -105,14 +105,14 @@ Function for extracting the temporal extent of the CSV file
 def csv_time(filepath, folder, my_time_id, df):
     if my_time_id:
         time=df[my_time_id[0]]
-        print(min(time))
-        print(max(time))
+        # print(min(time))
+        # print(max(time))
         timemin=str(min(time))
         timemax=str(max(time))
         timemax_formatted=str(dateparser.parse(timemax))
         timemin_formatted=str(dateparser.parse(timemin))
         timeextend=[timemin_formatted, timemax_formatted]
-        print(timeextend)
+        # print(timeextend)
         #if folder=='single':
         extractTool.print_pretty_time(filepath, timeextend,"CSV")
         return timeextend
@@ -150,7 +150,7 @@ def csv_convHull(filepath, folder, my_lats, my_lons, my_CRSinfo, df):
         mycrsID=intersect(listCRS,df.columns.values)
         myCRS=df[mycrsID[0]]
         myCRS_1=myCRS[0]
-        print(myCRS_1)
+        # print(myCRS_1)
         for z in coords:
             z[0],z[1] = extractTool.transformToWGS84(z[0],z[1], myCRS_1)
         #if folder=='single':
@@ -183,14 +183,14 @@ Function for extracting the bbox
 def csv_bbox(filepath, folder, my_lats, my_lons, my_CRS_info, df):
     listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
     bbox=[min(my_lats),min(my_lons),max(my_lats),max(my_lons)]
-    print("BBOX")
-    print(bbox)
+    # print("BBOX")
+    # print(bbox)
     # CRS transformation if there is information about crs
     if(my_CRS_info):
         mycrsID=intersect(listCRS,df.columns.values)
         myCRS=df[mycrsID[0]]
         myCRS1=myCRS[0]
-        print(myCRS1)
+        # print(myCRS1)
         lat1t,lng1t = extractTool.transformToWGS84(min(my_lats),min(my_lons), myCRS1)
         lat2t,lng2t = extractTool.transformToWGS84(max(my_lats),max(my_lons), myCRS1)
         bbox=[lat1t,lng1t,lat2t,lng2t]

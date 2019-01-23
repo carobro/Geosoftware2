@@ -36,7 +36,7 @@ def getNetCDFbbx(filepath, detail, folder, time):
     
     # if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
-    print(ret_value)
+    # print(ret_value)
     return ret_value
     #print("fertig")
 
@@ -60,13 +60,13 @@ def netcdf_time(filepath, folder):
         timemax_formatted=str(dateparser.parse(ende))
         timemin_formatted=str(dateparser.parse(anfang))
         #if folder=='single':
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        print("the temporal extend of the NetCDF object is:")
-        print(timemin_formatted)
-        print(timemax_formatted)
-        print("----------------------------------------------------------------")
+        # print("----------------------------------------------------------------")
+        # click.echo("Filepath:")
+        # click.echo(filepath)
+        # print("the temporal extend of the NetCDF object is:")
+        # print(timemin_formatted)
+        # print(timemax_formatted)
+        # print("----------------------------------------------------------------")
         return([timemin_formatted, timemax_formatted])
         #extractTool.ret_value.append([timemin_formatted, timemax_formatted])
 
@@ -83,22 +83,19 @@ def netcdf_time(filepath, folder):
         ds.close()
         return None
 
-
-
-
 def netcdf_convHull(filepath, folder):
     ds = xr.open_dataset(filepath)
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
-    click.echo(filepath)
+    # print("----------------------------------------------------------------")
+    # click.echo("Filepath:")
+    # click.echo(filepath)
     click.echo('Sorry there is no second level of detail for NetCDF files')
-    print("----------------------------------------------------------------")
+    # print("----------------------------------------------------------------")
     ds.close()
     return [None]
     #extractTool.ret_value.append([None])
 
 def netcdf_bbox(filepath, folder):
-    print("bbox")
+    # print("bbox")
     ds = xr.open_dataset(filepath)
     try:
         lats = ds.coords["lat"]

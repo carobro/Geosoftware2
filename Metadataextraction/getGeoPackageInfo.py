@@ -43,12 +43,12 @@ def getGeopackagebbx(filepath, detail, folder, time):
 
 
     ret_value=[bbox_val, convHull_val, time_val]
-    print(ret_value)
+    # print(ret_value)
     return ret_value
 
 def geopackage_time(filepath, folder):
     out="There is no time-value for GeoPackage files."
-    print(out)
+    # print(out)
     timeval=[None]
     return timeval
 
@@ -70,12 +70,12 @@ def geopackage_convHull(filepath, folder):
         point=[pointlist[y][0], pointlist[y][1]]
         convHull.append(point)
   
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
-    click.echo(filepath)
-    click.echo("Convex hull of the GeoPackage object:")
-    print(convHull)
-    print("----------------------------------------------------------------")
+    # print("----------------------------------------------------------------")
+    # click.echo("Filepath:")
+    # click.echo(filepath)
+    # click.echo("Convex hull of the GeoPackage object:")
+    # print(convHull)
+    # print("----------------------------------------------------------------")
     return convHull
     # if folder=='whole':
     #     print("----------------------------------------------------------------")
@@ -98,7 +98,7 @@ def geopackage_bbox(filepath, folder):
         lng2=row[0][3]
         myCRS=row[0][4]
         if not(lat1 and lat2):
-            print("keine koord")
+            print("no coordinates")
     except (not(lat1 and lat2)):
         raise Exception ("There are no coordinate values in this file.")
         # Especially the KML data files have this id, which is wgs84
@@ -107,11 +107,11 @@ def geopackage_bbox(filepath, folder):
         wgs_84=True
         bbox=[lat1,lng1,lat2,lng2]
     elif(myCRS):
-        print("second if")
+        # print("second if")
         wgs_84=True
-        print("vor")
+        # print("vor")
         lat1t,lng1t = de.transformToWGS84(lat1,lng1,myCRS)
-        print("transformation success")
+        # print("transformation success")
         lat2t,lng2t = de.transformToWGS84(lat2,lng2,myCRS)
         bbox=[lat1t,lng1t,lat2t,lng2t]
     else:
@@ -121,21 +121,21 @@ def geopackage_bbox(filepath, folder):
 
     #if folder=='single':
     if wgs_84==True:
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Boundingbox of the GeoPackage object:")
-        print(bbox)
-        print("----------------------------------------------------------------")
+        # print("----------------------------------------------------------------")
+        # click.echo("Filepath:")
+        # click.echo(filepath)
+        # click.echo("Boundingbox of the GeoPackage object:")
+        # print(bbox)
+        # print("----------------------------------------------------------------")
         return bbox
     else:
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo("Boundingbox of the GeoPackage object:")
-        print(bbox)
+        # print("----------------------------------------------------------------")
+        # click.echo("Filepath:")
+        # click.echo(filepath)
+        # click.echo("Boundingbox of the GeoPackage object:")
+        # print(bbox)
         print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-        print("----------------------------------------------------------------")
+        #print("----------------------------------------------------------------")
         return [None]
     # if folder=='whole':
     #     if wgs_84==True:

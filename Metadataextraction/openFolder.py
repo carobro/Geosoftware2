@@ -30,71 +30,60 @@ def openFolder(filepath, detail, folder, time):
     docs=os.listdir(folderpath) 
     # docs now contains the files of the folder 
     # tries to extract the bbox of each file 
-    print("2222222222222222222222222222")
-    print(docs)
-    print("222222222222222222222222222222")
+    #print(docs)
     for x in docs:  
         docPath= folderpath +"/"+ x
         try:
-            click.echo("folderShape")
+            #click.echo("folderShape")
             b=getShapefileInfo.getShapefilebbx(docPath, detail, folder, time)
         except Exception as e:
             try:
-                click.echo("folderGeoJSON")
+                #click.echo("folderGeoJSON")
                 b=getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder, time)
             except Exception as e:
                 try:
                     click.echo(e)
-                    click.echo("folderNetCDF")
+                    #click.echo("folderNetCDF")
                     b=getNetCDFInfo.getNetCDFbbx(docPath, detail, folder, time)
                 except Exception as e:
                     try:
-                        click.echo("folderCSV")
+                        #click.echo("folderCSV")
                         b=getCSVInfo.getCSVbbx(docPath, detail, folder, time)
                     except Exception as e:
                         try:
-                            click.echo("folderGeoTIFF")
+                            #click.echo("folderGeoTIFF")
                             b=getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder, time)
                         except Exception as e:
                             try:
-                                click.echo("folderGeoPackage")
+                                #click.echo("folderGeoPackage")
                                 b=getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder, time)
                                 print("after geopackage")
                             except Exception as e:
                                 try:
-                                    click.echo("folderISO")
+                                    #click.echo("folderISO")
                                     b=getIsoInfo.getIsobbx(docPath, detail, folder, time)
                                 except Exception as e:
                                     try:
-                                        click.echo("folderfolder")
+                                        #click.echo("folderfolder")
                                         openFolder(docPath, detail, folder, time)
                                     except Exception as e:
-                                        click.echo("folderInvalid")
+                                        #click.echo("folderInvalid")
                                         click.echo ("invalid file format in folder!")
                                         b=None
-        print(folder_bboxArray)
-        print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-        print(b[0])
-        print("///////////////////////////////////////////////////////")
+        #print(folder_bboxArray)
+        #print(b[0])
         #folder_bboxArray=folder_bboxArray.append(b[0])
         folder_bboxArray=folder_bboxArray+[b[0]]
-        print("11111111111111111111111111111111111111111111111111111111")
-        print(folder_bboxArray)
+        #print(folder_bboxArray)
         folder_convHullArray=folder_convHullArray+[b[1]]
-        print("2222222222222222222222222222222222222222222222222222222222")
-        print(folder_convHullArray)
+        #print(folder_convHullArray)
         folder_timeArray=folder_timeArray+[b[2]]
-        print("33333333333333333333333333333333333333333333333333333")
-        print(folder_timeArray)
-        print("=====================================================")
-
     
-    ret_value_folder=[] 
-    print("##################################################################################")                                   
+    ret_value_folder=[]                            
     #if folder=='whole':
     if detail=='bbox':
         bboxes=folder_bboxArray
-        print(bboxes)
+        #print(bboxes)
         min1=100000000
         min2=100000000
         max1=-10000000
@@ -126,54 +115,41 @@ def openFolder(filepath, detail, folder, time):
                 max2=x
 
         folderbbox=[min1, min2, max1, max2]
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        print("boundingbox of the whole folder:")
-        print(folderbbox)
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         ret_value_folder.append(folderbbox)
         #return folderbbox
     else:
         ret_value_folder.append([None])
     if detail=='convexHull':
-        print("tzttztztztz")
         points=folder_convHullArray
-        print("gi")
-        print(points)
-        print(ConvexHull(points))
+        # print(points)
+        # print(ConvexHull(points))
         hull=ConvexHull(points)
-        print("hi")
         hull_points=hull.vertices
         convHull=[]
-        print("concon")
         for y in hull_points:
             point=[points[y][0], points[y][1]]
             convHull.append(point)
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        click.echo("convex hull of the folder:")    
+        # click.echo("convex hull of the folder:")    
         click.echo(convHull)
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         #return convHull
         ret_value_folder.append(convHull)
     else:
         ret_value_folder.append([None])
     if (time):
-        print("(((((((((((((((((((((((((((((((((((((((((((((((((((")
         times=folder_timeArray
         mindate=[]
         maxdate=[]
-        print(times)
-        print("))))))))))))))))))))))))))))))))))))))))))))))))))))")
         for z in times:
             mindate.append(z[0])
             maxdate.append(z[1])
         min_mindate=min(mindate)
         max_maxdate=max(maxdate)
         folder_timeextend=[min_mindate, max_maxdate]
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        click.echo("timeextend of the folder:")    
-        click.echo(min_mindate)
-        click.echo(max_maxdate)
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        # click.echo("timeextend of the folder:")    
+        # click.echo(min_mindate)
+        # click.echo(max_maxdate)
+        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         #return folder_timeextend
         ret_value_folder.append(folder_timeextend)
     else:
