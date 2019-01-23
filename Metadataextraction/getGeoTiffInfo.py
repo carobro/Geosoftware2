@@ -35,10 +35,10 @@ def getGeoTiffbbx(filepath, detail, folder, time):
     else:
         time_val=[None]
 
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)
-        return ret_value
+    # if folder=='single':
+    ret_value=[bbox_val, convHull_val, time_val]
+    print(ret_value)
+    return ret_value
 
 def tiff_time(filepath, folder):
     print("----------------------------------------------------------------")
@@ -101,39 +101,42 @@ def tiff_bbox(filepath, folder):
     latlongmin = transform.TransformPoint(minx,miny)
     latlongmax = transform.TransformPoint(maxx,maxy)
     bbox = [latlongmin[0], latlongmin[1], latlongmax[0], latlongmax[1]]
-    if folder=='single':
-        if wgs_84==True:
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoTiff:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
-            return bbox
-        else:
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoTiff:")
-            print(bbox)
-            print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            print("----------------------------------------------------------------")
-            return [None]
-        #return (bbox)
-    if folder=='whole':
-        if wgs_84==True:
-            extractTool.bboxArray.append(bbox)
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoTiff:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
-        else:
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the GeoTiff:")
-            click.echo(bbox)
-            click.echo("because of a missing crs this GeoTiff is not part of the folder calculation.")
-            print("----------------------------------------------------------------")
+    # if folder=='single':
+    if wgs_84==True:
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the GeoTiff:")
+        click.echo(bbox)
+        print("----------------------------------------------------------------")
+        return bbox
+    else:
+        print("----------------------------------------------------------------")
+        click.echo("Filepath:")
+        click.echo(filepath)
+        click.echo("Boundingbox of the GeoTiff:")
+        print(bbox)
+        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        print("----------------------------------------------------------------")
+        return [None]
+    #return (bbox)
+    # if folder=='whole':
+    #     if wgs_84==True:
+    #         extractTool.bboxArray.append(bbox)
+    #         print("----------------------------------------------------------------")
+    #         click.echo("Filepath:")
+    #         click.echo(filepath)
+    #         click.echo("Boundingbox of the GeoTiff:")
+    #         click.echo(bbox)
+    #         print("----------------------------------------------------------------")
+    #     else:
+    #         print("----------------------------------------------------------------")
+    #         click.echo("Filepath:")
+    #         click.echo(filepath)
+    #         click.echo("Boundingbox of the GeoTiff:")
+    #         click.echo(bbox)
+    #         click.echo("because of a missing crs this GeoTiff is not part of the folder calculation.")
+    #         print("----------------------------------------------------------------")
+
+if __name__ == '__main__':
+    getGeoTiffbbx()

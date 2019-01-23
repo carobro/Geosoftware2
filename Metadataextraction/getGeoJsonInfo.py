@@ -113,12 +113,11 @@ def geojson_time(filepath, folder):
     extractTool.print_pretty_time(filepath, timeextend, "GeoJSON")
     return[timemax_formatted, timemin_formatted]
 
-    #if folder=='whole':
-     #   timeextend=[timemin_formatted, timemax_formatted]
-      #  extractTool.print_pretty_time(filepath, timemax_formatted, "GeoJSON")
-       # extractTool.timeextendArray.append(timeextend)
-        #print("timeextendArray:")
-        #print(extractTool.timeextendArray)
+    # if folder=='whole':
+    #     timeextend=[timemin_formatted, timemax_formatted]
+    #     extractTool.timeextendArray.append(timeextend)
+    #     print("timeextendArray:")
+    #     print(extractTool.timeextendArray)
 
 
 def geojson_bbox(filepath, folder):

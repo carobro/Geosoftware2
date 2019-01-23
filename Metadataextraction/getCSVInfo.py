@@ -68,11 +68,11 @@ def getCSVbbx(filepath, detail, folder, time):
         time_val=csv_time(filepath, folder,my_time_identifier,df)
     else:
         time_val=[None]
-
-    if folder=='single':
-        ret_value=[bbox_val, convHull_val, time_val]
-        print(ret_value)
-        return ret_value
+    
+    #if folder=='single':
+    ret_value=[bbox_val, convHull_val, time_val]
+    print(ret_value)
+    return ret_value
 
 """
 Function for splitting a csv file
