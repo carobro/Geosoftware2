@@ -112,13 +112,13 @@ def csv_time(filepath, folder, my_time_id, df):
         timemin_formatted=dateparser.parse(timemin)
         timeextend=[timemin_formatted, timemax_formatted]
         print(timeextend)
-        if folder=='single':
-            extractTool.print_pretty_time(filepath, timeextend,"CSV")
-            return timeextend
-        if folder=='whole':
-            extractTool.timeextendArray.append(filepath, timeextend)
-            print("timeextendArray:")
-            print(extractTool.timeextendArray)
+        #if folder=='single':
+        extractTool.print_pretty_time(filepath, timeextend,"CSV")
+        return timeextend
+        #if folder=='whole':
+        #    extractTool.timeextendArray.append(filepath, timeextend)
+        #    print("timeextendArray:")
+        #    print(extractTool.timeextendArray)
     else:
         print("No fitting header for time-values")
         return [None]
@@ -152,21 +152,21 @@ def csv_convHull(filepath, folder, my_lats, my_lons, my_CRSinfo, df):
         print(myCRS_1)
         for z in coords:
             z[0],z[1] = extractTool.transformToWGS84(z[0],z[1], myCRS_1)
-        if folder=='single':
-            extractTool.print_pretty_hull(filepath, convHull,"CSV")
-            return convHull
-        if folder=='whole':
-            extractTool.bboxArray=extractTool.bboxArray+convHull
-            extractTool.print_pretty_hull(filepath, convHull,"CSV")
+        #if folder=='single':
+        extractTool.print_pretty_hull(filepath, convHull,"CSV")
+        return convHull
+        #if folder=='whole':
+        #    extractTool.bboxArray=extractTool.bboxArray+convHull
+        #    extractTool.print_pretty_hull(filepath, convHull,"CSV")
             #return convHull
     else:
-        if folder=='single':
-            extractTool.print_pretty_hull(filepath, convHull,"CSV")
-            click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            return None
-        if folder=='whole':
-            extractTool.print_pretty_hull(filepath, convHull,"CSV")
-            click.echo("because of a missing crs this CSV is not part of the folder calculation.")
+        #if folder=='single':
+        extractTool.print_pretty_hull(filepath, convHull,"CSV")
+        click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        return None
+        #if folder=='whole':
+        #    extractTool.print_pretty_hull(filepath, convHull,"CSV")
+        #    click.echo("because of a missing crs this CSV is not part of the folder calculation.")
 
 """
 Function for extracting the bbox
@@ -193,21 +193,21 @@ def csv_bbox(filepath, folder, my_lats, my_lons, my_CRS_info, df):
         lat1t,lng1t = extractTool.transformToWGS84(min(my_lats),min(my_lons), myCRS1)
         lat2t,lng2t = extractTool.transformToWGS84(max(my_lats),max(my_lons), myCRS1)
         bbox=[lat1t,lng1t,lat2t,lng2t]
-        if folder=='single':
-            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
-            return bbox
-        if folder=='whole':
-            extractTool.bboxArray.append(bbox)
-            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
+        #if folder=='single':
+        extractTool.print_pretty_bbox(filepath,bbox,"CSV")
+        return bbox
+        #if folder=='whole':
+        #    extractTool.bboxArray.append(bbox)
+        #    extractTool.print_pretty_bbox(filepath,bbox,"CSV")
 
     else:
-        if folder=='single':
-            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
-            print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-            return [None]
-        if folder=='whole':
-            extractTool.print_pretty_bbox(filepath,bbox,"CSV")
-            click.echo("because of a missing crs this CSV is not part of the folder calculation.")
+        #if folder=='single':
+        extractTool.print_pretty_bbox(filepath,bbox,"CSV")
+        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        return [None]
+        #if folder=='whole':
+        #    extractTool.print_pretty_bbox(filepath,bbox,"CSV")
+        #    click.echo("because of a missing crs this CSV is not part of the folder calculation.")
 
 """
 Auxiliary function for testing if an identifier for the temporal or spatial extent is part of the header in the csv file

@@ -273,10 +273,3 @@ def iso_time(filepath, folder):
         return timeextend
         #print("The time value of this ISO file is:")
         #print(time)
-
-
-
-
-
-if __name__ == '__main__':
-    getIsobbx()

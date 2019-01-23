@@ -96,7 +96,3 @@ def test_answer13():
 def test_answer14():
     filepath = "test.sh"
     assert similar.extension(filepath) == "vector"
-
-
-
-
