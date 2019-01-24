@@ -50,7 +50,7 @@ def test_answer6():
     assert similar.calcuateScore(bbox1, bbox2) == 1
 
 """
-These tests check if the similarity score is multiplied wir 5/4
+These tests check if the similarity score is multiplied with 5/4
 if the datatypes are not equal
 """
 # equal

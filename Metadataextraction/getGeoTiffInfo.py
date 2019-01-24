@@ -54,6 +54,7 @@ def tiff_convexHull(filepath, folder):
     # print("----------------------------------------------------------------")
     # click.echo("Filepath:")
     # click.echo(filepath)
+    gdal.Open(filepath)
     click.echo('There is no convex hull for GeoTIFF files.')
     # print("----------------------------------------------------------------")
     return [None]

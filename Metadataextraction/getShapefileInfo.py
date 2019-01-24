@@ -38,7 +38,6 @@ def getShapefilebbx(filepath, detail, folder, time):
     # if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
     print(ret_value)
-    print("#############################")
     return ret_value
 
 def shapefile_convexHull(filepath, folder):
@@ -51,10 +50,13 @@ def shapefile_convexHull(filepath, folder):
     hull=ConvexHull(allPts)
     hull_points=hull.vertices
     convHull=[]
-    print(shapes)
+    print(hull_points)
     for y in hull_points:
         point=[allPts[y][0], allPts[y][1]]
         convHull.append(point)
+    print("#############################")
+    print(point)
+    print("#############################")
     #if folder =='single':
     # print("----------------------------------------------------------------")
     # click.echo("Filepath:")

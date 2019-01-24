@@ -63,7 +63,8 @@ def getIsobbx(filepath, detail, folder, time):
         bbox_val=[None]
     #os.remove("out.json")
 
-    if detail == 'convexHull':
+    if detail =='convexHull':
+        print("//////////////////////////////////////////")
         convHull_val=iso_convHull(filepath, folder)
         
     else:
@@ -82,6 +83,11 @@ def getIsobbx(filepath, detail, folder, time):
     
     #if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
+    print("-----------------------------------------------")
+    print(convHull_val)
+    print("-----------------------------------------------")
+    print(ret_value)
+    print("-----------------------------------------------")
     # print(ret_value)
     os.remove("out.json")
     return ret_value
@@ -169,19 +175,22 @@ def iso_convHull(filepath, folder):
             #TODO
             #hier besser raise exception?!
             print("There is a feature without coordinates in the iso file")
-        #point.append(feature.geometry.coordinates)
+        # point.append(feature.geometry.coordinates)
         #print(point)
     #print(point)
     #calculation of the convex hull
-    # print("hull")
     hull=ConvexHull(point)
     hull_points=hull.vertices
-    # print(hull_points)
+    print("555555555555555555555555555555555555555555")
+    print(hull_points)
+    print("555555555555555555555555555555555555555555")
     convHull=[]
     # print("afterhull")
     for z in hull_points:
         hullcoord=[point[z][0], point[z][1]]
         convHull.append(hullcoord)
+
+    print(convHull)
         # print("in hull_points_loop")
     #if folder=='single':
     # print("----------------------------------------------------------------")

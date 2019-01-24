@@ -49,6 +49,7 @@ def test_answerG():
 #####################################
 # --detail=convexHull --folder=single
 # ################################### 
+
 def test_answerO():
     filepath=__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp'
     assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]] 
@@ -59,7 +60,7 @@ def test_answerP():
 
 def test_answerQ():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
-    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [[137.99905382800011, -25.996866969999928], [140.99926498800005, -28.999101008999958], [151.34008239700006, -29.17737311299993], [151.34166839400007, -29.17739109599995], [151.393417547, -29.177894683999966], [151.3937835690001,-29.17789266699998], [151.3941365600001, -29.177839664999965], [151.3944875080001, -29.177694680999934], [152.00644910000005, -28.909157782999955], [152.00970300100005, -28.907662760999983], [153.53459401600003, -28.177638995999928], [153.55217124800004, -28.164408480999953], [153.54670756200005, -27.434827088999953], [153.3603268820001, -25.006193005999933], [153.35174810500007, -24.96573702099994], [153.2663279940001, -24.699736971999982], [153.2661289230001, -24.699200046999977], [143.87746788800007, -9.142926021999926], [143.87690808800005, -9.142306013999928], [143.87583816300003, -9.142175976999965], [142.15182012200012, -9.222157988999982], [142.15091003100008, -9.222278034999931], [142.14579010300008, -9.223198021999963], [141.57303297900012, -9.51290099199997], [141.57246314100007, -9.51347097699994], [141.5694031270001, -9.518450047999977], [137.9945999890001, -16.538260007999952], [137.99432499800002, -17.452575], [137.99687901200002, -25.13799899399993]], [None]]
 
 def test_answerR():
     filepath=__location__+'/testdata/muenster_ring_zeit.geojson'
@@ -70,9 +71,9 @@ def test_answerS():
     assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
 
 def test_answerAE():    
-    filepath=__location__+'/testdata/clc_1000_PT.gml'
-    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]
+    filepath=__location__+'/testdata/mypolygon_px6.gml'
+    assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [[79.39064024773653, 11.677958136567844], [79.39613341179829, 11.635255390466018], [79.42256926384478, 11.627857397680971], [79.44694517936921, 11.65307701972681], [79.44763182487713, 11.684009962648828], [79.40574644890594, 11.697121798928404]], [None]]
 
 def test_answerUE():    
-    filepath= __location__+'/testdata/ECMWF_ERA-40_subset.nc'
+    filepath= __location__+'/testdata/ECMWF_ERA-40_subset1.nc'
     assert extractTool.getMetadata(filepath, 'convexHull', 'single', False) == [[None], [None], [None]]

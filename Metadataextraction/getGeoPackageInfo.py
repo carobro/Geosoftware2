@@ -33,6 +33,9 @@ def getGeopackagebbx(filepath, detail, folder, time):
         bbox_val=[None]
     if detail == 'convexHull':
         convHull_val=geopackage_convHull(filepath, folder)
+        print("###############################################")
+        print(convHull_val)
+        print("###############################################")
     else:
         convHull_val=[None]
     if (time):
@@ -60,10 +63,17 @@ def geopackage_convHull(filepath, folder):
     
     points = c.fetchall()
     pointlist=[]
+    print("==================================")
+    print(points)
+    print("==================================")
     for z in points:
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         pointlist.append(de.transformToWGS84(z[0], z[1], myCRS))
         pointlist.append(de.transformToWGS84(z[2], z[3], myCRS))
     hull=ConvexHull(pointlist)
+    print("11111111111111111111111========")
+    print(hull)
+    print("11111111111111111111111==========")
     hull_points=hull.vertices
     convHull=[]
     for y in hull_points:
@@ -76,6 +86,7 @@ def geopackage_convHull(filepath, folder):
     # click.echo("Convex hull of the GeoPackage object:")
     # print(convHull)
     # print("----------------------------------------------------------------")
+    print(convHull)
     return convHull
     # if folder=='whole':
     #     print("----------------------------------------------------------------")
