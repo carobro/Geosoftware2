@@ -62,13 +62,13 @@ def test_answer7():
 # equal
 def test_answer8():
     input1 = "vector.geojson"
-    input2 = "vector.sh"
+    input2 = "vector.shp"
     assert similar.whatDataType(input1, input2, 0.6) == 0.6
 
 # not equal
 def test_answer9():
     input1 = "test.csv"
-    input2 = "test.sh"
+    input2 = "test.shp"
     assert similar.whatDataType(input1, input2, 0.6) == 0.75
 
 # not equal
@@ -94,5 +94,5 @@ def test_answer13():
     assert similar.extension(filepath) == "raster"
 
 def test_answer14():
-    filepath = "test.sh"
+    filepath = "test.shp"
     assert similar.extension(filepath) == "vector"

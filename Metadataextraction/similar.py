@@ -52,7 +52,7 @@ def extension(filepath):
 
     if typ == ".csv" or typ == ".tif" or typ == ".gpkg":
         return "raster"
-    if typ == ".geojson" or typ == ".sh" or typ == ".gpkg" or typ == ".gml" or typ == ".kml" or typ == ".nc":
+    if typ == ".geojson" or typ == ".shp" or typ == ".gpkg" or typ == ".gml" or typ == ".kml" or typ == ".nc":
         return "vector"
     else:
         print("not valid")
