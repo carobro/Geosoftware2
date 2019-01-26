@@ -40,9 +40,9 @@ def test_whole_E():
 #####################################
 
 def test_wholeD():
-    filepath="/home/minicaro/Downloads/timegeo/timegeo"
+    filepath=__location__+"/testdata/timegeo/timegeo"
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', True) == [[6.220493316650391, 50.52150360276628, 7.647256851196289, 51.974624029877454], [None], ['2018-11-14 00:00:00', '2018-11-14 00:00:00']]
 
 def test_wholeE():    
-    filepath="/home/minicaro/Downloads/time_mischung"
+    filepath=__location__+"/testdata/time_mischung"
     assert extractTool.getMetadata(filepath, 'bbox', 'whole', True) == [[-90.0, 0.0, 90.0, 357.5], [None], ['2002-07-01 12:00:00', '2018-11-14 00:00:00']]
