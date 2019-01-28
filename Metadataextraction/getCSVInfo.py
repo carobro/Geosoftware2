@@ -24,52 +24,67 @@ def getCSVbbx(filepath, detail, folder, time):
     listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum", "Date", "Timestamp"]
 
     df = csv_split(filepath)
+    print("1")
 
     #tests if there is a column named coordinate reference system or similar       
     if not intersect(listCRS,df.columns.values):
         CRSinfo= False
-        raise ValueError("Sadly we do not find a coordinate reference system.")
+        #raise ValueError("Sadly we do not find a coordinate reference system.")
     else:
         CRSinfo= True
     
+    print("2")
 
     # check if there are columns for latitude, longitude and timestamp
     if not(intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)):
+        print("3")
         click.echo("No fitting header for latitudes,longitudes")
+        bbox_val=[None]
+        convHull_val=[None]
     else:
+        print("4")
         my_lat=intersect(listlat,df.columns.values)
         my_lon=intersect(listlon,df.columns.values)
         # saves the coordinate values for latitude and longitude
         lats=df[my_lat[0]]
         lons=df[my_lon[0]]
+        # print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        if detail =='bbox':
+            bbox_val=csv_bbox(filepath, folder, lats, lons, CRSinfo, df)
+
+        else:
+            bbox_val=[None]
+
+        #returns the convex hull of the coordinates from the CSV object.
+        if detail == 'convexHull':
+            convHull_val=csv_convHull(filepath, folder, lats, lons, CRSinfo, df)
+            print("5")
+        else:
+            convHull_val=[None]
+            print("6")
 
     if intersect(listtime,df.columns.values):
+        print("7")
         my_time_identifier=intersect(listtime,df.columns.values)
+        if (time):
+            time_val=csv_time(filepath, folder,my_time_identifier,df)
+        else:
+            print("8")
+            time_val=[None]
     else:
+        print("9")
         my_time_identifier= False
         click.echo("No time information available")
-
-    # print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    if detail =='bbox':
-        bbox_val=csv_bbox(filepath, folder, lats, lons, CRSinfo, df)
-
-    else:
-        bbox_val=[None]
-
-    #returns the convex hull of the coordinates from the CSV object.
-    if detail == 'convexHull':
-        convHull_val=csv_convHull(filepath, folder, lats, lons, CRSinfo, df)
-
-    else:
-        convHull_val=[None]
-
-    if (time):
-        time_val=csv_time(filepath, folder,my_time_identifier,df)
-    else:
         time_val=[None]
+
+    
+
+    
     
     #if folder=='single':
+    print("10")
     ret_value=[bbox_val, convHull_val, time_val]
+    print("11")
     # print(ret_value)
     return ret_value
 
