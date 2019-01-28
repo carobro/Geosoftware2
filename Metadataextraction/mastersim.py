@@ -26,7 +26,7 @@ def master(filepath1, filepath2):
         print("Boudning Box filepath2") 
         print(bbox2)
         print('____________________________________')
-        sim = similar.calculateScore(bbox1, bbox2)
+        sim = similar.calculatedScore(bbox1, bbox2)
         print("Calculed Bounding Box similarity:")
         print(sim)
         print('____________________________________')
