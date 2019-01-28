@@ -23,21 +23,19 @@ def getCSVbbx(filepath, detail, folder, time):
     listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
     listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum", "Date", "Timestamp"]
 
-    #click.echo("csv")
-    # read the csv
     df = csv_split(filepath)
 
     #tests if there is a column named coordinate reference system or similar       
     if not intersect(listCRS,df.columns.values):
         CRSinfo= False
-        click.echo("No fitting header for a reference system")
+        raise ValueError("Sadly we do not find a coordinate reference system.")
     else:
         CRSinfo= True
+    
+
     # check if there are columns for latitude, longitude and timestamp
     if not(intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)):
         click.echo("No fitting header for latitudes,longitudes")
-        #raise Exception('No fitting header for latitudes,longitudes')
-        #lats, lons = None
     else:
         my_lat=intersect(listlat,df.columns.values)
         my_lon=intersect(listlon,df.columns.values)
@@ -79,19 +77,21 @@ def getCSVbbx(filepath, detail, folder, time):
 Function for splitting a csv file
 
 :param filepath: path to the file
+:raises: TypeError, if its not possible to read the file with ';' or ',' as a delimiter
 :returns: datafile as a read_csv
 """
 def csv_split(filepath):
-    # print("in split")
-    # First try ';' as the delimiter, if that does not work, take ','
     try:
         deli=';'
-        df = pd.read_csv(filepath, delimiter=deli,engine='python') 
-        
-    except Exception:
-        deli=','
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
-    return df
+        return df
+    except:
+        try:
+            deli=','
+            df = pd.read_csv(filepath, delimiter=deli,engine='python')
+            return df
+        except:
+            raise TypeError("This is not a csv file!")
 
 """
 Function for extracting the temporal extent of the CSV file

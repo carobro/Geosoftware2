@@ -49,7 +49,10 @@ def openFolder(filepath, detail, folder, time):
                     try:
                         #click.echo("folderCSV")
                         b=getCSVInfo.getCSVbbx(docPath, detail, folder, time)
-                    except Exception as e:
+                    except ValueError as err:
+                        print(err.args)
+                        continue
+                    except TypeError as e:
                         try:
                             #click.echo("folderGeoTIFF")
                             b=getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder, time)
@@ -83,46 +86,44 @@ def openFolder(filepath, detail, folder, time):
     #if folder=='whole':
     if detail=='bbox':
         bboxes=folder_bboxArray
-        #print(bboxes)
-        min1=100000000
-        min2=100000000
-        max1=-10000000
-        max2=-10000000
         lat1List=[lat1 for lat1, lng1, lat2, lng2 in bboxes]
-        #print(lat1List)
         for x in lat1List:
-            if x<min1:
-                min1=x
-
+            try:
+                if x<min1:
+                    min1=x
+            except NameError:
+                min1 = x
 
         lng1List=[lng1 for lat1, lng1, lat2, lng2 in bboxes]
-        #print(lng1List)
         for x in lng1List:
-            if x<min2:
-                min2=x
+            try:
+                if x<min2:
+                    min2=x
+            except NameError:
+                min2 = x
 
         lat2List=[lat2 for lat1, lng1, lat2, lng2 in bboxes]
-        #print(lat2List)
         for x in lat2List:
-            if x>max1:
+            try:
+                if x>max1:
+                    max1=x
+            except NameError:
                 max1=x
 
-
         lng2List=[lng2 for lat1, lng1, lat2, lng2 in bboxes]
-        #print(lng2List)
         for x in lng2List:
-            if x>max2:
+            try:
+                if x>max2:
+                    max2=x
+            except NameError:
                 max2=x
 
         folderbbox=[min1, min2, max1, max2]
         ret_value_folder.append(folderbbox)
-        #return folderbbox
     else:
         ret_value_folder.append([None])
     if detail=='convexHull':
         points=folder_convHullArray
-        # print(points)
-        # print(ConvexHull(points))
         hull=ConvexHull(points)
         hull_points=hull.vertices
         convHull=[]

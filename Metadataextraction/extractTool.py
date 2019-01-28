@@ -33,6 +33,8 @@ An advantage of our code is that the file extension is not important for the met
 def getMetadata(path, detail, folder, time):
    
     filepath = path
+
+    a = None
    
     if(len(filepath)==0):
         click.echo("Please insert a correct filepath")
@@ -52,7 +54,10 @@ def getMetadata(path, detail, folder, time):
                 try:
                     #print("CSV")
                     a=getCSVInfo.getCSVbbx(filepath, detail, folder, time)
-                except Exception as e:
+                except ValueError as err:
+                    print(err.args)
+                except TypeError as e:
+                    print(e.args)
                     try:
                         #print("GeoPackage")
                         a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
@@ -68,8 +73,8 @@ def getMetadata(path, detail, folder, time):
                                 try:
                                     #click.echo("Folder")
                                     a=openFolder.openFolder(filepath, detail, folder, time)
-                                except Exception as e:
-                                    a=None
+                                except:
+                                    click.echo("end this")
     print("Final extraction:")
     print(a)
     return a

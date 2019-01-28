@@ -21,7 +21,7 @@ def test_answerU():
 
 def test_answerUU():  
     filepath=  __location__+'/testdata/Baumfaellungen_Duesseldorf.csv'
-    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == [[None], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox', 'single', True) == None
 
 def test_answerV():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
