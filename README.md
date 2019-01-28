@@ -71,7 +71,7 @@ Then you can navigate in any common console in the folder of the tool (*"extract
 there, the following command must be executed   
 
 ```bat 
-python extractTool.py --path='[filepath]' --detail=[bbox|concexHull] --time
+python extractTool.py --path='[filepath]' --detail=[bbox|convexHull] --time
 ```
  for `filepath` you must insert a filepath to your testdata
  
