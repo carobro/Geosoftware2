@@ -66,19 +66,22 @@ for a more detailed explanation look at: https://github.com/carobro/Geosoftware2
 :param bbox2: Bounding Box from a file
 :returns: similarity score from the two Bounding Boxes
 """
-def calcuateScore(bbox1,bbox2):
+def calculateScore(bbox1,bbox2):
     if isinstance(bbox1[0], float) and isinstance(bbox1[1], float) and isinstance(bbox1[2], float) and isinstance(bbox1[3], float) and isinstance(bbox2[0], float) and isinstance(bbox2[1], float) and isinstance(bbox2[2], float) and isinstance(bbox2[3], float):
-        if distance(bbox1,bbox2) < 20000:
-            simdis = distance(bbox1,bbox2)/20000
+        if  bbox1[0] != bbox2[0] and bbox1[1] != bbox2[1] and bbox1[2] != bbox2[2] and bbox1[3] != bbox2[3]: 
+            if distance(bbox1,bbox2) < 20000:
+                simdis = distance(bbox1,bbox2)/20000
+            else:
+                simdis = 1
+            if abs(area(bbox1) - area(bbox2)) < 1000000:
+                simA = (abs(area(bbox1) - area(bbox2)))/1000000
+            else:
+                simA = 1
+            sim = (2 * simdis + simA)/3
+            return sim
         else:
-            simdis = 1
-        if abs(area(bbox1) - area(bbox2)) < 1000000:
-            simA = (abs(area(bbox1) - area(bbox2)))/1000000
-        else:
-            simA = 1
-        sim = (2 * simdis + simA)/3
-        return sim
-
+            sim = 0
+            return sim
     else:
         sim = 1
         return sim

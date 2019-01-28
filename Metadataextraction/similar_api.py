@@ -89,7 +89,7 @@ def calculateScore(bbox1,bbox2):
             sim = (2 * simdis + simA)/3
             return sim
         else:
-            sim=1
+            sim=0
             return sim
     else:
         sim = 1
