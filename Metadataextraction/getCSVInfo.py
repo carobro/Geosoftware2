@@ -81,6 +81,11 @@ Function for splitting a csv file
 :returns: datafile as a read_csv
 """
 def csv_split(filepath):
+    # Here we avoid that a gml is parsed as a csv 
+    my_split=filepath.split('.')
+    if(my_split[len(my_split)-1]=='gml'):
+        raise TypeError("This is a gml and not a csv file!")
+
     try:
         deli=';'
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
