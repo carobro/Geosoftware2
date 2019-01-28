@@ -10,9 +10,6 @@ import ogr2ogr
 import json
 import dateparser
 
-#@click.command()
-#@click.option('--path', prompt='Datapath', help='Path to the data.')
-#@click.option('--time', 'detail', flag_value='time', default=True)
 timeextendArray=[]
 
 """
@@ -25,13 +22,13 @@ if this file cannot find any time-values the file throws an
 :param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
 :returns: temporal extent 
 """
-def getTimeextent(path, detail, folder):
+def getTimeextent(path, detail ):
     filepath = path
     try:
         getShapefiletime(filepath, detail)
     except Exception:
         try:
-            getCSVtime(filepath, detail, folder)
+            getCSVtime(filepath, detail )
         except Exception:
             try:
                 getNetCDFtime(filepath, detail)
@@ -89,14 +86,12 @@ Function for extracting the temporal extent of a CSV file
 :param filepath: path to the file
 :param detail: specifies if the user wants the time as a level of detail
 """
-def getCSVtime(filepath, detail, folder):
+def getCSVtime(filepath, detail ):
     # After opening the file we search in the header for collumns with names like
     # date, time or timestamp. If some of these collumns exists we collect
     # all the values from inside and calculate the min and max
     # Doesn't work if there are empty lines 
-    click.echo("CSV")
     if detail =='time':
-        click.echo("hallo")
         # Using Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
         df = pd.read_csv(filepath, sep=';|,',engine='python')
         listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum"]
@@ -107,19 +102,7 @@ def getCSVtime(filepath, detail, folder):
         if not intersection:
             print("No fitting header for time-values")
             # TODO: fehlerbehandlung  
-            #try:
-                #print("test2")
-                #for t in listtime:
-                    #if(x not in df.columns.values):
-                        #click.echo("This file does not include time-values")
-                    #else:
-                        #time=df[t]
-                        #timeextend =[min(time), max(time)]
-                        #click.echo(timeextend)
-                        #return timeextend
-            #except Exception as e:
-                #click.echo ("There is no time-value or invalid file.")
-                #return None   
+
         else:
             time=df[intersection[0]]
             timeextend=[min(time), max(time)]
@@ -164,37 +147,30 @@ def getGeoJsontime(filepath, detail):
             first = geojson["features"]
             for time in geojson: 
                 try:
-                    #click.echo(first[0]["Date"])
                     time = first[0]["Date"]
                     timelist.append(time)
                 except Exception as e:
                     try:
-                        #click.echo(first[0]["creationDate"])
                         time = time[0]["creationDate"]
                         timelist.append(time)
                     except Exception as e:
                         try:
-                            #click.echo(first[0]["date"])
                             time = first[0]["date"]
                             timelist.append(time)
                         except Exception as e:
                             try:
-                                #click.echo(first[0]["time"])
                                 time = first[0]["time"]
                                 timelist.append(time)
                             except Exception as e:
                                 try:
-                                    #click.echo(first[0]["properties"]["date"])
                                     time = first[0]["properties"]["date"]
                                     timelist.append(time)
                                 except Exception as e:
                                     try:
-                                        #click.echo(first[0]["properties"]["time"])
                                         time = first[0]["properties"]["time"]
                                         timelist.append(time)
                                     except Exception as e:
                                         try:
-                                            #click.echo(first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"])
                                             time = first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"]
                                             timelist.append(time)
                                         except Exception as e:
@@ -202,9 +178,8 @@ def getGeoJsontime(filepath, detail):
                                             return None         
         timemax = min(timelist)
         timemin = max(timelist)
-        #click.echo(min(timelist))
         click.echo(max(timelist))
-        return timemax #, timemin
+        return timemax
 
 """
 Function for extracting the temporal extent of a NetCDF file
@@ -227,7 +202,6 @@ def getNetCDFtime(filepath, detail):
             end = str(endtime.values)
             timemax_formatted=dateparser.parse(start)
             timemin_formatted=dateparser.parse(end)
-            print(timemax_formatted, timemax_formatted)
             return [start, end]
         except Exception as e:
             click.echo ("There is no time-value or invalid file")
@@ -242,7 +216,6 @@ Geopackages do not have any time information so we return None
 :returns: None
 """
 def getGeopackagetime(filepath, detail):
-    click.echo("GeoPackage")
     if detail =='time':
         click.echo ("There is no time-value for Geopackage files")
         return None
@@ -254,7 +227,6 @@ Function for extracting the temporal extent of an iso file
 :returns: temporal extent
 """
 def getIsoTime(filepath, detail):
-    click.echo("Iso")
     if detail =='time':
         # We transform the gml file to a geojson file
         ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
@@ -262,51 +234,41 @@ def getIsoTime(filepath, detail):
         geojson = json.load(iso)
         # @see https://www.w3schools.com/python/python_file_remove.asp
         os.remove("time.json")
-        print(" ")
-        print("The time value of this file is:")
         # search for words like "Date", "creationDate", "time" and collect them
         if geojson["type"] == "FeatureCollection":
             first = geojson["features"]  
             time = []
             for i in range(0,5):            
                 try:
-                    click.echo(first[i]["Date"])
                     time = first[i]["Date"]
                     return time
                 except Exception as e:
                     try:
-                        click.echo(first[i]["properties"]["creationDate"])
                         time = time[i]["properties"]["creationDate"]
                         return time
                     except Exception as e:
                         try:
-                            click.echo(first[i]["date"])
                             time = first[i]["date"]
                             return time
                         except Exception as e:
                             try:
-                                click.echo(first[i]["time"])
                                 time = first[i]["time"]
                                 return time
                             except Exception as e:
                                 try:
-                                    click.echo(first[i]["properties"]["date"])
                                     time = first[i]["properties"]["date"]
                                     return time
                                 except Exception as e:
                                     try:
-                                        click.echo(first[i]["properties"]["time"])
                                         time = first[i]["properties"]["time"]
                                         return time
                                     except Exception as e:
                                         try:
-                                            click.echo(first[i]["properties"]["Date"])
                                             time = first[i]["properties"]["Date"]
                                             return time
                                         except Exception as e:
                                             click.echo("there is no time-value")
                                             return None   
-            print(time)
             return time
 
 if __name__ == '__main__':

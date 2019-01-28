@@ -15,10 +15,9 @@ Auxiliary function to bypass problems with the CLI tool when executed from anywh
 @click.option('--path',required=True,prompt='insert filepath!', help='please insert the path to the data here.')
 @click.option('--time', is_flag=True, help='returns the time extend of one object')
 @click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
-@click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
 
-def click_function(path, detail, folder, time):
-    getMetadata(path, detail, folder, time)
+def click_function(path, detail, time):
+    getMetadata(path, detail, time)
 
 """
 Function for extracting the metadata (bounding box)
@@ -30,53 +29,43 @@ An advantage of our code is that the file extension is not important for the met
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-def getMetadata(path, detail, folder, time):
+def getMetadata(path, detail, time):
    
     filepath = path
-
     a = None
    
     if(len(filepath)==0):
         click.echo("Please insert a correct filepath")
         return None
     try:
-        #click.echo("Shapefile")
-        a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
+        a=getShapefileInfo.getShapefilebbx(filepath, detail, time)
     except Exception as e:
         try:
-            #click.echo("GeoJson")
-            a=getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder, time)
+            a=getGeoJsonInfo.getGeoJsonbbx(filepath, detail, time)
         except Exception as e:
             try:
-                #click.echo("NetCDF")
-                a=getNetCDFInfo.getNetCDFbbx(filepath, detail, folder, time)
+                a=getNetCDFInfo.getNetCDFbbx(filepath, detail, time)
             except Exception as e:
                 try:
-                    #print("CSV")
-                    a=getCSVInfo.getCSVbbx(filepath, detail, folder, time)
+                    a=getCSVInfo.getCSVbbx(filepath, detail, time)
                 except ValueError as err:
                     print(err.args)
                 except TypeError as e:
                     print(e.args)
                     try:
-                        #print("GeoPackage")
-                        a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
+                        a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, time)
                     except Exception as e:
                         try:
-                            #click.echo("GeoTIFF")
-                            a=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder, time)
+                            a=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, time)
                         except Exception as e:
                             try:
-                                #click.echo("ISO")
-                                a=getIsoInfo.getIsobbx(filepath, detail, folder, time)
+                                a=getIsoInfo.getIsobbx(filepath, detail, time)
                             except Exception as e:
                                 try:
-                                    #click.echo("Folder")
-                                    a=openFolder.openFolder(filepath, detail, folder, time)
+                                    a=openFolder.openFolder(filepath, detail, time)
 
                                 except Exception as e:
                                     print(e)
-                                    click.echo("end this")
     print("Final extraction:")
     print(a)
     return a
