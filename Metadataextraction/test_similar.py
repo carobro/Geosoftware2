@@ -35,13 +35,13 @@ def test_answer3():
 def test_answer4():
     bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
     bbox2 = ["abc"]
-    assert similar.calculateScalculatedScorecore(bbox1, bbox2) == 1
+    assert similar.calculatedScore(bbox1, bbox2) == 1
 
 # Germany - Germany
 def test_answer5():
     bbox1 = [5.8663155, 47.270111, 15.041932 , 55.099159]
     bbox2 = [5.8663155, 47.270111, 15.041932 , 55.099159]
-    assert similar.calculatedScore(bbox1, bbox2) == 1
+    assert similar.calculatedScore(bbox1, bbox2) == 0
 
 # Invalid input - Invalid input
 def test_answer6():
