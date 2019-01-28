@@ -36,24 +36,24 @@ def test_master17():
      filepath2 = __location__+'/testdata/wf_100m_klas.tif'
      assert mastersim.master(filepath1, filepath2) == 0.6181574506199584
 
-
+"""
 #check
 def test_master1():
-     filepath1 = (__location__+'/testdata/Abgrabungen_Kreis_Kleve.shp')
-     filepath2 = (__location__+'/testdata/Abgrabungen_Kreis_Kleve.shp')
+     filepath1 = (__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp')
+     filepath2 = (__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp')
      assert mastersim.master(filepath1, filepath2) == 1
-
+"""
 # check
 def test_master2():
     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
     filepath2 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
-    assert mastersim.master(filepath1, filepath2) == 1
+    assert mastersim.master(filepath1, filepath2) == 0
 
 #check
 def test_master3():
     filepath1 = __location__+'/testdata/wf_100m_klas.tif'
     filepath2 = __location__+'/testdata/wf_100m_klas.tif'
-    assert mastersim.master(filepath1, filepath2) == 1
+    assert mastersim.master(filepath1, filepath2) == 0
 
 #check
 def test_master4():
@@ -63,22 +63,22 @@ def test_master4():
 
 #check
 def test_master5():
-    filepath1 =__location__+'/testdata/ECMWF_ERA-40_subset.nc'
-    filepath2 = __location__+'/testdata/ECMWF_ERA-40_subset.nc'
-    assert mastersim.master(filepath1, filepath2) == 1
+    filepath1 =__location__+'/testdata/ECMWF_ERA-40_subset1.nc'
+    filepath2 = __location__+'/testdata/ECMWF_ERA-40_subset1.nc'
+    assert mastersim.master(filepath1, filepath2) == 0
 
 
 #check
 def test_master6():
     filepath1 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
-    assert mastersim.master(filepath1, filepath2) == 1
+    assert mastersim.master(filepath1, filepath2) == 0
 
 #check
 def test_master7():
     filepath1 = __location__+'/testdata/3D_LoD1_33390_5664.gml'
     filepath2 = __location__+'/testdata/3D_LoD1_33390_5664.gml'
-    assert mastersim.master(filepath1, filepath2) == 1
+    assert mastersim.master(filepath1, filepath2) == 0
 
 def test_master8():
     filepath1 = __location__+'/testdata/3D_LoD1_33390_5664.gml'
@@ -87,9 +87,9 @@ def test_master8():
 
 #check
 def test_master9():
-    filepath1 = __location__+'/testdata/ECMWF_ERA-40_subset.nc'
+    filepath1 = __location__+'/testdata/ECMWF_ERA-40_subset1.nc'
     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
-    assert mastersim.master(filepath1, filepath2) == 1
+    assert mastersim.master(filepath1, filepath2) == 0.6564650750802342
 
 def test_master10():
     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 

@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import dateparser
+import dateparser   # used to parse the dates
 
 """
 Function for extracting the bounding box of a NetCDF file
@@ -17,107 +17,115 @@ Function for extracting the bounding box of a NetCDF file
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
 def getNetCDFbbx(filepath, detail, folder, time):
-
-    print("drin")
     #validation if file is netcdf
-    ds = xr.open_dataset(filepath)
     if detail =='bbox':
-        print("bbox")
-        try:
-            lats = ds.coords["lat"]
-            lons = ds.coords["lon"]
-
-        except Exception as e:
-            lats = ds.coords["latitude"]
-            lons = ds.coords["longitude"]
-        #print(ds.values)
-        minlat=min(lats).values
-        minlatFloat=float(minlat)
-        minlon=min(lons).values
-        minlonFloat=float(minlon)
-        maxlat=max(lats).values
-        maxlatFloat=float(maxlat)
-        maxlon=max(lons).values
-        maxlonFloat=float(maxlon)
-
-
-        bbox = [minlatFloat,minlonFloat,maxlatFloat,maxlonFloat]
-        #click.echo(bbox)
-
-        if folder=='single':
-            print("----------------------------------------------------------------")
-            click.echo("Filepath:")
-            click.echo(filepath)
-            click.echo("Boundingbox of the NetCDF Object:")
-            click.echo(bbox)
-            print("----------------------------------------------------------------")
-            extractTool.ret_value.append(bbox)
-            #print("test")
-            #return bbox
-        if folder=='whole':
-            #fuer Boundingbox des Ordners
-            extractTool.bboxArray.append(bbox)
-            click.echo(filepath)
-            print(bbox)
-            #return bbox
+        bbox_val=netcdf_bbox(filepath, folder)
     else:
-        extractTool.ret_value.append([None])
+        bbox_val=[None]
+
     if detail == 'convexHull':
-        ds = xr.open_dataset(filepath)
-        print("----------------------------------------------------------------")
-        click.echo("Filepath:")
-        click.echo(filepath)
-        click.echo('Sorry there is no second level of detail for NetCDF files')
-        print("----------------------------------------------------------------")
-        extractTool.ret_value.append([None])
-    
+        convHull_val=netcdf_convHull(filepath, folder)
     else:
-        extractTool.ret_value.append([None])
+        convHull_val=[None]
 
     # if time is selected (TRUE), the temporal extent is calculated
-
     if (time):
-        #ds = xr.open_dataset(filepath)
-        try:
-            mytime = ds.coords["time"]
-            # print(ds.values)
-            starttime = min(mytime)
-            endtime = max(mytime)
-            # temporal extent
-            anfang = str(starttime.values)
-            ende = str(endtime.values)
-            timemax_formatted=dateparser.parse(ende)
-            timemin_formatted=dateparser.parse(anfang)
-            if folder=='single':
-                print("----------------------------------------------------------------")
-                click.echo("Filepath:")
-                click.echo(filepath)
-                print("the temporal extend of the NetCDF object is:")
-                print(timemin_formatted)
-                print(timemax_formatted)
-                print("----------------------------------------------------------------")
-                extractTool.ret_value.append([anfang, ende])
-
-            if folder=='whole':
-                timeextend=[timemin_formatted, timemax_formatted]
-                extractTool.timeextendArray.append(timeextend)
-                #print(timeextend[0])
-                print("timeextendArray:")
-                print(extractTool.timeextendArray)
-                #return anfang, ende
-        except Exception as e:
-            extractTool.ret_value.append([None])
-            click.echo ("There is no time-value or invalid file")
-            #return None
+        time_val=netcdf_time(filepath, folder)
     else:
-        extractTool.ret_value.append([None])
-
+        time_val=[None]
     
-    ds.close()
-    if folder=='single':
-        print(extractTool.ret_value)
-        return extractTool.ret_value
-        #print("fertig")
+    # if folder=='single':
+    ret_value=[bbox_val, convHull_val, time_val]
+    # print(ret_value)
+    return ret_value
+    #print("fertig")
 
-if __name__ == '__main__':
-    getNetCDFbbx()
+"""
+Function for extracting the time of a NetCDF file
+
+:param filepath: path to the file
+:param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
+:returns: temporal extent
+"""
+def netcdf_time(filepath, folder):
+    ds = xr.open_dataset(filepath)
+    try:
+        mytime = ds.coords["time"]
+        # print(ds.values)
+        starttime = min(mytime)
+        endtime = max(mytime)
+        # Zeitliche Ausdehnung
+        anfang = str(starttime.values)
+        ende = str(endtime.values)
+        timemax_formatted=str(dateparser.parse(ende))
+        timemin_formatted=str(dateparser.parse(anfang))
+        #if folder=='single':
+        # print("----------------------------------------------------------------")
+        # click.echo("Filepath:")
+        # click.echo(filepath)
+        # print("the temporal extend of the NetCDF object is:")
+        # print(timemin_formatted)
+        # print(timemax_formatted)
+        # print("----------------------------------------------------------------")
+        return([timemin_formatted, timemax_formatted])
+        #extractTool.ret_value.append([timemin_formatted, timemax_formatted])
+
+        # if folder=='whole':
+        #timeextend=[timemin_formatted, timemax_formatted]
+        #extractTool.timeextendArray.append(timeextend)
+        #print(timeextend[0])
+        #print("timeextendArray:")
+        #print(extractTool.timeextendArray)
+        #return anfang, ende
+        ds.close()
+    except Exception as e:
+        click.echo ("There is no time-value or invalid file")
+        ds.close()
+        return None
+
+def netcdf_convHull(filepath, folder):
+    ds = xr.open_dataset(filepath)
+    # print("----------------------------------------------------------------")
+    # click.echo("Filepath:")
+    # click.echo(filepath)
+    click.echo('Sorry there is no second level of detail for NetCDF files')
+    # print("----------------------------------------------------------------")
+    ds.close()
+    return [None]
+    #extractTool.ret_value.append([None])
+
+def netcdf_bbox(filepath, folder):
+    # print("bbox")
+    ds = xr.open_dataset(filepath)
+    try:
+        lats = ds.coords["lat"]
+        lons = ds.coords["lon"]
+
+    except Exception as e:
+        lats = ds.coords["latitude"]
+        lons = ds.coords["longitude"]
+    #print(ds.values)
+    minlat=min(lats).values
+    minlatFloat=float(minlat)
+    minlon=min(lons).values
+    minlonFloat=float(minlon)
+    maxlat=max(lats).values
+    maxlatFloat=float(maxlat)
+    maxlon=max(lons).values
+    maxlonFloat=float(maxlon)
+
+
+    bbox = [minlatFloat,minlonFloat,maxlatFloat,maxlonFloat]
+    #click.echo(bbox)
+
+    #if folder=='single':
+    extractTool.print_pretty_bbox(filepath,bbox, "NetCDF")
+    ds.close()
+    return bbox
+    # if folder=='whole':
+        #fuer Boundingbox des Ordners
+    #    extractTool.bboxArray.append(bbox)
+    #    click.echo(filepath)
+    #    print(bbox)
+    #    ds.close()
+        #return bbox

@@ -1,20 +1,6 @@
-#import click, json, sqlite3, csv, pygeoj
-#from osgeo import gdal, ogr, osr
-#import pandas as pd
-#import numpy as np
-#import xarray as xr
-#import os
-from pyproj import Proj, transform
-import click
+from pyproj import Proj, transform # used for the CRS transformation
+import click    # used for output messages
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
-
-"""
-global variable to save the bbox values of single files it is used for the boundingbox extraction of a whole folder
-"""
-bboxArray = []
-timeextendArray=[]
-ret_value=[]
-
 
 """
 Auxiliary function to bypass problems with the CLI tool when executed from anywhere else
@@ -26,10 +12,11 @@ Auxiliary function to bypass problems with the CLI tool when executed from anywh
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
 @click.command()
-@click.option('--path',required=True, help='please insert the path to the data here.')
+@click.option('--path',required=True,prompt='insert filepath!', help='please insert the path to the data here.')
 @click.option('--time', is_flag=True, help='returns the time extend of one object')
 @click.option('--detail', type=click.Choice(['bbox', 'convexHull']), default='bbox', help='select which information you want to get')
 @click.option('--folder', type=click.Choice(['single', 'whole']), default='single', help='select if you want to get the Metadata from the whole folder or for each seperate file.')
+
 def click_function(path, detail, folder, time):
     getMetadata(path, detail, folder, time)
 
@@ -46,52 +33,48 @@ An advantage of our code is that the file extension is not important for the met
 def getMetadata(path, detail, folder, time):
    
     filepath = path
+
+    a = None
    
     if(len(filepath)==0):
         click.echo("Please insert a correct filepath")
         return None
     try:
-        click.echo("detailShape")
+        #click.echo("Shapefile")
         a=getShapefileInfo.getShapefilebbx(filepath, detail, folder, time)
     except Exception as e:
         try:
-            print("This is no valid Shapefile.")
-            click.echo("detailjson")
+            #click.echo("GeoJson")
             a=getGeoJsonInfo.getGeoJsonbbx(filepath, detail, folder, time)
         except Exception as e:
             try:
-                print("error")
-                print(e)
-                click.echo("detail_netcdf")
+                #click.echo("NetCDF")
                 a=getNetCDFInfo.getNetCDFbbx(filepath, detail, folder, time)
             except Exception as e:
                 try:
-                    print("detail_csv")
+                    #print("CSV")
                     a=getCSVInfo.getCSVbbx(filepath, detail, folder, time)
-                except Exception as e:
+                except ValueError as err:
+                    print(err.args)
+                except TypeError as e:
+                    print(e.args)
                     try:
-                        print("detail geopackage")
+                        #print("GeoPackage")
                         a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, folder, time)
                     except Exception as e:
                         try:
-                            print (e)
-                            print("neu")
-                            click.echo("detail geotiff")
+                            #click.echo("GeoTIFF")
                             a=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, folder, time)
                         except Exception as e:
                             try:
-                                click.echo("detailiso")
+                                #click.echo("ISO")
                                 a=getIsoInfo.getIsobbx(filepath, detail, folder, time)
                             except Exception as e:
                                 try:
-                                    click.echo(e)
-                                    click.echo("detail folder")
+                                    #click.echo("Folder")
                                     a=openFolder.openFolder(filepath, detail, folder, time)
-                                except Exception as e:
-                                    #click.echo(e)
-                                    #click.echo ("invalid file format!!!!!")
-                                    #return 0
-                                    a=None
+                                except:
+                                    click.echo("end this")
     print("Final extraction:")
     print(a)
     return a
@@ -116,6 +99,28 @@ def transformToWGS84(lat, lng, sourceCRS):
         return(latT,lngT)
     except Exception as e:
         print(e)
+
+def print_pretty_bbox(path, bbox, my_format):
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(path)
+    click.echo("Boundingbox of the "+my_format+" object:")
+    click.echo(bbox)
+    print("----------------------------------------------------------------")
+
+def print_pretty_hull(path, convHull, my_format):
+    print("----------------------------------------------------------------")
+    click.echo("Filepath:")
+    click.echo(path)
+    click.echo("Convex Hull of the "+my_format+" file: ")
+    click.echo(convHull)
+    print("----------------------------------------------------------------")
+
+def print_pretty_time(path, time, my_format):
+    print("----------------------------------------------------------------")
+    click.echo("Timeextend of the "+my_format+" file:")
+    click.echo(time)
+    print("----------------------------------------------------------------")
 
 if __name__ == '__main__':
     click_function()

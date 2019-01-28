@@ -16,139 +16,145 @@ Function for extracting the spatial extent from a directory of files
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
+#bboxArray=[]
+
 
 def openFolder(filepath, detail, folder, time):
+    #Es kann sein, dass hier keine ordner extrahiert werden koennen, die in anderen
+    #Ordnern liegen.
+    folder_bboxArray=[]
+    folder_convHullArray=[]
+    folder_timeArray=[]
     folderpath= filepath
     click.echo("folderfolderfolder")
     docs=os.listdir(folderpath) 
     # docs now contains the files of the folder 
     # tries to extract the bbox of each file 
+    #print(docs)
     for x in docs:  
         docPath= folderpath +"/"+ x
         try:
-            click.echo("folderShape")
-            getShapefileInfo.getShapefilebbx(docPath, detail, folder, time)
+            #click.echo("folderShape")
+            b=getShapefileInfo.getShapefilebbx(docPath, detail, folder, time)
         except Exception as e:
             try:
-                click.echo("folderGeoJSON")
-                getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder, time)
+                #click.echo("folderGeoJSON")
+                b=getGeoJsonInfo.getGeoJsonbbx(docPath, detail, folder, time)
             except Exception as e:
                 try:
                     click.echo(e)
-                    click.echo("folderNetCDF")
-                    getNetCDFInfo.getNetCDFbbx(docPath, detail, folder, time)
+                    #click.echo("folderNetCDF")
+                    b=getNetCDFInfo.getNetCDFbbx(docPath, detail, folder, time)
                 except Exception as e:
                     try:
-                        click.echo("folderCSV")
-                        getCSVInfo.getCSVbbx(docPath, detail, folder, time)
-                    except Exception as e:
+                        #click.echo("folderCSV")
+                        b=getCSVInfo.getCSVbbx(docPath, detail, folder, time)
+                    except ValueError as err:
+                        print(err.args)
+                        continue
+                    except TypeError as e:
                         try:
-                            click.echo("folderGeoTIFF")
-                            getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder, time)
+                            #click.echo("folderGeoTIFF")
+                            b=getGeoTiffInfo.getGeoTiffbbx(docPath, detail, folder, time)
                         except Exception as e:
                             try:
-                                click.echo("folderGeoPackage")
-                                getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder, time)
+                                #click.echo("folderGeoPackage")
+                                b=getGeoPackageInfo.getGeopackagebbx(docPath, detail, folder, time)
                                 print("after geopackage")
                             except Exception as e:
                                 try:
-                                    click.echo("folderISO")
-                                    getIsoInfo.getIsobbx(docPath, detail, folder, time)
+                                    #click.echo("folderISO")
+                                    b=getIsoInfo.getIsobbx(docPath, detail, folder, time)
                                 except Exception as e:
                                     try:
-                                        click.echo("folderfolder")
+                                        #click.echo("folderfolder")
                                         openFolder(docPath, detail, folder, time)
                                     except Exception as e:
-                                        click.echo("folderInvalid")
+                                        #click.echo("folderInvalid")
                                         click.echo ("invalid file format in folder!")
-                                        return None
-    ret_value_folder=[]                                    
-    if folder=='whole':
-        if detail=='bbox':
-            print("if")
-            bboxes=extractTool.bboxArray
-            print("222222222")
-            print(bboxes)
-            min1=100000000
-            min2=100000000
-            max1=-10000000
-            max2=-10000000
-            lat1List=[lat1 for lat1, lng1, lat2, lng2 in bboxes]
-            #print(lat1List)
-            for x in lat1List:
+                                        b=None
+        #print(folder_bboxArray)
+        #print(b[0])
+        #folder_bboxArray=folder_bboxArray.append(b[0])
+        folder_bboxArray=folder_bboxArray+[b[0]]
+        #print(folder_bboxArray)
+        folder_convHullArray=folder_convHullArray+[b[1]]
+        #print(folder_convHullArray)
+        folder_timeArray=folder_timeArray+[b[2]]
+    
+    ret_value_folder=[]                            
+    #if folder=='whole':
+    if detail=='bbox':
+        bboxes=folder_bboxArray
+        lat1List=[lat1 for lat1, lng1, lat2, lng2 in bboxes]
+        for x in lat1List:
+            try:
                 if x<min1:
                     min1=x
+            except NameError:
+                min1 = x
 
-
-            lng1List=[lng1 for lat1, lng1, lat2, lng2 in bboxes]
-            #print(lng1List)
-            for x in lng1List:
+        lng1List=[lng1 for lat1, lng1, lat2, lng2 in bboxes]
+        for x in lng1List:
+            try:
                 if x<min2:
                     min2=x
+            except NameError:
+                min2 = x
 
-            lat2List=[lat2 for lat1, lng1, lat2, lng2 in bboxes]
-            #print(lat2List)
-            for x in lat2List:
+        lat2List=[lat2 for lat1, lng1, lat2, lng2 in bboxes]
+        for x in lat2List:
+            try:
                 if x>max1:
                     max1=x
+            except NameError:
+                max1=x
 
-
-            lng2List=[lng2 for lat1, lng1, lat2, lng2 in bboxes]
-            #print(lng2List)
-            for x in lng2List:
+        lng2List=[lng2 for lat1, lng1, lat2, lng2 in bboxes]
+        for x in lng2List:
+            try:
                 if x>max2:
                     max2=x
+            except NameError:
+                max2=x
 
-            folderbbox=[min1, min2, max1, max2]
-            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            print("boundingbox of the whole folder:")
-            print(folderbbox)
-            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            ret_value_folder.append(folderbbox)
-            #return folderbbox
-        else:
-            ret_value_folder.append([None])
-        if detail=='convexHull':
-            print("tzttztztztz")
-            points=extractTool.bboxArray
-            print("gi")
-            print(points)
-            print(ConvexHull(points))
-            hull=ConvexHull(points)
-            print("hi")
-            hull_points=hull.vertices
-            convHull=[]
-            print("concon")
-            for y in hull_points:
-                point=[points[y][0], points[y][1]]
-                convHull.append(point)
-            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            click.echo("convex hull of the folder:")    
-            click.echo(convHull)
-            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            #return convHull
-            ret_value_folder.append(convHull)
-        else:
-            ret_value_folder.append([None])
-        if (time):
-            times=extractTool.timeextendArray
-            mindate=[]
-            maxdate=[]
-            for z in times:
-                mindate.append(z[0])
-                maxdate.append(z[1])
-            min_mindate=min(mindate)
-            max_maxdate=max(maxdate)
-            folder_timeextend=[min_mindate, max_maxdate]
-            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            click.echo("timeextend of the folder:")    
-            click.echo(min_mindate)
-            click.echo(max_maxdate)
-            print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            #return folder_timeextend
-            ret_value_folder.append(convHull)
-        else:
-            ret_value_folder.append([None])
+        folderbbox=[min1, min2, max1, max2]
+        ret_value_folder.append(folderbbox)
+    else:
+        ret_value_folder.append([None])
+    if detail=='convexHull':
+        points=folder_convHullArray
+        hull=ConvexHull(points)
+        hull_points=hull.vertices
+        convHull=[]
+        for y in hull_points:
+            point=[points[y][0], points[y][1]]
+            convHull.append(point)
+        # click.echo("convex hull of the folder:")    
+        click.echo(convHull)
+        #return convHull
+        ret_value_folder.append(convHull)
+    else:
+        ret_value_folder.append([None])
+    if (time):
+        times=folder_timeArray
+        mindate=[]
+        maxdate=[]
+        for z in times:
+            mindate.append(z[0])
+            maxdate.append(z[1])
+        min_mindate=min(mindate)
+        max_maxdate=max(maxdate)
+        folder_timeextend=[min_mindate, max_maxdate]
+        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        # click.echo("timeextend of the folder:")    
+        # click.echo(min_mindate)
+        # click.echo(max_maxdate)
+        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        #return folder_timeextend
+        ret_value_folder.append(folder_timeextend)
+    else:
+        ret_value_folder.append([None])
 
     print(ret_value_folder)
     return ret_value_folder

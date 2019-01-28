@@ -20,13 +20,13 @@ def master(filepath1, filepath2):
     try:
         print('___________________________________')
         bbox1 = first[0]
-        bbox2 = second[3]
+        bbox2 = second[0]
         print("Boudning Box filepath1")
         print(bbox1)
         print("Boudning Box filepath2") 
         print(bbox2)
         print('____________________________________')
-        sim = similar.calcuateScore(bbox1, bbox2)
+        sim = similar.calculatedScore(bbox1, bbox2)
         print("Calculed Bounding Box similarity:")
         print(sim)
         print('____________________________________')
