@@ -20,6 +20,10 @@ Function for extracting the spatial extent from a directory of files
 
 
 def openFolder(filepath, detail, folder, time):
+
+    if (detail=="convexHull"):
+        click.echo("There is no convex hull for directories.")
+        return None
     #Es kann sein, dass hier keine ordner extrahiert werden koennen, die in anderen
     #Ordnern liegen.
     folder_bboxArray=[]
@@ -137,6 +141,7 @@ def openFolder(filepath, detail, folder, time):
     else:
         ret_value_folder.append([None])
     if detail=='convexHull':
+        #gibts jetzt eh nicht mehr -> das kann irgendwie geloescht werden :)
         points=folder_convHullArray
         hull=ConvexHull(points)
         hull_points=hull.vertices
