@@ -9,8 +9,8 @@ Function for calling up all important fuctions
 """
 def master(bbox1, bbox2, type1, type2):
     try:
-        sim = calculateScore(bbox1, bbox2)
-        print("Calculed Bounding Box similarity:")
+        sim = calculatedScore(bbox1, bbox2)
+        print("Calculated Bounding Box similarity:")
         print(sim)
         print('____________________________________')
         score = whatDataType(type1, type2, sim)
@@ -23,7 +23,7 @@ def master(bbox1, bbox2, type1, type2):
     except Exception:
         if bbox1 == None or bbox2 == None:
             print("One of the Bounding Boxes are Empty")
-            score = 1
+            score = 0
             print(score)
             return score
 
@@ -75,7 +75,7 @@ for a more detailed explanation look at: https://github.com/carobro/Geosoftware2
 :param bbox2: Bounding Box from a file
 :returns: similarity score from the two Bounding Boxes
 """
-def calculateScore(bbox1,bbox2):
+def calculatedScore(bbox1,bbox2):
     if isinstance(bbox1[0], float) and isinstance(bbox1[1], float) and isinstance(bbox1[2], float) and isinstance(bbox1[3], float) and isinstance(bbox2[0], float) and isinstance(bbox2[1], float) and isinstance(bbox2[2], float) and isinstance(bbox2[3], float):
         if  bbox1[0] != bbox2[0] and bbox1[1] != bbox2[1] and bbox1[2] != bbox2[2] and bbox1[3] != bbox2[3]: 
             if distance(bbox1,bbox2) < 20000:
@@ -89,7 +89,7 @@ def calculateScore(bbox1,bbox2):
             sim = (2 * simdis + simA)/3
             return sim
         else:
-            sim=1
+            sim = 0
             return sim
     else:
         sim = 1
