@@ -74,20 +74,32 @@ def openFolder(filepath, detail, folder, time):
                                         click.echo ("invalid file format in folder!")
                                         b=None
         #print(folder_bboxArray)
-        #print(b[0])
+        print("__________________________________________________________________")
         #folder_bboxArray=folder_bboxArray.append(b[0])
-        folder_bboxArray=folder_bboxArray+[b[0]]
+        print([b[0]])
+        if (b[0]!=[None]):
+            folder_bboxArray=folder_bboxArray+[b[0]]
+        print(folder_bboxArray)
         #print(folder_bboxArray)
-        folder_convHullArray=folder_convHullArray+[b[1]]
+        if (b[1]!= [None]):
+            folder_convHullArray=folder_convHullArray+[b[1]]
         #print(folder_convHullArray)
-        folder_timeArray=folder_timeArray+[b[2]]
+        if (b[2]!=[None]):
+            folder_timeArray=folder_timeArray+[b[2]]
+
+    print("fold1")
     
     ret_value_folder=[]                            
     #if folder=='whole':
     if detail=='bbox':
+        print("fold2")
         bboxes=folder_bboxArray
+        print("fold388888888")
+        print(bboxes)
         lat1List=[lat1 for lat1, lng1, lat2, lng2 in bboxes]
+        print("88888888888888888")
         for x in lat1List:
+            print("fold4")
             try:
                 if x<min1:
                     min1=x
@@ -96,6 +108,7 @@ def openFolder(filepath, detail, folder, time):
 
         lng1List=[lng1 for lat1, lng1, lat2, lng2 in bboxes]
         for x in lng1List:
+            print("fold35")
             try:
                 if x<min2:
                     min2=x
@@ -104,6 +117,7 @@ def openFolder(filepath, detail, folder, time):
 
         lat2List=[lat2 for lat1, lng1, lat2, lng2 in bboxes]
         for x in lat2List:
+            print("fold36")
             try:
                 if x>max1:
                     max1=x
@@ -155,7 +169,7 @@ def openFolder(filepath, detail, folder, time):
         ret_value_folder.append(folder_timeextend)
     else:
         ret_value_folder.append([None])
-
+    print("fold3")
     print(ret_value_folder)
     return ret_value_folder
 

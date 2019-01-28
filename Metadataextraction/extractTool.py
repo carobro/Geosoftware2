@@ -73,7 +73,9 @@ def getMetadata(path, detail, folder, time):
                                 try:
                                     #click.echo("Folder")
                                     a=openFolder.openFolder(filepath, detail, folder, time)
-                                except:
+
+                                except Exception as e:
+                                    print(e)
                                     click.echo("end this")
     print("Final extraction:")
     print(a)
