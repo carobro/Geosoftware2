@@ -56,11 +56,11 @@ def openFolder(filepath, detail , time):
                                     b=getIsoInfo.getIsobbx(docPath, detail , time)
                                 except Exception as e:
                                     try:
-                                        openFolder(docPath, detail , time)
+                                        b=openFolder(docPath, detail , time)
                                     except Exception as e:
                                         click.echo ("invalid file format in folder!")
                                         b=None
-        
+                               
         if (b[0]!=[None]):
             folder_bboxArray=folder_bboxArray+[b[0]]
         if (b[1]!= [None]):
@@ -133,7 +133,11 @@ def openFolder(filepath, detail , time):
         min_mindate=min(mindate)
         max_maxdate=max(maxdate)
         folder_timeextend=[min_mindate, max_maxdate]
-        ret_value_folder.append(folder_timeextend)
+        if (times):
+            ret_value_folder.append(folder_timeextend)
+        else:
+            ret_value_folder.append([None])
+
     else:
         ret_value_folder.append([None])
     return ret_value_folder

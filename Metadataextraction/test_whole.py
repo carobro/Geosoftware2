@@ -108,3 +108,12 @@ def test_wholeFC():
 def test_wholeGC():    
     filepath=__location__+"/testdata/leer"
     assert extractTool.getMetadata(filepath, 'convexHull', True) == None
+
+
+###########################################
+# --detail=bbox folder in folder 
+###########################################
+
+def test_wholeFF():    
+    filepath=__location__+"/testdata/folder"
+    assert extractTool.getMetadata(filepath, 'bbox', False) == [[6.59663465544554, 51.2380774, 6.71483, 51.486636388722296], [None], [None]]
