@@ -20,42 +20,38 @@ Function for extracting the bounding box of a geopackage file
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-def getGeopackagebbx(filepath, detail, folder, time):
+def getGeopackagebbx(filepath, detail , time):
     """returns the bounding Box Geopackage
     @param path Path to the file
     @see https://docs.python.org/2/library/sqlite3.html"""
     
     
     if detail =='bbox':
-        bbox_val=geopackage_bbox(filepath, folder)
+        bbox_val=geopackage_bbox(filepath )
 
     else:
         bbox_val=[None]
     if detail == 'convexHull':
-        convHull_val=geopackage_convHull(filepath, folder)
-        print("###############################################")
+        convHull_val=geopackage_convHull(filepath )
         print(convHull_val)
-        print("###############################################")
     else:
         convHull_val=[None]
     if (time):
-        time_val=geopackage_time(filepath, folder)
+        time_val=geopackage_time(filepath )
 
     else:
         time_val=[None]
 
 
     ret_value=[bbox_val, convHull_val, time_val]
-    # print(ret_value)
     return ret_value
 
-def geopackage_time(filepath, folder):
-    out="There is no time-value for GeoPackage files."
-    # print(out)
+def geopackage_time(filepath ):
+    print("There is no time-value for GeoPackage files.")
     timeval=[None]
     return timeval
 
-def geopackage_convHull(filepath, folder):
+def geopackage_convHull(filepath ):
     conn = sqlite3.connect(filepath)
     c = conn.cursor()
     c.execute("""SELECT min_x,min_y, max_x, max_y, srs_id
@@ -63,39 +59,21 @@ def geopackage_convHull(filepath, folder):
     
     points = c.fetchall()
     pointlist=[]
-    print("==================================")
     print(points)
-    print("==================================")
     for z in points:
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         pointlist.append(de.transformToWGS84(z[0], z[1], myCRS))
         pointlist.append(de.transformToWGS84(z[2], z[3], myCRS))
     hull=ConvexHull(pointlist)
-    print("11111111111111111111111========")
-    print(hull)
-    print("11111111111111111111111==========")
     hull_points=hull.vertices
     convHull=[]
     for y in hull_points:
         point=[pointlist[y][0], pointlist[y][1]]
         convHull.append(point)
-  
-    # print("----------------------------------------------------------------")
-    # click.echo("Filepath:")
-    # click.echo(filepath)
-    # click.echo("Convex hull of the GeoPackage object:")
-    # print(convHull)
-    # print("----------------------------------------------------------------")
-    print(convHull)
-    return convHull
-    # if folder=='whole':
-    #     print("----------------------------------------------------------------")
-    #     de.bboxArray=de.bboxArray+convHull
-    #     click.echo("convex hull whole")
-    #     click.echo(convHull)
-        
 
-def geopackage_bbox(filepath, folder):
+    return convHull
+
+def geopackage_bbox(filepath ):
     conn = sqlite3.connect(filepath)
     c = conn.cursor()
     # @see: https://www.geopackage.org/spec121/index.html#_contents_2
@@ -118,54 +96,19 @@ def geopackage_bbox(filepath, folder):
         wgs_84=True
         bbox=[lat1,lng1,lat2,lng2]
     elif(myCRS):
-        # print("second if")
         wgs_84=True
-        # print("vor")
         lat1t,lng1t = de.transformToWGS84(lat1,lng1,myCRS)
-        # print("transformation success")
         lat2t,lng2t = de.transformToWGS84(lat2,lng2,myCRS)
         bbox=[lat1t,lng1t,lat2t,lng2t]
     else:
         print("There is no crs provided.")
         bbox=[lat1,lng1,lat2,lng2]
 
-
-    #if folder=='single':
     if wgs_84==True:
-        # print("----------------------------------------------------------------")
-        # click.echo("Filepath:")
-        # click.echo(filepath)
-        # click.echo("Boundingbox of the GeoPackage object:")
-        # print(bbox)
-        # print("----------------------------------------------------------------")
         return bbox
     else:
-        # print("----------------------------------------------------------------")
-        # click.echo("Filepath:")
-        # click.echo(filepath)
-        # click.echo("Boundingbox of the GeoPackage object:")
-        # print(bbox)
         print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-        #print("----------------------------------------------------------------")
         return [None]
-    # if folder=='whole':
-    #     if wgs_84==True:
-    #         de.bboxArray.append(bbox)
-    #         print("----------------------------------------------------------------")
-    #         click.echo("Filepath:")
-    #         click.echo(filepath)
-    #         click.echo("Boundingbox of the GeoPackage:")
-    #         click.echo(bbox)
-    #         print("----------------------------------------------------------------")
-    #     else:
-    #         print("----------------------------------------------------------------")
-    #         click.echo("Filepath:")
-    #         click.echo(filepath)
-    #         click.echo("Boundingbox of the GeoPackage:")
-    #         click.echo(bbox)
-    #         click.echo("because of a missing crs this GeoPackage is not part of the folder calculation.")
-    #         print("----------------------------------------------------------------")
-
 
 if __name__ == '__main__':
     getGeopackagebbx()

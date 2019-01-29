@@ -12,17 +12,16 @@ Function for extracting the bounding box of a shapefile
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-def getShapefilebbx(filepath, detail, folder, time):    
+def getShapefilebbx(filepath, detail, time):    
     #if the file is a valid shapefile it will be opened with this function.
     #otherwise an exception will be thrown.
-    
 
     if detail =='bbox':
-        bbox_val=shapefile_bbox(filepath, folder)       
+        bbox_val=shapefile_bbox(filepath)       
     else:
         bbox_val=[None]
     if detail == 'convexHull':
-        convHull_val=shapefile_convexHull(filepath, folder)
+        convHull_val=shapefile_convexHull(filepath)
     else:
         convHull_val=[None]
     if (time):
@@ -30,14 +29,11 @@ def getShapefilebbx(filepath, detail, folder, time):
     else:
         time_val=[None]
 
-    # if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
-    print("777777777777777")
     print(ret_value)
-    print("77777777777777")
     return ret_value
 
-def shapefile_convexHull(filepath, folder):
+def shapefile_convexHull(filepath):
     sf = shapefile.Reader(filepath)
     shapes=sf.shapes()
     allPts=[]
@@ -51,56 +47,21 @@ def shapefile_convexHull(filepath, folder):
     for y in hull_points:
         point=[allPts[y][0], allPts[y][1]]
         convHull.append(point)
-    print("#############################")
     print(point)
-    print("#############################")
-    #if folder =='single':
-    # print("----------------------------------------------------------------")
-    # click.echo("Filepath:")
-    # click.echo(filepath)
-    # click.echo("The convex hull of the Shapefile is:")    
-    # click.echo(convHull)
     print("Missing CRS -----> Convex hull will not be saved in zenodo.")
-    print("5555555555555555555555555555555")
-    # print("----------------------------------------------------------------")
-    return [None]
-    #if folder=='whole':
-    #    print("----------------------------------------------------------------")
-    #    click.echo("Filepath:")
-    #    click.echo(filepath)
-    #    click.echo("The convex hull of the Shapefile is:")    
-    #    click.echo(convHull)
-    #    click.echo("Shapefiles cannot be used for the calculation of the folder because of the missing crs.")
-    #    print("----------------------------------------------------------------")
-        #TODO
-        #extractTool.bboxArray=extractTool.bboxArray+convHull
-        #click.echo(extractTool.bboxArray)
-
-
-def shapefile_time(filepath, folder):
-    #click.echo="There is no timevalue for Shapefiles"
-    #timeval=[None]
     return [None]
 
-def shapefile_bbox(filepath, folder):
+
+def shapefile_time(filepath):
+    click.echo="There is no timevalue for Shapefiles"
+    return [None]
+
+def shapefile_bbox(filepath):
     sf = shapefile.Reader(filepath)
     output = sf.bbox
-    # if folder=='single':
     extractTool.print_pretty_bbox(filepath, output, "Shapefile")
     click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-    print("888888888888888888888888888")
     return [None]
-    #if folder=='whole':
-    #    print("----------------------------------------------------------------")
-    #    click.echo("Filepath:")
-    #    click.echo(filepath)
-    #    click.echo("Boundingbox of the Shapefile:")
-    #    click.echo(output)
-    #    click.echo("Shapefiles cannot be used for the calculation of the whole folder because of the missing crs.")
-    #    print("----------------------------------------------------------------")
-    #    #TODO
-    #    #adds the boundingbox of the shapefile to the bboxArray
-    #    #extractTool.bboxArray.append(output)
     
 if __name__ == '__main__':
     getShapefilebbx()

@@ -19,7 +19,7 @@ def test_timeShape():
     assert getTimeextent.getShapefiletime(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'time') == None
 
 def test_timeCSV():    
-    assert getTimeextent.getCSVtime(__location__+'/testdata/Baumfaellungen_Duesseldorf.csv', 'time', 'single') == None
+    assert getTimeextent.getCSVtime(__location__+'/testdata/Baumfaellungen_Duesseldorf.csv', 'time' ) == None
 
 def test_timeGeoPackage():    
     assert getTimeextent.getGeopackagetime(__location__+'/testdata/Geopackage_Queensland_geopackage/census2016_cca_qld_short.gpkg', 'time') == None

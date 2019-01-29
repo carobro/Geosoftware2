@@ -25,7 +25,6 @@ def extract_coordinates(geoj):
         for z in geoj:
             extract_coordinates(z)
 
-
 #without this function getIsobbx would open a folder and extract metadata the wrong way.
 def is_folder_check(filepath):
     is_folder=False
@@ -45,10 +44,8 @@ Function for extracting the bounding box of an iso file
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-def getIsobbx(filepath, detail, folder, time):
-    
+def getIsobbx(filepath, detail , time):
     gdal.UseExceptions()
-    # click.echo("iso")
 
     if (is_folder_check(filepath)):
         raise Exception ("This is a folder! ------> first opening it")
@@ -57,15 +54,13 @@ def getIsobbx(filepath, detail, folder, time):
 
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
     if detail =='bbox':
-        bbox_val=iso_bbox(filepath, folder)
+        bbox_val=iso_bbox(filepath )
     
     else:
         bbox_val=[None]
-    #os.remove("out.json")
 
     if detail =='convexHull':
-        print("//////////////////////////////////////////")
-        convHull_val=iso_convHull(filepath, folder)
+        convHull_val=iso_convHull(filepath )
         
     else:
         convHull_val=[None]
@@ -74,26 +69,18 @@ def getIsobbx(filepath, detail, folder, time):
     # words like "date", "timestamp", "time" and collect them
     if (time):
         try: 
-            time_val=iso_time(filepath, folder)
+            time_val=iso_time(filepath )
         except Exception as e:
             print(e)
         
     else:
         time_val=[None]
     
-    #if folder=='single':
     ret_value=[bbox_val, convHull_val, time_val]
-    print("-----------------------------------------------")
-    print(convHull_val)
-    print("-----------------------------------------------")
-    print(ret_value)
-    print("-----------------------------------------------")
-    # print(ret_value)
     os.remove("out.json")
     return ret_value
-    #return time
 
-def iso_bbox(filepath, folder):
+def iso_bbox(filepath ):
     defined_crs=True
     try:
         iso = pygeoj.load(filepath="out.json")
@@ -121,52 +108,15 @@ def iso_bbox(filepath, folder):
         print("While splitting the string an error occurred")
         defined_crs=False
     if defined_crs:
-        #if folder=='single':
-        # print("----------------------------------------------------------------")
-        # click.echo("filepath:")
-        # click.echo(filepath)
-        # click.echo("Boundingbox of the ISO object:")
-        # click.echo(mybbx)
-        # print("----------------------------------------------------------------")
         return mybbx
-        #extractTool.ret_value.append(mybbx)
-
-        # if folder=='whole':
-        #     print("----------------------------------------------------------------")
-        #     click.echo("filepath:")
-        #     click.echo(filepath)
-        #     click.echo("Boundingbox of the ISO object:")
-        #     click.echo(mybbx)
-        #     print("----------------------------------------------------------------")
-        #     extractTool.bboxArray.append(mybbx)
-    else:
-        #if folder=='single':
-        # print("----------------------------------------------------------------")
-        # click.echo("filepath:")
-        # click.echo(filepath)
-        # click.echo("Boundingbox of the ISO object:")
-        # click.echo(mybbx)
-        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
-        # print("----------------------------------------------------------------")
-        return [None]
-        #extractTool.ret_value.append([None])
         
-        # if folder=='whole':
-        #     print("----------------------------------------------------------------")
-        #     click.echo("Filepath:")
-        #     click.echo(filepath)
-        #     click.echo("Boundingbox of the ISO object:")
-        #     click.echo(mybbx)
-        #     click.echo("because of a missing crs this ISO object is not part of the folder calculation.")
-        #     print("----------------------------------------------------------------")
+    else:
+        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        return [None]
 
-
-def iso_convHull(filepath, folder):
-    # print("conv iso")
-    #ogr2ogr.main(["","-f", "GeoJSON", "out.json", filepath])
+def iso_convHull(filepath ):
     iso = pygeoj.load(filepath="out.json")
     #TO-DO feature.geometry.coordinates in variable speichern
-    #points = 0
     for feature in iso:
         try:
             f=feature.geometry.coordinates
@@ -175,49 +125,18 @@ def iso_convHull(filepath, folder):
             #TODO
             #hier besser raise exception?!
             print("There is a feature without coordinates in the iso file")
-        # point.append(feature.geometry.coordinates)
-        #print(point)
-    #print(point)
+       
     #calculation of the convex hull
     hull=ConvexHull(point)
     hull_points=hull.vertices
-    print("555555555555555555555555555555555555555555")
-    print(hull_points)
-    print("555555555555555555555555555555555555555555")
     convHull=[]
-    # print("afterhull")
     for z in hull_points:
         hullcoord=[point[z][0], point[z][1]]
         convHull.append(hullcoord)
 
-    print(convHull)
-        # print("in hull_points_loop")
-    #if folder=='single':
-    # print("----------------------------------------------------------------")
-    # click.echo("Filepath:")
-    # click.echo(filepath)
-    # click.echo("Convex hull of the ISO object:")
-    # click.echo(convHull)
-    # print("----------------------------------------------------------------")
     return convHull
-    #extractTool.ret_value.append([convHull])
-    # if folder=='whole':
-    #     print("----------------------------------------------------------------")
-    #     extractTool.bboxArray=extractTool.bboxArray+convHull
-    #     #extractTool.bboxArray.append(convHull)
-    #     click.echo("convex hull whole")
-    #     click.echo(convHull)
-    #     print("bboxArray")
-    #     print(extractTool.bboxArray)
-    #     print("----------------------------------------------------------------")
-    #os.remove("out.json")
-    #iso.close()
-    #return point
 
-
-
-def iso_time(filepath, folder):
-    print("time")
+def iso_time(filepath ):
     try:
         ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
     except Exception as a:
@@ -229,7 +148,6 @@ def iso_time(filepath, folder):
     # @see https://www.w3schools.com/python/python_file_remove.asp
     os.remove("time.json")
     if geojson["type"] == "FeatureCollection":
-        #print(geojson["features"])
         first = geojson["features"]  
         time = []
         for i in range(0,5):            
@@ -266,20 +184,9 @@ def iso_time(filepath, folder):
                                             return time
                                         except Exception as e:
                                             #this exception is important for folder time extraction of cvs files...DONT DELETE IT!
-                                            #extractTool.ret_value.append([None])
-                                            #print(extractTool.ret_value)
-                                            #return(extractTool.ret_value)
                                             click.echo("There is no time-value ISO")
-                                            #click.echo("there is no time-value ISO")
-                                            #print(time)
                                             return [None]   
 
         time_formatted=dateparser.parse(time)
         timeextend=[time_formatted, time_formatted]
-
-        #extractTool.ret_value.append([timeextend])
-        # print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-        # print(timeextend)
         return timeextend
-        #print("The time value of this ISO file is:")
-        #print(time)

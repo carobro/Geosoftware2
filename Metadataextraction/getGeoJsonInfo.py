@@ -29,18 +29,17 @@ As mentioned in the geojson specification the standard crs is wgs84.
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
 
-def getGeoJsonbbx(filepath, detail, folder, time):
-    #TODO
+def getGeoJsonbbx(filepath, detail , time):
     #pygeoj only works with two-dimensional coordinates
 
     if detail =='bbox':
-        bbox_val=geojson_bbox(filepath, folder)
+        bbox_val=geojson_bbox(filepath )
 
     else:
         bbox_val=[None]
 
     if detail == 'convexHull':
-        convHull_val=geojson_convHull(filepath, folder)
+        convHull_val=geojson_convHull(filepath )
         
     else:
         convHull_val=[None]  
@@ -49,7 +48,7 @@ def getGeoJsonbbx(filepath, detail, folder, time):
     # Then we search for words like date, creationDate or time at two different levels
     #print("GeoJsonTIMES")
     if (time):
-        time_val=geojson_time(filepath, folder)
+        time_val=geojson_time(filepath )
        
     else:
         time_val=[None]
@@ -58,7 +57,7 @@ def getGeoJsonbbx(filepath, detail, folder, time):
     # print(ret_value)       
     return ret_value
 
-def geojson_time(filepath, folder):
+def geojson_time(filepath ):
     ds = open(filepath)
     geojson = json.load(ds)
     timelist = list()
@@ -66,37 +65,30 @@ def geojson_time(filepath, folder):
         first = geojson["features"]
         for time in geojson: 
             try:
-                #click.echo(first[0]["Date"])
                 time = first[0]["Date"]
                 timelist.append(time)
             except Exception as e:
                 try:
-                    #click.echo(first[0]["creationDate"])
                     time = time[0]["creationDate"]
                     timelist.append(time)
                 except Exception as e:
                     try:
-                        #click.echo(first[0]["date"])
                         time = first[0]["date"]
                         timelist.append(time)
                     except Exception as e:
                         try:
-                            #click.echo(first[0]["time"])
                             time = first[0]["time"]
                             timelist.append(time)
                         except Exception as e:
                             try:
-                                #click.echo(first[0]["properties"]["date"])
                                 time = first[0]["properties"]["date"]
                                 timelist.append(time)
                             except Exception as e:
                                 try:
-                                    #click.echo(first[0]["properties"]["time"])
                                     time = first[0]["properties"]["time"]
                                     timelist.append(time)
                                 except Exception as e:
                                     try:
-                                        #click.echo(first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"])
                                         time = first[0]["geometry"][0]["properties"]["STAND_DER_DATEN"]
                                         timelist.append(time)
                                     except Exception as e:
@@ -107,35 +99,19 @@ def geojson_time(filepath, folder):
     timemin = str(min(timelist))
     timemax_formatted=str(dateparser.parse(timemax))
     timemin_formatted=str(dateparser.parse(timemin))
-
-    #if folder=='single':   
+  
     timeextend = [timemin_formatted, timemax_formatted]
     extractTool.print_pretty_time(filepath, timeextend, "GeoJSON")
     return[timemax_formatted, timemin_formatted]
 
-    # if folder=='whole':
-    #     timeextend=[timemin_formatted, timemax_formatted]
-    #     extractTool.timeextendArray.append(timeextend)
-    #     print("timeextendArray:")
-    #     print(extractTool.timeextendArray)
-
-
-def geojson_bbox(filepath, folder):
+def geojson_bbox(filepath ):
     geojson = pygeoj.load(filepath)
     geojbbx = (geojson).bbox
-    #if folder=='single':
     extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
     return(geojbbx)
-    #if folder=='whole':
-    #    extractTool.print_pretty_bbox(filepath, geojbbx, "GeoJSON")
-    #    extractTool.bboxArray.append(geojbbx)
-    #    print(extractTool.bboxArray)
-    #return(geojbbx)
 
-def geojson_convHull(filepath, folder):
-    # print("geojson convexHull")
+def geojson_convHull(filepath ):
     geojson = pygeoj.load(filepath)
-    #point = list()
     for feature in geojson:
         try:
             r= feature.geometry.coordinates
@@ -152,12 +128,5 @@ def geojson_convHull(filepath, folder):
     for z in hull_points:
         hullcoord=[point[z][0], point[z][1]]
         convHull.append(hullcoord)
-    #folder=='single':
     extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
     return(convHull)
-    #if folder=='whole':
-    #    extractTool.print_pretty_hull(filepath, convHull, "GeoJSON")
-    #    click.echo("convex hull whole")
-    #    click.echo(convHull)
-    #    extractTool.bboxArray=extractTool.bboxArray+convHull
-    #    print(extractTool.bboxArray)

@@ -3,16 +3,6 @@ import extractTool
 import click
 import os
 
-
-# def mastersim(filepath):
-    # bbox1 = detailebenen(filepath) blabla Hier muessen die Bboxen berechet werden
-    # bbox2 = detailebee(filepath) blabla also detailebenen Aufrufen
-    # sim = aehnlickeit(bbox1, bbox2)
-    # Hier muss typ.py
-    # input1 = typ.getTyp(filepath)
-    # input2 = typ.getTyp(filepath)
-    # whatDataType(input1, input2, sim)
-
 """
 Function to apply data type similarity on the similarity score
 
@@ -25,13 +15,10 @@ def whatDataType(filepath1, filepath2, sim):
     input2 = extension(filepath2)
     
     if input1 == "raster" and input2 == "raster":
-        click.echo("These files are rasterdata")
         return sim
     if input1 == "vector" and input2 == "vector":
-        click.echo("These files are vectordata")
         return sim
     if input1 == "raster" and input2 == "vector" or input1 == "vector" and input2 == "raster":
-        click.echo("These files are not the same datatype")
         sim = sim*5/4
         if sim > 1:
             sim = 1
@@ -48,7 +35,6 @@ Function to find out if the datafile is a vector or rasta datatype
 def extension(filepath):
     end = os.path.splitext(filepath)
     typ = end[1]
-    print(typ)
 
     if typ == ".csv" or typ == ".tif" or typ == ".gpkg":
         return "raster"

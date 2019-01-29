@@ -10,21 +10,13 @@ Function for calling up all important fuctions
 def master(bbox1, bbox2, type1, type2):
     try:
         sim = calculatedScore(bbox1, bbox2)
-        print("Calculated Bounding Box similarity:")
-        print(sim)
-        print('____________________________________')
         score = whatDataType(type1, type2, sim)
-        print('____________________________________')
-        print("Final similarity score")
-        print(score)
-        print('____________________________________')
         return score
 
     except Exception:
         if bbox1 == None or bbox2 == None:
             print("One of the Bounding Boxes are Empty")
             score = 0
-            print(score)
             return score
 
 """
@@ -38,13 +30,10 @@ def whatDataType(type1, type2, sim):
     input1 = extension(type1)
     input2 = extension(type2)
     if input1 == "raster" and input2 == "raster":
-        click.echo("These files are rasterdata")
         return sim
     if input1 == "vector" and input2 == "vector":
-        click.echo("These files are vectordata")
         return sim
     if input1 == "raster" and input2 == "vector" or input1 == "vector" and input2 == "raster":
-        click.echo("These files are not the same datatype")
         sim = sim*5/4
         if sim > 1:
             sim = 1
