@@ -62,14 +62,7 @@ def getMetadata(path, detail, time):
                                 a=getIsoInfo.getIsobbx(filepath, detail, time)
                             except Exception as e:
                                 try:
-<<<<<<< HEAD
-                                    click.echo("Folder")
-                                    a=openFolder.openFolder(filepath, detail, folder, time)
-                                    print("666666666666666666666666")
-=======
                                     a=openFolder.openFolder(filepath, detail, time)
-
->>>>>>> macCAROns
                                 except Exception as e:
                                     print("88888888")
                                     print(e)
