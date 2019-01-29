@@ -1,13 +1,12 @@
 from pyproj import Proj, transform # used for the CRS transformation
-import click    # used for output messages
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder
+import click        # used to print something
+import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder   # used for the specific extraction functions
 
 """
 Auxiliary function to bypass problems with the CLI tool when executed from anywhere else
 
 :param path: path to the directory of the files or to the file itself
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
-:param folder: specifies if the user gets the metadata for the whole folder "whole" or for each file "single"
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
@@ -25,93 +24,109 @@ An advantage of our code is that the file extension is not important for the met
 
 :param path: path to the directory of the files or to the file itself
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
-:param folder: specifies if the user gets the metadata for the whole folder "whole" or for each file "single"
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
 def getMetadata(path, detail, time):
    
     filepath = path
-    a = None
+    result = None
    
     if(len(filepath)==0):
-        click.echo("Please insert a correct filepath")
+        click.echo("Filepath is empty! Please insert a correct filepath")
         return None
     try:
-        a=getShapefileInfo.getShapefilebbx(filepath, detail, time)
+        result=getShapefileInfo.getShapefilebbx(filepath, detail, time)
     except Exception as e:
         try:
-            a=getGeoJsonInfo.getGeoJsonbbx(filepath, detail, time)
+            result=getGeoJsonInfo.getGeoJsonbbx(filepath, detail, time)
         except Exception as e:
             try:
-                a=getNetCDFInfo.getNetCDFbbx(filepath, detail, time)
+                result=getNetCDFInfo.getNetCDFbbx(filepath, detail, time)
             except Exception as e:
                 try:
-                    a=getCSVInfo.getCSVbbx(filepath, detail, time)
-                except ValueError as err:
-                    print(err.args)
+                    result=getCSVInfo.getCSVbbx(filepath, detail, time)
                 except TypeError as e:
-                    print(e.args)
                     try:
-                        a=getGeoPackageInfo.getGeopackagebbx(filepath, detail, time)
+                        result=getGeoPackageInfo.getGeopackagebbx(filepath, detail, time)
                     except Exception as e:
                         try:
-                            a=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, time)
+                            result=getGeoTiffInfo.getGeoTiffbbx(filepath, detail, time)
                         except Exception as e:
                             try:
-                                a=getIsoInfo.getIsobbx(filepath, detail, time)
+                                result=getIsoInfo.getIsobbx(filepath, detail, time)
                             except Exception as e:
                                 try:
-                                    a=openFolder.openFolder(filepath, detail, time)
+                                    result=openFolder.openFolder(filepath, detail, time)
                                 except Exception as e:
-                                    print("88888888")
-                                    print(e)
-    print("Final extraction:")
-    print(a)
-    return a
+                                    click.echo(e)
+    click.secho("Final extraction:",bold=True)
+    click.echo(result)
+    return result
 
 """
 Function for transforming the coordinate reference system to WGS84 using PyProj (https://github.com/jswhit/pyproj)
 
-:param lat: value for latitude
 :param lng: value for longitude
+:param lat: value for latitude
 :sourceCRS: epsg identifier for the source coordinate reference system
 :returns: the transformed values for latitude and longitude 
 """
-def transformToWGS84(lat, lng, sourceCRS):
-    # formatting the input CRS
+def transformToWGS84(lng, lat, sourceCRS):
     try:
-        inputProj='epsg:'
-        inputProj+=str(sourceCRS)
-        inProj = Proj(init=inputProj)
+        # formatting the input CRS
+        input_proj_str='epsg:'
+        input_proj_str+=str(sourceCRS)
+        input_proj = Proj(init=input_proj_str)
         # epsg:4326 is WGS84
-        outProj = Proj(init='epsg:4326')
-        latT, lngT = transform(inProj,outProj,lat,lng)
-        return(latT,lngT)
+        output_proj = Proj(init='epsg:4326')
+        lat_t, lon_t = transform(input_proj,output_proj,lng,lat)
+        return(lat_t,lon_t)
     except Exception as e:
-        print(e)
+        click.echo(e)
 
-def print_pretty_bbox(path, bbox, my_format):
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
+"""
+Function to print the bounding box in a pretty format.
+
+:param path: path to the file
+:param bbox: bounding box
+:param data_format: data format
+"""
+def print_pretty_bbox(path, bbox, data_format):
+    click.echo("----------------------------------------------------------------")
+    click.secho("Filepath:", fg="green")
     click.echo(path)
-    click.echo("Boundingbox of the "+my_format+" object:")
+    click.echo("Boundingbox of the "+data_format+" object:")
     click.echo(bbox)
-    print("----------------------------------------------------------------")
+    click.echo("----------------------------------------------------------------")
 
-def print_pretty_hull(path, convHull, my_format):
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
+"""
+Function to print the convex hull in a pretty format.
+
+:param path: path to the file
+:param convex_hull: convex hull
+:param data_format: data format
+"""
+def print_pretty_hull(path, convex_hull, data_format):
+    click.echo("----------------------------------------------------------------")
+    click.secho("Filepath:", fg="green")
     click.echo(path)
-    click.echo("Convex Hull of the "+my_format+" file: ")
-    click.echo(convHull)
-    print("----------------------------------------------------------------")
+    click.echo("Convex Hull of the "+data_format+" file: ")
+    click.echo(convex_hull)
+    click.echo("----------------------------------------------------------------")
 
-def print_pretty_time(path, time, my_format):
-    print("----------------------------------------------------------------")
-    click.echo("Timeextend of the "+my_format+" file:")
+"""
+Function to print the time in a pretty format.
+
+:param path: path to the file
+:param bbox: bounding box
+:param data_format: data format
+"""
+def print_pretty_time(path, time, data_format):
+    click.echo("----------------------------------------------------------------")
+    click.echo("Timeextend of the "+data_format+" file:")
     click.echo(time)
-    print("----------------------------------------------------------------")
+    click.echo("----------------------------------------------------------------")
 
 if __name__ == '__main__':
     click_function()

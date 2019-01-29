@@ -1,6 +1,8 @@
 # @author Carolin Bronowicz
 # @version 1.0
-import click, shapefile, sqlite3, csv, json, pygeoj
+# Tests for our getTimeextend file. This file is just for testing. The single fuctions are included in our extractTool.py 
+import click        # used to print something
+import shapefile, sqlite3, csv, json, pygeoj
 from osgeo import gdal, ogr, osr
 import os
 import pandas as pd
@@ -8,7 +10,7 @@ import numpy as np
 import xarray as xr
 import ogr2ogr
 import json
-import dateparser
+import dateparser   # used to parse the dates
 
 timeextendArray=[]
 
@@ -86,7 +88,7 @@ Function for extracting the temporal extent of a CSV file
 :param filepath: path to the file
 :param detail: specifies if the user wants the time as a level of detail
 """
-def getCSVtime(filepath, detail ):
+def getCSVtime(filepath, detail):
     # After opening the file we search in the header for collumns with names like
     # date, time or timestamp. If some of these collumns exists we collect
     # all the values from inside and calculate the min and max
@@ -101,8 +103,6 @@ def getCSVtime(filepath, detail ):
         click.echo(intersection)
         if not intersection:
             print("No fitting header for time-values")
-            # TODO: fehlerbehandlung  
-
         else:
             time=df[intersection[0]]
             timeextend=[min(time), max(time)]

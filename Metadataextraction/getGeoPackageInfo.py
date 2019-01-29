@@ -1,113 +1,110 @@
-import click, json, sqlite3, csv, pygeoj, extractTool as de
-from osgeo import gdal, ogr, osr
-import pandas as pd
-import numpy as np
-import xarray as xr
-import os
-import sqlite3
-from pyproj import Proj, transform
-from scipy.spatial import ConvexHull
+import click        # used to print something
+import extractTool  # used for the the transformation and prints
+import sqlite3      # used to access the geopackage database, :see:  https://docs.python.org/2/library/sqlite3.html
+from scipy.spatial import ConvexHull  # used to calculate the convex hull
 
-#Boolean variable that shows if the crs of the bbox is in wgs84
-wgs_84=False
-myCRS=""
 """
 Function for extracting the bounding box of a geopackage file
 
 :param filepath: path to the file
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
-:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
-:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+:returns: spatial and temporal information in the format [[bounding box],[convex Hull],[temporal extent]]
 """
-def getGeopackagebbx(filepath, detail , time):
-    """returns the bounding Box Geopackage
-    @param path Path to the file
-    @see https://docs.python.org/2/library/sqlite3.html"""
-    
-    
+def getGeopackagebbx(filepath, detail, time):
     if detail =='bbox':
-        bbox_val=geopackage_bbox(filepath )
-
+        bbox_val=geopackage_bbox(filepath)
     else:
         bbox_val=[None]
-    if detail == 'convexHull':
-        convHull_val=geopackage_convHull(filepath )
-        print(convHull_val)
-    else:
-        convHull_val=[None]
-    if (time):
-        time_val=geopackage_time(filepath )
 
+    if detail == 'convexHull':
+        convex_hull_val=geopackage_convex_hull(filepath)
+    else:
+        convex_hull_val=[None]
+
+    if (time):
+        time_val=geopackage_time(filepath)
     else:
         time_val=[None]
 
-
-    ret_value=[bbox_val, convHull_val, time_val]
+    ret_value=[bbox_val, convex_hull_val, time_val]
     return ret_value
 
-def geopackage_time(filepath ):
-    print("There is no time-value for GeoPackage files.")
+"""
+Function that should extract the temporal extent of a geopackage file, but for now there is no time value for geopackage files. So it just returns None.
+
+:param filepath: path to the file
+:returns: None
+"""
+def geopackage_time(filepath):
+    click.echo("There is no time-value for GeoPackage files.")
     timeval=[None]
     return timeval
 
-def geopackage_convHull(filepath ):
+"""
+Function for extracting the convex hull
+
+:param filepath: path to the file
+:returns: convex hull of the geojson
+"""
+def geopackage_convex_hull(filepath):
+    # accessing the database
     conn = sqlite3.connect(filepath)
     c = conn.cursor()
-    c.execute("""SELECT min_x,min_y, max_x, max_y, srs_id
-                    FROM gpkg_contents""")
-    
+    # retrieving coordinate values and crs information
+    c.execute("""SELECT min_x, min_y, max_x, max_y, srs_id FROM gpkg_contents""")
     points = c.fetchall()
-    pointlist=[]
-    print(points)
+    point_list=[]
     for z in points:
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        pointlist.append(de.transformToWGS84(z[0], z[1], myCRS))
-        pointlist.append(de.transformToWGS84(z[2], z[3], myCRS))
-    hull=ConvexHull(pointlist)
+        point_list.append(extractTool.transformToWGS84(z[0], z[1], z[5]))
+        point_list.append(extractTool.transformToWGS84(z[2], z[3], z[5]))
+    hull=ConvexHull(point_list)
     hull_points=hull.vertices
-    convHull=[]
+    convex_hull=[]
     for y in hull_points:
-        point=[pointlist[y][0], pointlist[y][1]]
-        convHull.append(point)
+        point=[point_list[y][0], point_list[y][1]]
+        convex_hull.append(point)
+    return convex_hull
 
-    return convHull
+"""
+Function for extracting the bbox using sqlite3
 
-def geopackage_bbox(filepath ):
+:see: https://www.geopackage.org/spec121/index.html#_contents_2
+:param filepath: path to the file
+:returns: bounding box of the geopackage in the format [minlon, minlat, maxlon, maxlat]
+"""
+def geopackage_bbox(filepath):
     conn = sqlite3.connect(filepath)
     c = conn.cursor()
-    # @see: https://www.geopackage.org/spec121/index.html#_contents_2
-    c.execute("""SELECT min(min_y), min(min_x), max(max_y), max(max_x), srs_id
-                    FROM gpkg_contents""")
+    c.execute("""SELECT min(min_x), min(min_y), max(max_x), max(max_y), srs_id FROM gpkg_contents""")
     row = c.fetchall()
     try:
-        lat1=row[0][0]
-        lng1=row[0][1]
-        lat2=row[0][2]
-        lng2=row[0][3]
+        min_lon=row[0][0]
+        min_lat=row[0][1]
+        max_lon=row[0][2]
+        max_lat=row[0][3]
         myCRS=row[0][4]
-        if not(lat1 and lat2):
-            print("no coordinates")
-    except (not(lat1 and lat2)):
-        raise Exception ("There are no coordinate values in this file.")
-        # Especially the KML data files have this id, which is wgs84
-        # No need to transform
-    if ((myCRS=="CRS84" or myCRS == 4326) and (lat1 and lng1)):
-        wgs_84=True
-        bbox=[lat1,lng1,lat2,lng2]
+    except Exception:
+        click.echo("There are no coordinate values in this file.")
+        raise 
+        
+    if ((myCRS=="CRS84" or myCRS == 4326) and (min_lon and min_lat)):
+        crs_info=True
+        bbox=[min_lon,min_lat,max_lon,max_lat]
     elif(myCRS):
-        wgs_84=True
-        lat1t,lng1t = de.transformToWGS84(lat1,lng1,myCRS)
-        lat2t,lng2t = de.transformToWGS84(lat2,lng2,myCRS)
-        bbox=[lat1t,lng1t,lat2t,lng2t]
+        crs_info=True
+        min_lon_t,min_lat_t = extractTool.transformToWGS84(min_lon,min_lat,myCRS)
+        max_lon_t,max_lat_t = extractTool.transformToWGS84(max_lon,max_lat,myCRS)
+        bbox=[min_lon_t,min_lat_t,max_lon_t,max_lat_t]
     else:
-        print("There is no crs provided.")
-        bbox=[lat1,lng1,lat2,lng2]
+        click.echo("There is no crs provided.")
+        bbox=[min_lon,min_lat,max_lon,max_lat]
 
-    if wgs_84==True:
+    if (crs_info):
+        extractTool.print_pretty_bbox(filepath, bbox, "GeoJSON")
         return bbox
     else:
-        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
         return [None]
 
 if __name__ == '__main__':

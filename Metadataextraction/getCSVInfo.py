@@ -1,62 +1,65 @@
-import click        # used to print something 
-import extractTool  # used for the the transformation and prints 
+import click        # used to print something
+import extractTool # used for the the transformation and prints  
 import pandas as pd # to read the csv we use Pandas: http://pandas.pydata.org/pandas-docs/stable/io.html
 import numpy as np  # used to calculate the convex hull
 from scipy.spatial import ConvexHull  # used to calculate the convex hull
 import dateparser   # used to parse the dates
-import sys
 
 """
-Function for extracting the bounding box of a csv file
+Function for extracting the spatial and temporal information of a csv file
 :see: https://www.programiz.com/python-programming/reading-csv-files
 
 :param filepath: path to the file
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
-:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
-:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+:returns: spatial and temporal information in the format [[bounding box],[convex Hull],[temporal extent]]
+it is not possible to get the output of the bounding box and the convex hull
 """
-def getCSVbbx(filepath, detail  , time):
-    # some identifiers for comparing them with the first line of the csv file
-    listlat = ["Koordinate_Hochwert","lat","Latitude","latitude","Lat"]
-    listlon = ["Koordinate_Rechtswert","lon","Lon","Longitude","longitude","lng","Lng"]
-    listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
-    listtime = ["time", "timestamp", "date", "Time", "Jahr", "Datum", "Date", "Timestamp"]
+def getCSVbbx(filepath, detail, time):
+    # some identifiers used to compare them with the first line of the csv file
+    list_lat_identifier = ["Koordinate_Hochwert","lat","Latitude","latitude","Lat"]
+    list_lon_identifier = ["Koordinate_Rechtswert","lon","Lon","Longitude","longitude","lng","Lng"]
+    list_crs = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
+    list_time = ["time", "timestamp", "date", "Time", "Jahr", "Datum", "Date", "Timestamp"]
 
+    # try to read the csv
     df = csv_split(filepath)
-    print("1")
 
-    #tests if there is a column named coordinate reference system or similar       
-    if not intersect(listCRS,df.columns.values):
-        CRSinfo= False
-    else:
+    # tests if there is a column named coordinate reference system or similar       
+    if intersect(list_crs,df.columns.values):
         CRSinfo= True
-
-    # check if there are columns for latitude, longitude and timestamp
-    if not(intersect(listlat,df.columns.values) and intersect(listlon,df.columns.values)):
-        click.echo("No fitting header for latitudes,longitudes")
-        bbox_val=[None]
-        convHull_val=[None]
     else:
-        my_lat=intersect(listlat,df.columns.values)
-        my_lon=intersect(listlon,df.columns.values)
+        CRSinfo= False
+
+    # check if there are columns for latitude and longitude 
+    if intersect(list_lat_identifier,df.columns.values) and intersect(list_lon_identifier,df.columns.values):
+        # assign the lat and lon identifier
+        my_lat=intersect(list_lat_identifier,df.columns.values)
+        my_lon=intersect(list_lon_identifier,df.columns.values)
         # saves the coordinate values for latitude and longitude
         lats=df[my_lat[0]]
         lons=df[my_lon[0]]
         
+        # invoce cvs_bbox if bbox is used as level of detail
         if detail =='bbox':
-            bbox_val=csv_bbox(filepath , lats, lons, CRSinfo, df)
+            bbox_val=csv_bbox(filepath, lats, lons, CRSinfo, df)
         else:
             bbox_val=[None]
 
-        #returns the convex hull of the coordinates from the CSV object.
+        # invoce csv_convex_hull if convex hull is used as level of detail
         if detail == 'convexHull':
-            convHull_val=csv_convHull(filepath , lats, lons, CRSinfo, df)
+            convex_hull_val=csv_convex_hull(filepath , lats, lons, CRSinfo, df)
         else:
-            convHull_val=[None]
+            convex_hull_val=[None]
+    else:
+        click.echo("No fitting header for latitudes,longitudes")
+        bbox_val=[None]
+        convex_hull_val=[None]
 
-    if intersect(listtime,df.columns.values):
-        my_time_identifier=intersect(listtime,df.columns.values)
+    # check if there are columns for time values 
+    if intersect(list_time,df.columns.values):
+        my_time_identifier=intersect(list_time,df.columns.values)
+        # if time is used as a flag, invoke csv_time
         if (time):
             time_val=csv_time(filepath ,my_time_identifier,df)
         else:
@@ -66,7 +69,7 @@ def getCSVbbx(filepath, detail  , time):
         click.echo("No time information available")
         time_val=[None]
 
-    ret_value=[bbox_val, convHull_val, time_val]
+    ret_value=[bbox_val, convex_hull_val, time_val]
     return ret_value
 
 """
@@ -81,7 +84,6 @@ def csv_split(filepath):
     my_split=filepath.split('.')
     if(my_split[len(my_split)-1]=='gml'):
         raise TypeError("This is a gml and not a csv file!")
-
     try:
         deli=';'
         df = pd.read_csv(filepath, delimiter=deli,engine='python')
@@ -98,60 +100,61 @@ def csv_split(filepath):
 Function for extracting the temporal extent of the CSV file
 
 :param filepath: path to the file
-:param folder: specifies if we have a single file or a folder
 :param my_time_id: identifier of the time values
 :param df: CSV reader
-:returns: datafile as a read_csv
+:returns: time, meeting the ISO8601 standard, in the form [time_min, time_max]
 """
 def csv_time(filepath, my_time_id, df):
     if my_time_id:
+        # get the identifier for time for this specific csv
         time=df[my_time_id[0]]
-        timemin=str(min(time))
-        timemax=str(max(time))
-        timemax_formatted=str(dateparser.parse(timemax))
-        timemin_formatted=str(dateparser.parse(timemin))
-        timeextend=[timemin_formatted, timemax_formatted]
-        extractTool.print_pretty_time(filepath, timeextend,"CSV")
-        return timeextend
+        # convert the min and max of time as a string
+        time_min=str(min(time))
+        time_max=str(max(time))
+        # format the time
+        time_max_formatted=str(dateparser.parse(time_max))
+        time_min_formatted=str(dateparser.parse(time_min))
 
+        time_extend=[time_min_formatted, time_max_formatted]
+        # pretty print of time
+        extractTool.print_pretty_time(filepath, time_extend,"CSV")
+        return time_extend
     else:
-        print("No fitting header for time-values")
+        click.echo("No fitting header for time-values")
         return [None]
 
 """
 Function for extracting the convex Hull
 
 :param filepath: path to the file
-:param folder: specifies if we have a single file or a folder
 :param my_lats: latitude values 
 :param my_lons: longitude values
-:param my_CRSinfo: identifier of the CRS info
+:param my_crs_info: identifier of the CRS info
 :param df: CSV reader
-:returns: convex hull of the csv
+:returns: convex hull of the csv with points in the form [lon,lat]
 """
-def csv_convHull(filepath , my_lats, my_lons, my_CRSinfo, df):
-    listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
-    #click.echo("convexHull")
-    coords=np.column_stack((my_lats, my_lons))
-    #definition and calculation of the convex hull
+def csv_convex_hull(filepath , my_lats, my_lons, my_crs_info, df):
+    list_crs = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
+    coords=np.column_stack((my_lons, my_lats))
+    # definition and calculation of the convex hull
     hull=ConvexHull(coords)
     hull_points=hull.vertices
-    convHull=[]
+    convex_hull=[]
     for z in hull_points:
         point=[coords[z][0], coords[z][1]]
-        convHull.append(point)
-    if(my_CRSinfo):
-        mycrsID=intersect(listCRS,df.columns.values)
-        myCRS=df[mycrsID[0]]
-        myCRS_1=myCRS[0]
-
-        for z in coords:
-            z[0],z[1] = extractTool.transformToWGS84(z[0],z[1], myCRS_1)
-        extractTool.print_pretty_hull(filepath, convHull,"CSV")
-        return convHull
+        convex_hull.append(point)
         
+    # coordinate transformation if we have information about the crs
+    if(my_crs_info):
+        my_crs_id=intersect(list_crs,df.columns.values)
+        my_list_crs=df[my_crs_id[0]]
+        my_crs=my_list_crs[0]
+        for z in coords:
+            z[0],z[1] = extractTool.transformToWGS84(z[0],z[1], my_crs)
+        extractTool.print_pretty_hull(filepath, convex_hull,"CSV")
+        return convex_hull
     else:
-        extractTool.print_pretty_hull(filepath, convHull,"CSV")
+        extractTool.print_pretty_hull(filepath, convex_hull,"CSV")
         click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
         return None
 
@@ -159,31 +162,31 @@ def csv_convHull(filepath , my_lats, my_lons, my_CRSinfo, df):
 Function for extracting the bbox
 
 :param filepath: path to the file
-:param folder: specifies if we have a single file or a folder
 :param my_lats: latitude values 
 :param my_lons: longitude values
-:param my_CRSinfo: identifier of the CRS info
+:param my_crs_info: identifier of the CRS info
 :param df: CSV reader
-:returns: bounding box of the csv
+:returns: bounding box of the csv in the format [minlon, minlat, maxlon, maxlat]
 """
 def csv_bbox(filepath , my_lats, my_lons, my_CRS_info, df):
-    listCRS = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
-    bbox=[min(my_lats),min(my_lons),max(my_lats),max(my_lons)]
+    list_crs = ["CRS","crs","Koordinatensystem","EPSG","Coordinate reference system", "coordinate system"]
+    bbox=[min(my_lons),min(my_lats),max(my_lons),max(my_lats)]
     
     # CRS transformation if there is information about crs
     if(my_CRS_info):
-        mycrsID=intersect(listCRS,df.columns.values)
-        myCRS=df[mycrsID[0]]
-        myCRS1=myCRS[0]
-        lat1t,lng1t = extractTool.transformToWGS84(min(my_lats),min(my_lons), myCRS1)
-        lat2t,lng2t = extractTool.transformToWGS84(max(my_lats),max(my_lons), myCRS1)
-        bbox=[lat1t,lng1t,lat2t,lng2t]
+        my_crs_id=intersect(list_crs,df.columns.values)
+        # values for the crs
+        my_list_crs=df[my_crs_id[0]]
+        # get the first crs id 
+        my_crs=my_list_crs[0]
+        lon_min_t, lat_min_t = extractTool.transformToWGS84(min(my_lons),min(my_lats), my_crs)
+        lon_max_t, lat_max_t = extractTool.transformToWGS84(max(my_lons),max(my_lats), my_crs)
+        bbox=[lon_min_t,lat_min_t,lon_max_t,lat_max_t]
         extractTool.print_pretty_bbox(filepath,bbox,"CSV")
         return bbox
-        
     else:
         extractTool.print_pretty_bbox(filepath,bbox,"CSV")
-        print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
+        click.echo("Missing CRS -----> Boundingbox will not be saved in zenodo.")
         return [None]
         
 """

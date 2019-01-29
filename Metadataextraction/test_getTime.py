@@ -1,19 +1,10 @@
-import click, shapefile, json, sqlite3, csv, pygeoj
-from osgeo import gdal
-import pandas as pd
-import numpy as np
-import xarray as xr
-import os
-
-import extractTool
-import getTimeextent
+import os            # used to get the location of the testdata
+import getTimeextent # used to invoke the get time functions of the specific datatypes
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 # Tests for our getTimeextend file. This file is just for testing.
 # The single fuctions are included in our extractTool.py 
-
-print(__location__+'/testdata/')
 
 def test_timeShape():
     assert getTimeextent.getShapefiletime(__location__+'/testdata/Abgrabungen_Kreis_Kleve_shapefile/Abgrabungen_Kreis_Kleve_Shape.shp', 'time') == None
