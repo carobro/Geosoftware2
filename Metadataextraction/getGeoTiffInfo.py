@@ -37,7 +37,7 @@ def getGeoTiffbbx(filepath, detail, time):
 Function for extracting the temporal extent of a GeoTIFF, but for now there is no time value for geopackage files. So it just returns None.
 
 :param filepath: path to the file
-:returns: time, meeting the ISO8601 standard, in the form [time_min, time_max]
+:returns: None
 """
 def tiff_time(filepath):
     click.echo('There is no time value for GeoTIFF files')

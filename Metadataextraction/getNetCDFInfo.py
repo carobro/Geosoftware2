@@ -12,11 +12,10 @@ Function for extracting the bounding box of a NetCDF file
 
 :param filepath: path to the file
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
-:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-def getNetCDFbbx(filepath, detail , time):
+def getNetCDFbbx(filepath, detail, time):
     #validation if file is netcdf
     if detail =='bbox':
         bbox_val=netcdf_bbox(filepath)
@@ -36,6 +35,7 @@ def getNetCDFbbx(filepath, detail , time):
     
     ret_value=[bbox_val, convHull_val, time_val]
     return ret_value
+
 """
 Function for extracting the time of a NetCDF file
 
@@ -49,7 +49,7 @@ def netcdf_time(filepath):
         mytime = ds.coords["time"]
         starttime = min(mytime)
         endtime = max(mytime)
-        # Zeitliche Ausdehnung
+        # Time extend
         anfang = str(starttime.values)
         ende = str(endtime.values)
         timemax_formatted=str(dateparser.parse(ende))
@@ -61,33 +61,45 @@ def netcdf_time(filepath):
         ds.close()
         return None
 
+"""
+Function for extracting the convex hull of a NetCDF file
+
+:param filepath: path to the file
+:returns: None, because netCDF are raster data and convex Hull of raster data equals the bounding box.
+"""
 def netcdf_convHull(filepath):
     ds = xr.open_dataset(filepath)
-    click.echo('Sorry there is no second level of detail for NetCDF files')
     ds.close()
     return [None]
 
+"""
+Function for extracting the bbox 
+
+:param filepath: path to the file
+:returns: bounding box of the netCDF in the format [minlon, minlat, maxlon, maxlat]
+"""
 def netcdf_bbox(filepath):
     ds = xr.open_dataset(filepath)
     try:
         lats = ds.coords["lat"]
         lons = ds.coords["lon"]
-
     except Exception as e:
-        lats = ds.coords["latitude"]
-        lons = ds.coords["longitude"]
-    #print(ds.values)
-    minlat=min(lats).values
-    minlatFloat=float(minlat)
-    minlon=min(lons).values
-    minlonFloat=float(minlon)
-    maxlat=max(lats).values
-    maxlatFloat=float(maxlat)
-    maxlon=max(lons).values
-    maxlonFloat=float(maxlon)
+        try:
+            lats = ds.coords["latitude"]
+            lons = ds.coords["longitude"]
+        except Exception as e:
+            click.echo(e)
 
+    min_lat=min(lats).values
+    min_lat_float=float(min_lat)
+    min_lon=min(lons).values
+    min_lon_float=float(min_lon)
+    max_lat=max(lats).values
+    max_lat_float=float(max_lat)
+    max_lon=max(lons).values
+    max_lon_float=float(max_lon)
 
-    bbox = [minlatFloat,minlonFloat,maxlatFloat,maxlonFloat]
+    bbox = [min_lon_float,min_lat_float,max_lon_float,max_lat_float]
     extractTool.print_pretty_bbox(filepath,bbox, "NetCDF")
     ds.close()
     return bbox

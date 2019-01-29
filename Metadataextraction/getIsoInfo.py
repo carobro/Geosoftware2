@@ -3,7 +3,7 @@ import json         # used to parse kml and gml as json
 import pygeoj       # used to parse kml and gml as json
 import extractTool  # used for the prints
 from osgeo import gdal  # used to print useful exceptions
-import os       # used for folder handling
+import os            # used to get the location of the testdata   # used for folder handling
 import ogr2ogr  # used to create help file
 import tempfile # used to create help file
 from scipy.spatial import ConvexHull  # used to calculate the convex hullimport geojson as gj
@@ -49,11 +49,10 @@ Function for extracting the bounding box of an iso file
 
 :param filepath: path to the file
 :param detail: specifies the level of detail of the geospatial extent (bbox or convex hull)
-:param folder: specifies if the user gets the metadata for the whole folder (whole) or for each file (single)
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
 """
-def getIsobbx(filepath, detail , time):
+def getIsobbx(filepath, detail, time):
     gdal.UseExceptions()
 
     if (is_folder_check(filepath)):
@@ -63,32 +62,33 @@ def getIsobbx(filepath, detail , time):
 
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
     if detail =='bbox':
-        bbox_val=iso_bbox(filepath)
-    
+        bbox_val=iso_bbox(filepath)    
     else:
         bbox_val=[None]
 
     if detail =='convexHull':
-        convHull_val=iso_convHull(filepath)
-        
+        convex_hull_val=iso_convex_hull(filepath)
     else:
-        convHull_val=[None]
+        convex_hull_val=[None]
 
-    # We transform the gml file to a geojson file, then search for
-    # words like "date", "timestamp", "time" and collect them
     if (time):
         try: 
             time_val=iso_time(filepath)
         except Exception as e:
-            print(e)
-        
+            print(e)        
     else:
         time_val=[None]
     
-    ret_value=[bbox_val, convHull_val, time_val]
+    ret_value=[bbox_val, convex_hull_val, time_val]
     os.remove("out.json")
     return ret_value
 
+"""
+Function for extracting the bounding box of an iso file
+
+:param filepath: path to the file
+:returns: spatial extent as a bbox in the format [minlon, minlat, maxlon, maxlat]
+"""
 def iso_bbox(filepath):
     defined_crs=True
     try:
@@ -99,12 +99,12 @@ def iso_bbox(filepath):
     # Identification of CRS and transformation
     # In some test data the epsg id was stored in an unicode object like this one'urn:ogc:def:crs:EPSG::4258'
     try:
-        isocrs = (iso).crs
-        mycrs= isocrs["properties"]["name"]
-        mycrsString=mycrs.encode('ascii','ignore')
+        iso_crs = (iso).crs
+        my_crs= iso_crs["properties"]["name"]
+        my_crs_str=my_crs.encode('ascii','ignore')
         # Extracting the epsg id
-        mySplit= mycrsString.split(':')
-        CRSID=mySplit[len(mySplit)-1]
+        my_split= my_crs_str.split(':')
+        CRSID=my_split[len(my_split)-1]
         # Especially the KML data files have this id, which is wgs84
         # No need to transform
         if (CRSID=="CRS84" or CRSID == 4326):
@@ -117,13 +117,20 @@ def iso_bbox(filepath):
         print("While splitting the string an error occurred")
         defined_crs=False
     if defined_crs:
+        extractTool.print_pretty_bbox(filepath, mybbx, "ISO")
         return mybbx
         
     else:
         print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
         return [None]
 
-def iso_convHull(filepath):
+"""
+Function for extracting the convex hull of an iso file
+
+:param filepath: path to the file
+:returns: convex hull of the iso file
+"""
+def iso_convex_hull(filepath):
     iso = pygeoj.load(filepath="out.json")
     #TO-DO feature.geometry.coordinates in variable speichern
     for feature in iso:
@@ -131,30 +138,32 @@ def iso_convHull(filepath):
             f=feature.geometry.coordinates
             extract_coordinates(f)
         except Exception:
-            #TODO
-            #hier besser raise exception?!
-            print("There is a feature without coordinates in the iso file")
+            click.echo("There is a feature without coordinates in the iso file")
        
     #calculation of the convex hull
     hull=ConvexHull(point)
     hull_points=hull.vertices
-    convHull=[]
+    convex_hull=[]
     for z in hull_points:
         hullcoord=[point[z][0], point[z][1]]
-        convHull.append(hullcoord)
+        convex_hull.append(hullcoord)
+    return convex_hull
 
-    return convHull
+"""
+Function for extracting the temporal extent of an iso file. 
+We transform the gml file to a geojson file, then search for words like "date", "timestamp", "time" and collect them.
 
+:param filepath: path to the file
+:returns: time, meeting the ISO8601 standard, in the form [time, time]
+"""
 def iso_time(filepath):
     try:
         ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
-    except Exception as a:
-        print (a)
-
+    except Exception as e:
+        click.echo(e)
     iso = open("time.json")
-
     geojson = json.load(iso)
-    # @see https://www.w3schools.com/python/python_file_remove.asp
+    # :see: https://www.w3schools.com/python/python_file_remove.asp
     os.remove("time.json")
     if geojson["type"] == "FeatureCollection":
         first = geojson["features"]  
@@ -194,8 +203,7 @@ def iso_time(filepath):
                                         except Exception as e:
                                             #this exception is important for folder time extraction of cvs files...DONT DELETE IT!
                                             click.echo("There is no time-value ISO")
-                                            return [None]   
-
+                                            return [None]
         time_formatted=dateparser.parse(time)
         timeextend=[time_formatted, time_formatted]
         return timeextend

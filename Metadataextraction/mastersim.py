@@ -1,9 +1,7 @@
-import math
+import math         # used for the computations
 import extractTool  # used for the the transformation and prints
-import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
-import similar      
+import similar      # used to calculate the similarity score
 import click        # used to print something
-import os
 
 """
 Function for calling up all important functions 
@@ -27,5 +25,3 @@ def master(filepath1, filepath2):
             print("One of the Bounding Boxes are Empty")
             score = 1
             return score
-
-  
