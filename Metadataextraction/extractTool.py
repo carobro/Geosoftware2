@@ -71,10 +71,11 @@ def getMetadata(path, detail, folder, time):
                                 a=getIsoInfo.getIsobbx(filepath, detail, folder, time)
                             except Exception as e:
                                 try:
-                                    #click.echo("Folder")
+                                    click.echo("Folder")
                                     a=openFolder.openFolder(filepath, detail, folder, time)
-
+                                    print("666666666666666666666666")
                                 except Exception as e:
+                                    print("88888888")
                                     print(e)
                                     click.echo("end this")
     print("Final extraction:")
