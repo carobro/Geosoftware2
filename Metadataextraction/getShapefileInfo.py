@@ -1,8 +1,7 @@
-import click
+import click        # used to print something 
 import shapefile
-import extractTool
-from scipy.spatial import ConvexHull
-
+import extractTool # used for the the transformation and prints  # used for the the transformation and prints
+from scipy.spatial import ConvexHull  # used to calculate the convex hull
 """
 Function for extracting the bounding box of a shapefile
 

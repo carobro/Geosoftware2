@@ -1,21 +1,24 @@
-import click, json, sqlite3, csv, pygeoj, extractTool
-from osgeo import gdal, ogr, osr
-import pandas as pd
-import numpy as np
-import xarray as xr
-import os
-import ogr2ogr
-#new for this module
-import tempfile
-from scipy.spatial import ConvexHull
-import geojson as gj
+import click        # used to print something
+import json         # used to parse kml and gml as json
+import pygeoj       # used to parse kml and gml as json
+import extractTool  # used for the prints
+from osgeo import gdal  # used to print useful exceptions
+import os       # used for folder handling
+import ogr2ogr  # used to create help file
+import tempfile # used to create help file
+from scipy.spatial import ConvexHull  # used to calculate the convex hullimport geojson as gj
 import xml.etree.ElementTree as ET
-import dateparser
+import dateparser   # used to parse the dates
 
 #https://gis.stackexchange.com/questions/130963/write-geojson-into-a-geojson-file-with-python
-
+# list which saves the points
 point=list()
-#in diese methode muss ein feature.geometry.coordinates wert eingefuegt werden.
+"""
+Function for extracting coordinates of a feature.geometry.coordinates value and adds every point as a new point to the point list
+
+:param geoj: feature.geometry.coordinates value of the geojson
+:returns: point 
+"""
 def extract_coordinates(geoj):
     if (len(geoj)==2) and (type(geoj[0])==int or type(geoj[0])==float):
         new_point=[geoj[0], geoj[1]]
@@ -25,6 +28,12 @@ def extract_coordinates(geoj):
         for z in geoj:
             extract_coordinates(z)
 
+"""
+Auxiliary function to check if the file is a folder
+
+:param filepath: path to the file
+:returns: boolean value if the filepath contains a folder
+"""
 #without this function getIsobbx would open a folder and extract metadata the wrong way.
 def is_folder_check(filepath):
     is_folder=False
@@ -54,13 +63,13 @@ def getIsobbx(filepath, detail , time):
 
     """@see http://manpages.ubuntu.com/manpages/trusty/man1/ogr2ogr.1.html"""
     if detail =='bbox':
-        bbox_val=iso_bbox(filepath )
+        bbox_val=iso_bbox(filepath)
     
     else:
         bbox_val=[None]
 
     if detail =='convexHull':
-        convHull_val=iso_convHull(filepath )
+        convHull_val=iso_convHull(filepath)
         
     else:
         convHull_val=[None]
@@ -69,7 +78,7 @@ def getIsobbx(filepath, detail , time):
     # words like "date", "timestamp", "time" and collect them
     if (time):
         try: 
-            time_val=iso_time(filepath )
+            time_val=iso_time(filepath)
         except Exception as e:
             print(e)
         
@@ -80,7 +89,7 @@ def getIsobbx(filepath, detail , time):
     os.remove("out.json")
     return ret_value
 
-def iso_bbox(filepath ):
+def iso_bbox(filepath):
     defined_crs=True
     try:
         iso = pygeoj.load(filepath="out.json")
@@ -114,7 +123,7 @@ def iso_bbox(filepath ):
         print("Missing CRS -----> Boundingbox will not be saved in zenodo.")
         return [None]
 
-def iso_convHull(filepath ):
+def iso_convHull(filepath):
     iso = pygeoj.load(filepath="out.json")
     #TO-DO feature.geometry.coordinates in variable speichern
     for feature in iso:
@@ -136,7 +145,7 @@ def iso_convHull(filepath ):
 
     return convHull
 
-def iso_time(filepath ):
+def iso_time(filepath):
     try:
         ogr2ogr.main(["","-f", "GeoJSON", "time.json", filepath])
     except Exception as a:

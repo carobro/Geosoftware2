@@ -1,6 +1,7 @@
 # @author Carolin Bronowicz
 # @version 1.0
-import click, shapefile, sqlite3, csv, json, pygeoj
+import click        # used to print something
+import shapefile, sqlite3, csv, json, pygeoj
 from osgeo import gdal, ogr, osr
 import os
 import pandas as pd
@@ -8,7 +9,7 @@ import numpy as np
 import xarray as xr
 import ogr2ogr
 import json
-import dateparser
+import dateparser   # used to parse the dates
 
 timeextendArray=[]
 

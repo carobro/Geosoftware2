@@ -1,12 +1,12 @@
-import click, json, sqlite3, csv, pygeoj
+import click        # used to print something
+import json, sqlite3, csv, pygeoj
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, extractTool
-from scipy.spatial import ConvexHull
-
+from scipy.spatial import ConvexHull  # used to calculate the convex hull
 """
 Function for extracting the spatial extent from a directory of files
 

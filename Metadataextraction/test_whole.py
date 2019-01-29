@@ -1,12 +1,12 @@
-import click, shapefile, json, sqlite3, csv, pygeoj
+import click        # used to print something , shapefile, json, sqlite3, csv, pygeoj
 from osgeo import gdal
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import dateparser
+import dateparser   # used to parse the dates
 
-import extractTool
+import extractTool # used for the the transformation and prints  # used for the the transformation and prints
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
 
 
@@ -16,7 +16,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 ###############################
 def test_whole_A():
     filepath=__location__+'/testdata/mischung_bbox1'
-    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[-43.7405, 50.31025197410836, 9.468398712484145, 167.998], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[5.9153007564753155, -43.7405, 167.998, 52.5307755328733], [None], [None]]
 
 def test_whole_B():  
     filepath=__location__+"/testdata/mischung_bbox2"  
@@ -28,11 +28,11 @@ def test_whole_C():
 
 def test_whole_D():  
     filepath=__location__+"/testdata/geopackagetest"  
-    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[96.8169, -43.7405, 167.998, -9.14218], [None], [None]]
 
 def test_whole_E():
     filepath=__location__+"/testdata/csvordnertest"
-    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[47.988889, 4.3175, 53.217222, 9.731219], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[4.3175, 47.988889, 9.731219, 53.217222], [None], [None]]
 
 def test_whole_F():
     filepath=__location__+"/testdata/innergeoj"

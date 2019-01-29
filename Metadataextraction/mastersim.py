@@ -1,8 +1,8 @@
 import math
-import extractTool
+import extractTool  # used for the the transformation and prints
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
-import similar
-import click
+import similar      
+import click        # used to print something
 import os
 
 """

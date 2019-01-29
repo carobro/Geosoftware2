@@ -1,12 +1,12 @@
-import click, shapefile, json, sqlite3, csv, pygeoj
+import click        # used to print something , shapefile, json, sqlite3, csv, pygeoj
 from osgeo import gdal
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import dateparser
+import dateparser   # used to parse the dates
 
-import extractTool
+import extractTool # used for the the transformation and prints  # used for the the transformation and prints
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -16,7 +16,7 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 ######################################
 def test_answerU():  
     filepath=  __location__+'/testdata/cities_NL.csv'
-    assert extractTool.getMetadata(filepath, 'bbox' , True) == [[51.434444000000006, 4.3175, 53.217222, 6.574722], [None], ['2018-09-30 00:00:00', '2018-09-30 00:00:00']]
+    assert extractTool.getMetadata(filepath, 'bbox' , True) == [[4.3175, 51.434444000000006, 6.574722, 53.217222], [None], ['2018-09-30 00:00:00', '2018-09-30 00:00:00']]
 
 
 def test_answerT():
@@ -30,7 +30,7 @@ def test_answerUU():
 
 def test_answerV():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
-    assert extractTool.getMetadata(filepath, 'bbox' , True) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox' , True) == [[96.8169, -43.7405, 167.998, -9.14218], [None], [None]]
 
 def test_answerW():
     filepath=__location__+'/testdata/muenster_ring_zeit.geojson'

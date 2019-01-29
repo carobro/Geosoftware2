@@ -1,16 +1,17 @@
-import click, shapefile, json, sqlite3, csv, pygeoj
+import click        # used to print something
 from osgeo import gdal
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
 
-import extractTool, mastersim, similar
+import extractTool # used for the the transformation and prints  # used for the the transformation and prints
+import mastersim, similar
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-#--detai
+#--detail
 print(__location__+'/testdata/')
 """
 These tests check if the calucated similar score from two files is
@@ -28,13 +29,13 @@ def test_master15():
 def test_master16():
     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 
     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
-    assert mastersim.master(filepath1, filepath2) == 0.773460028183427
+    assert mastersim.master(filepath1, filepath2) == 1
 
 #check
 def test_master17():
      filepath1 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
      filepath2 = __location__+'/testdata/wf_100m_klas.tif'
-     assert mastersim.master(filepath1, filepath2) == 0.6181574506199584
+     assert mastersim.master(filepath1, filepath2) == 0.8222891646452265
 
 """
 #check
@@ -89,7 +90,7 @@ def test_master8():
 def test_master9():
     filepath1 = __location__+'/testdata/ECMWF_ERA-40_subset1.nc'
     filepath2 = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'
-    assert mastersim.master(filepath1, filepath2) == 0.6564650750802342
+    assert mastersim.master(filepath1, filepath2) == 0.665100495192416
 
 def test_master10():
     filepath1 = __location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson' 

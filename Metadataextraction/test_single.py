@@ -1,12 +1,12 @@
-import click, shapefile, json, sqlite3, csv, pygeoj
+import click        # used to print something , shapefile, json, sqlite3, csv, pygeoj
 from osgeo import gdal
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import dateparser
+import dateparser   # used to parse the dates
 
-import extractTool
+import extractTool # used for the the transformation and prints  # used for the the transformation and prints
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, getIsoInfo, openFolder
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -20,11 +20,11 @@ def test_answerA():
 
 def test_answerB():  
     filepath= __location__+'/testdata/cities_NL.csv'
-    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[51.434444000000006, 4.3175, 53.217222, 6.574722], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[4.3175, 51.434444000000006, 6.574722, 53.217222], [None], [None]]
 
 def test_answerC():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    
-    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[-43.7405, 96.8169, -9.14218, 167.998], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox' , False) == [[96.8169, -43.7405, 167.998, -9.14218], [None], [None]]
 
 def test_answerD():
     filepath=__location__+'/testdata/Abgrabungen_Kreis_Kleve.geojson'
@@ -56,7 +56,7 @@ def test_answerO():
 
 def test_answerP():  
     filepath=  __location__+'/testdata/cities_NL.csv'
-    assert extractTool.getMetadata(filepath, 'convexHull' , False) == [[None], [[53.197222, 5.7925], [53.217222, 6.574722], [51.999167, 5.9225], [51.434444, 5.484167], [51.930833, 4.4791669999999995], [52.084167, 4.3175], [52.634443999999995, 4.746389]], [None]]
+    assert extractTool.getMetadata(filepath, 'convexHull' , False) == [[None], [[6.574722, 53.217222], [5.7925, 53.197222], [4.746389, 52.634443999999995], [4.3175, 52.084167], [4.4791669999999995, 51.930833], [5.484167, 51.434444], [5.9225, 51.999167]], [None]]
 
 def test_answerQ():
     filepath = __location__+'/testdata/Queensland_Children_geopackage/census2016_cca_qld_short.gpkg'    

@@ -1,11 +1,11 @@
-
-import click, json, sqlite3, csv, pygeoj, extractTool
+import click        # used to print something , 
+import json, sqlite3, csv, pygeoj, extractTool
 from osgeo import gdal, ogr, osr
 import pandas as pd
 import numpy as np
 import xarray as xr
 import os
-import dateparser   # used to parse the dates
+import dateparser   # used to parse the dates 
 
 """
 Function for extracting the bounding box of a NetCDF file
@@ -19,18 +19,18 @@ Function for extracting the bounding box of a NetCDF file
 def getNetCDFbbx(filepath, detail , time):
     #validation if file is netcdf
     if detail =='bbox':
-        bbox_val=netcdf_bbox(filepath )
+        bbox_val=netcdf_bbox(filepath)
     else:
         bbox_val=[None]
 
     if detail == 'convexHull':
-        convHull_val=netcdf_convHull(filepath )
+        convHull_val=netcdf_convHull(filepath)
     else:
         convHull_val=[None]
 
     # if time is selected (TRUE), the temporal extent is calculated
     if (time):
-        time_val=netcdf_time(filepath )
+        time_val=netcdf_time(filepath)
     else:
         time_val=[None]
     
@@ -43,7 +43,7 @@ Function for extracting the time of a NetCDF file
 :param time: boolean variable, if it is true the user gets the temporal extent instead of the spatial extent
 :returns: temporal extent
 """
-def netcdf_time(filepath ):
+def netcdf_time(filepath):
     ds = xr.open_dataset(filepath)
     try:
         mytime = ds.coords["time"]
@@ -61,13 +61,13 @@ def netcdf_time(filepath ):
         ds.close()
         return None
 
-def netcdf_convHull(filepath ):
+def netcdf_convHull(filepath):
     ds = xr.open_dataset(filepath)
     click.echo('Sorry there is no second level of detail for NetCDF files')
     ds.close()
     return [None]
 
-def netcdf_bbox(filepath ):
+def netcdf_bbox(filepath):
     ds = xr.open_dataset(filepath)
     try:
         lats = ds.coords["lat"]

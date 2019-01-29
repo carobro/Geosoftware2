@@ -1,6 +1,6 @@
 import math
-import extractTool
-import click
+import extractTool # used for the the transformation and prints  # used for the the transformation and prints
+import click        # used to print something 
 import os
 
 """

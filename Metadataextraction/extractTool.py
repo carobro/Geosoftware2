@@ -1,5 +1,5 @@
 from pyproj import Proj, transform # used for the CRS transformation
-import click    # used for output messages
+import click        # used to print something
 import getShapefileInfo, getGeoTiffInfo, getCSVInfo, getIsoInfo, getGeoJsonInfo, getNetCDFInfo, getGeoPackageInfo, openFolder   # used for the specific extraction functions
 
 """
@@ -60,28 +60,28 @@ def getMetadata(path, detail, time):
                                     result=openFolder.openFolder(filepath, detail, time)
                                 except Exception as e:
                                     click.echo(e)
-    click.echo("Final extraction:")
+    click.secho("Final extraction:",bold=True)
     click.echo(result)
     return result
 
 """
 Function for transforming the coordinate reference system to WGS84 using PyProj (https://github.com/jswhit/pyproj)
 
-:param lat: value for latitude
 :param lng: value for longitude
+:param lat: value for latitude
 :sourceCRS: epsg identifier for the source coordinate reference system
 :returns: the transformed values for latitude and longitude 
 """
-def transformToWGS84(lat, lng, sourceCRS):
+def transformToWGS84(lng, lat, sourceCRS):
     try:
         # formatting the input CRS
-        inputProj='epsg:'
-        inputProj+=str(sourceCRS)
-        inProj = Proj(init=inputProj)
+        input_proj_str='epsg:'
+        input_proj_str+=str(sourceCRS)
+        input_proj = Proj(init=input_proj_str)
         # epsg:4326 is WGS84
-        outProj = Proj(init='epsg:4326')
-        latT, lngT = transform(inProj,outProj,lat,lng)
-        return(latT,lngT)
+        output_proj = Proj(init='epsg:4326')
+        lat_t, lon_t = transform(input_proj,output_proj,lng,lat)
+        return(lat_t,lon_t)
     except Exception as e:
         click.echo(e)
 
@@ -93,12 +93,12 @@ Function to print the bounding box in a pretty format.
 :param data_format: data format
 """
 def print_pretty_bbox(path, bbox, data_format):
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
+    click.echo("----------------------------------------------------------------")
+    click.secho("Filepath:", fg="green")
     click.echo(path)
     click.echo("Boundingbox of the "+data_format+" object:")
     click.echo(bbox)
-    print("----------------------------------------------------------------")
+    click.echo("----------------------------------------------------------------")
 
 """
 Function to print the convex hull in a pretty format.
@@ -108,12 +108,12 @@ Function to print the convex hull in a pretty format.
 :param data_format: data format
 """
 def print_pretty_hull(path, convex_hull, data_format):
-    print("----------------------------------------------------------------")
-    click.echo("Filepath:")
+    click.echo("----------------------------------------------------------------")
+    click.secho("Filepath:", fg="green")
     click.echo(path)
     click.echo("Convex Hull of the "+data_format+" file: ")
     click.echo(convex_hull)
-    print("----------------------------------------------------------------")
+    click.echo("----------------------------------------------------------------")
 
 """
 Function to print the time in a pretty format.
@@ -123,10 +123,10 @@ Function to print the time in a pretty format.
 :param data_format: data format
 """
 def print_pretty_time(path, time, data_format):
-    print("----------------------------------------------------------------")
+    click.echo("----------------------------------------------------------------")
     click.echo("Timeextend of the "+data_format+" file:")
     click.echo(time)
-    print("----------------------------------------------------------------")
+    click.echo("----------------------------------------------------------------")
 
 if __name__ == '__main__':
     click_function()
