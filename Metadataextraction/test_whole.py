@@ -36,7 +36,7 @@ def test_whole_E():
 
 def test_whole_F():
     filepath=__location__+"/testdata/innergeoj"
-    assert extractTool.getMetadata(filepath, 'bbox', 'whole', False) == [[6.60864, 51.2380774, 6.71483, 51.31549], [None], [None]]
+    assert extractTool.getMetadata(filepath, 'bbox', False) == [[6.60864, 51.2380774, 6.71483, 51.31549], [None], [None]]
 
 
 #####################################
