@@ -7,19 +7,19 @@ http://localhost:5000/api/records/
 Diese ist von zenodo vorgegeben, wird aber durch unsere Bereitstellung der Bounding Box ergaenzt.
 Standardmaessig werden die letzten 10 gepublishten Records in der API angezeigt. 
 
-![Alt-Text](/home/paulsenmann/Pictures/Screenshot from 2019-01-30 04-33-44.png)
+![Alt-Text](API-Images/Screenshot from 2019-01-30 04-33-44.png)
 
 http://localhost:5000/api/records/[ID]
 
 Ueber die ID kommt man auf die einzelnen Ansichten der Records.
 
-![Alt-Text](/home/paulsenmann/Pictures/Screenshot from 2019-01-30 04-32-55.png)
+![Alt-Text](API-Images/Screenshot from 2019-01-30 04-32-55.png)
 
 http://localhost:5000/api/records/[ID]/similar
 
 An diese ID wird dann noch der Suffix similar gehaengt um auf den Similarity endpunkt zu gelangen.
 
-![Alt-Text](/home/paulsenmann/Pictures/Screenshot from 2019-01-30 04-33-44.png)
+![Alt-Text](API-Images/Screenshot from 2019-01-30 04-33-44.png)
 
 ### Tests
 
