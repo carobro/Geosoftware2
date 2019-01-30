@@ -71,7 +71,25 @@ Then you can navigate in any common console in the folder of the tool (*"extract
 there, the following command must be executed
 
 At last switch to the distro branch with
-```git checkout distro```
+```bat
+git checkout distro
+```
+
+It should automatically switch to the changed zenodo version
+If not reboot the zenodo development installation with:
+```bat
+docker-compose up db es cache mq
+```
+in a new terminal 
+```bat
+workon zenodo
+celery worker -A zenodo.celery -l INFO --purge --loglevel=DEBUG
+```
+in a new terminal
+```bat
+workon zenodo
+FLASK_DEBUG=True zenodo run --reload --with-threads
+```
 
 ```bat 
 python extractTool.py --path='[filepath]' --detail=[bbox|convexHull] --time
