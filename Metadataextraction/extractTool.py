@@ -80,8 +80,8 @@ def transformToWGS84(lng, lat, sourceCRS):
         input_proj = Proj(init=input_proj_str)
         # epsg:4326 is WGS84
         output_proj = Proj(init='epsg:4326')
-        lat_t, lon_t = transform(input_proj,output_proj,lng,lat)
-        return(lat_t,lon_t)
+        lon_t, lat_t = transform(input_proj,output_proj,lng,lat)
+        return(lon_t,lat_t)
     except Exception as e:
         click.echo(e)
 
@@ -94,7 +94,7 @@ Function to print the bounding box in a pretty format.
 """
 def print_pretty_bbox(path, bbox, data_format):
     click.echo("----------------------------------------------------------------")
-    click.secho("Filepath:", fg="green")
+    click.echo("Filepath:")
     click.echo(path)
     click.echo("Boundingbox of the "+data_format+" object:")
     click.echo(bbox)
@@ -109,7 +109,7 @@ Function to print the convex hull in a pretty format.
 """
 def print_pretty_hull(path, convex_hull, data_format):
     click.echo("----------------------------------------------------------------")
-    click.secho("Filepath:", fg="green")
+    click.echo("Filepath:")
     click.echo(path)
     click.echo("Convex Hull of the "+data_format+" file: ")
     click.echo(convex_hull)
