@@ -90,7 +90,7 @@ in a new terminal
 workon zenodo
 FLASK_DEBUG=True zenodo run --reload --with-threads
 ```
-
+-------------------------------
 ```bat 
 python extractTool.py --path='[filepath]' --detail=[bbox|convexHull] --time
 ```
