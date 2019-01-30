@@ -17,8 +17,8 @@ For Zenodo installation, please follow the instructions below:
 (Who wants to save time, should not try it under Windows. On Linux its much faster and easier :wink: )
  
 After installation execute:
-```bat 
-pip install -e .
+```bat
+pip install -e
 ```
 Now you can open `http://localhost:5000/`. There you can create your own profile and upload files.
 
@@ -68,8 +68,29 @@ Next step:
 pip install pytest   
 ```      
 Then you can navigate in any common console in the folder of the tool (*"extractTool"*) and
-there, the following command must be executed   
+there, the following command must be executed
 
+At last switch to the distro branch with
+```bat
+git checkout distro
+```
+
+It should automatically switch to the changed zenodo version
+If not reboot the zenodo development installation with:
+```bat
+docker-compose up db es cache mq
+```
+in a new terminal 
+```bat
+workon zenodo
+celery worker -A zenodo.celery -l INFO --purge --loglevel=DEBUG
+```
+in a new terminal
+```bat
+workon zenodo
+FLASK_DEBUG=True zenodo run --reload --with-threads
+```
+-------------------------------
 ```bat 
 python extractTool.py --path='[filepath]' --detail=[bbox|convexHull] --time
 ```

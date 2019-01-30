@@ -7,10 +7,6 @@
 `>>> pd.read_csv(filepath)`   
 
 ## Für Shapefile - Extraktion
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 `$ pip install pyshp`   
 `$ python`   
 `>>> import shapefile`   
@@ -33,12 +29,9 @@
 `$ pip install numpy`
 `$ pip install pandas`
 `$ pip install xarray`
-<<<<<<< HEAD
 
 ## Für GeoPackage - Extraktion
 `install from https://github.com/nextgis/pygdal`   
 `$ python`   
 `>>> from osgeo import gdal`   
 `>>> gdalinfo(filepath)`    
-=======
->>>>>>> master
