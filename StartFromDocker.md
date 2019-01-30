@@ -1,6 +1,6 @@
 # Start Zenodo with Docker, which contains our tool
 
-Because our tool lies on [PyPi](https://pypi.org/project/extractTool/) we added the extractTool version nto the `requirements.txt`from zenodo. So if you want to start zenodo with our extractTool you can follow these Steps:   
+Because our tool lies on [PyPi](https://pypi.org/project/extractTool/) we added the extractTool version into the `requirements.txt`from zenodo. So if you want to start zenodo with our extractTool you can follow these Steps:   
    
 **1. You must clone our repository**
 ```bat
