@@ -17,8 +17,8 @@ For Zenodo installation, please follow the instructions below:
 (Who wants to save time, should not try it under Windows. On Linux its much faster and easier :wink: )
  
 After installation execute:
-```bat 
-pip install -e .
+```bat
+pip install -e
 ```
 Now you can open `http://localhost:5000/`. There you can create your own profile and upload files.
 
@@ -68,7 +68,10 @@ Next step:
 pip install pytest   
 ```      
 Then you can navigate in any common console in the folder of the tool (*"extractTool"*) and
-there, the following command must be executed   
+there, the following command must be executed
+
+At last switch to the distro branch with
+```git checkout distro```
 
 ```bat 
 python extractTool.py --path='[filepath]' --detail=[bbox|convexHull] --time
