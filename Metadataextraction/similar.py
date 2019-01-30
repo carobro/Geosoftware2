@@ -1,7 +1,7 @@
 import math         # used for the computations (e.g. cos and sin)
-import extractTool  # used for the the transformation and prints  # used for the the transformation and prints
+import extractTool  # used for the the transformation and prints
 import click        # used to print something 
-import os            # used to get the location of the testdata       # used to navigate through the files
+import os            # used to get the location of the testdata     
 
 """
 Function to apply data type similarity on the similarity score
