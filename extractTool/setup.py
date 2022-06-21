@@ -24,7 +24,7 @@ setuptools.setup(
         "docopt==0.6.2",
         "geojson==2.4.1",
         "jsonlib==1.6.1",
-        "numpy==1.15.4",
+        "numpy==1.22.0",
         "pandas==0.23.4",
         "PyGeoj==1.0.0",
         "pylint==1.9.3",
